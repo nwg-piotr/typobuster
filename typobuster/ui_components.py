@@ -3,7 +3,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-from typobuster.tools import save_settings, sanitize_spaces, sanitize_eol
+from typobuster.tools import *
 
 
 class MenuBar(Gtk.MenuBar):
@@ -129,17 +129,30 @@ class SanitizationDialog(Gtk.Window):
         vbox.set_property("margin", 12)
         self.add(vbox)
 
-        self.sanitize_double_spaces = Gtk.CheckButton(label="Remove double spaces")
-        self.sanitize_double_spaces.set_active(self.settings["sanitize-double-spaces"])
-        vbox.pack_start(self.sanitize_double_spaces, False, False, 0)
+        self.sanitize_hyphens = Gtk.CheckButton(label="Hyphens")
+        self.sanitize_hyphens.set_active(self.settings["sanitize-hyphens"])
+        self.sanitize_hyphens.connect("toggled", self.switch_settings_key, "sanitize-hyphens")
+        vbox.pack_start(self.sanitize_hyphens, False, False, 0)
 
-        self.sanitize_punctuation_marks = Gtk.CheckButton(label="Remove spaces before punctuation marks")
+        self.sanitize_quotes = Gtk.CheckButton(label="Quotes")
+        self.sanitize_quotes.set_active(self.settings["sanitize-quotes"])
+        self.sanitize_quotes.connect("toggled", self.switch_settings_key, "sanitize-quotes")
+        vbox.pack_start(self.sanitize_quotes, False, False, 0)
+
+        self.sanitize_punctuation_marks = Gtk.CheckButton(label="Punctuation marks")
         self.sanitize_punctuation_marks.set_active(self.settings["sanitize-punctuation-marks"])
+        self.sanitize_punctuation_marks.connect("toggled", self.switch_settings_key, "sanitize-punctuation-marks")
         vbox.pack_start(self.sanitize_punctuation_marks, False, False, 0)
 
-        self.sanitize_double_eol = Gtk.CheckButton(label="Double end-of-line characters")
-        self.sanitize_double_eol.set_active(self.settings["sanitize-double-eol"])
-        vbox.pack_start(self.sanitize_double_eol, False, False, 0)
+        self.sanitize_spaces = Gtk.CheckButton(label="Spaces")
+        self.sanitize_spaces.set_active(self.settings["sanitize-spaces"])
+        self.sanitize_spaces.connect("toggled", self.switch_settings_key, "sanitize-spaces")
+        vbox.pack_start(self.sanitize_spaces, False, False, 0)
+
+        self.sanitize_eol = Gtk.CheckButton(label="End-of-line characters")
+        self.sanitize_eol.set_active(self.settings["sanitize-eol"])
+        self.sanitize_eol.connect("toggled", self.switch_settings_key, "sanitize-eol")
+        vbox.pack_start(self.sanitize_eol, False, False, 0)
 
         button = Gtk.Button(label="Sanitize")
         button.connect("clicked", self.sanitize_text, buffer)
@@ -147,18 +160,29 @@ class SanitizationDialog(Gtk.Window):
 
         self.show_all()
 
+    def switch_settings_key(self, chekbox, key):
+        if key in self.settings:
+            self.settings[key] = chekbox.get_active()
+            save_settings(self.settings)
+        else:
+            print(f"Key '{key}' not found in settings")
+
     def sanitize_text(self, widget, buffer):
         text, start_idx, end_idx = text_to_modify(buffer)
 
-        self.settings["sanitize-double-spaces"] = self.sanitize_double_spaces.get_active()
-        self.settings["sanitize-punctuation-marks"] = self.sanitize_punctuation_marks.get_active()
-        self.settings["sanitize-double-eol"] = self.sanitize_double_eol.get_active()
-        save_settings(self.settings)
+        if self.settings["sanitize-hyphens"]:
+            text = sanitize_hyphens(text, start_idx, end_idx)
 
-        if self.settings["sanitize-double-spaces"]:
+        if self.settings["sanitize-quotes"]:
+            text = sanitize_quotes(text, start_idx, end_idx)
+
+        if self.settings["sanitize-punctuation-marks"]:
+            text = sanitize_punctuation_marks(text, start_idx, end_idx)
+
+        if self.settings["sanitize-spaces"]:
             text = sanitize_spaces(text, start_idx, end_idx)
 
-        if self.settings["sanitize-double-eol"]:
+        if self.settings["sanitize-eol"]:
             text = sanitize_eol(text, start_idx, end_idx)
 
         self.parent_window.update_text(text)

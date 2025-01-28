@@ -10,7 +10,7 @@ from typobuster.tools import *
 
 class Scratchpad(Gtk.Window):
     def __init__(self):
-        super().__init__(title="GtkSourceView Example")
+        super().__init__(title="Untitled - Typobuster")
         self.set_default_size(800, 600)
         self.settings = load_settings()
 

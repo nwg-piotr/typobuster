@@ -8,7 +8,7 @@ def config_dir():
     xdg_config_home = os.getenv('XDG_CONFIG_HOME')
     config_home = xdg_config_home if xdg_config_home else os.path.join(os.getenv("HOME"), ".config")
 
-    return os.path.join(config_home, "nwg-scratchpad")
+    return os.path.join(config_home, "typobuster")
 
 
 def eprint(*args, **kwargs):
@@ -42,9 +42,11 @@ def load_settings():
     config_path = os.path.join(config_dir(), "config")
 
     defaults = {
-        "sanitize-double-spaces": True,
+        "sanitize-spaces": True,
         "sanitize-punctuation-marks": True,
-        "sanitize-double-eol": True,
+        "sanitize-hyphens": True,
+        "sanitize-quotes": True,
+        "sanitize-eol": True,
         "view-line-numbers": True,
     }
     settings = load_json(config_path)
@@ -93,28 +95,40 @@ def load_text_file(path):
         return None
 
 
-def sanitize_spaces(text, start_idx, end_idx):
+def sanitize_hyphens(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
-
     selection = selection.replace("–", "-")  # Replace en-dashes with hyphens
     selection = selection.replace(" -", " - ")  # Add spaces around hyphens
     selection = selection.replace("- ", " - ")  # Add spaces around hyphens
+    return text[:start_idx] + selection + text[end_idx:]
+
+
+def sanitize_quotes(text, start_idx, end_idx):
+    selection = text[start_idx:end_idx]
     selection = selection.replace('„', '"')  # Replace German-style quotes with English-style quotes
     selection = selection.replace('”', '"')  # Replace German-style quotes with English-style quotes
-    selection = re.sub(r"([.,!?;:])", r"\1 ", selection)  # Add a space after punctuation marks
-    selection = re.sub(r'\s+([.,!?;:])', r'\1', text)  # Remove spaces before punctuation marks
-    selection = re.sub(r" {2,}", " ", selection)  # Replace two or more spaces with a single space
+    return text[:start_idx] + selection + text[end_idx:]
+
+
+def sanitize_punctuation_marks(text, start_idx, end_idx):
+    selection = text[start_idx:end_idx]
+    selection = re.sub(r'\s+([.,!?;:])', r'\1', selection)  # Remove spaces before punctuation marks
+    selection = re.sub(r'([.,!?;:])([A-Za-z0-9])', r'\1 \2', selection)
     selection = selection.replace('. ,', '.,')
     selection = selection.replace('. . .', '...')
+    return text[:start_idx] + selection + text[end_idx:]
 
+
+def sanitize_spaces(text, start_idx, end_idx):
+    selection = text[start_idx:end_idx]
+    selection = re.sub(r" {2,}", " ", selection)  # Replace two or more spaces with a single space
+    selection = selection.replace("\n ", "")  # Remove spaces right after end-of-line characters
     return text[:start_idx] + selection + text[end_idx:]
 
 
 def sanitize_eol(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
-
     selection = re.sub(r"\n{2,}", "\n", selection)  # Replace two or more end-of-line characters with a single one
     selection = selection.replace("\n", "\n\n")  # Double all end-of-line characters
     selection = selection.replace(" \n", "\n")  # Remove spaces before end-of-line characters
-
     return text[:start_idx] + selection + text[end_idx:]
