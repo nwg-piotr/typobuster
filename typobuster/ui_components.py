@@ -1,7 +1,7 @@
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
 from typobuster.tools import *
 
@@ -125,7 +125,9 @@ class SanitizationDialog(Gtk.Window):
         self.parent_window = parent_window
         self.settings = parent_window.settings
 
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.connect("key-release-event", self.handle_keyboard_release)
+
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         vbox.set_property("margin", 12)
         self.add(vbox)
 
@@ -154,11 +156,23 @@ class SanitizationDialog(Gtk.Window):
         self.sanitize_eol.connect("toggled", self.switch_settings_key, "sanitize-eol")
         vbox.pack_start(self.sanitize_eol, False, False, 0)
 
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        vbox.pack_start(hbox, False, False, 0)
+
         button = Gtk.Button(label="Sanitize")
+        hbox.pack_end(button, False, False, 0)
         button.connect("clicked", self.sanitize_text, buffer)
-        vbox.pack_start(button, False, False, 0)
+
+        button = Gtk.Button(label="Cancel")
+        hbox.pack_end(button, False, False, 0)
+        button.connect("clicked", lambda x: self.destroy())
 
         self.show_all()
+
+    def handle_keyboard_release(self, widget, event):
+        if event.keyval == Gdk.KEY_Escape:
+            self.destroy()
+
 
     def switch_settings_key(self, chekbox, key):
         if key in self.settings:
