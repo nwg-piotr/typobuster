@@ -122,7 +122,7 @@ def sanitize_punctuation_marks(text, start_idx, end_idx):
 def sanitize_spaces(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
     selection = re.sub(r" {2,}", " ", selection)  # Replace two or more spaces with a single space
-    selection = selection.replace("\n ", "")  # Remove spaces right after end-of-line characters
+    selection = selection.replace("\n ", "\n")  # Remove spaces right after end-of-line characters
     return text[:start_idx] + selection + text[end_idx:]
 
 
