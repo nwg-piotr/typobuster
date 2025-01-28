@@ -127,7 +127,7 @@ class SanitizationDialog(Gtk.Window):
 
         self.connect("key-release-event", self.handle_keyboard_release)
 
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         vbox.set_property("margin", 12)
         self.add(vbox)
 
@@ -157,6 +157,7 @@ class SanitizationDialog(Gtk.Window):
         vbox.pack_start(self.sanitize_eol, False, False, 0)
 
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        hbox.set_property("margin-top", 12)
         vbox.pack_start(hbox, False, False, 0)
 
         button = Gtk.Button(label="Sanitize")
