@@ -1,2 +1,2 @@
 # typobuster
-A simple text editor designed to automatically fix common typos
+Work in progress: a simple text editor designed to automatically fix common typos.
