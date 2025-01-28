@@ -78,7 +78,7 @@ class MenuBar(Gtk.MenuBar):
         tools_menu_item.set_submenu(tools_menu)
 
         # Create the Sanitize menu item
-        sanitize_menu_item = Gtk.MenuItem(label="Sanitize")
+        sanitize_menu_item = Gtk.MenuItem(label="Sanitization")
         tools_menu.append(sanitize_menu_item)
         sanitize_menu_item.connect("activate", parent_window.sanitize_text)
         sanitize_menu_item.set_can_focus(False)
