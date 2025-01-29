@@ -183,9 +183,10 @@ class SanitizationDialog(Gtk.Window):
         hbox.pack_end(button, False, False, 0)
         button.connect("clicked", self.sanitize_text, buffer)
 
-        button = Gtk.Button(label="Undo")
-        hbox.pack_end(button, False, False, 0)
-        button.connect("clicked", self.undo_sanitization, buffer)
+        self.undo_button = Gtk.Button(label="Undo")
+        hbox.pack_end(self.undo_button, False, False, 0)
+        self.undo_button.set_sensitive(bool(self.text_states))
+        self.undo_button.connect("clicked", self.undo_sanitization, buffer)
 
         button = Gtk.Button(label="Close")
         hbox.pack_end(button, False, False, 0)
@@ -230,6 +231,7 @@ class SanitizationDialog(Gtk.Window):
         if self.text_states:
             last_text = self.text_states.pop()  # Restore last text state
             self.parent_window.update_text(last_text)
+            self.undo_button.set_sensitive(bool(self.text_states))
 
 
 def text_to_modify(buffer):
