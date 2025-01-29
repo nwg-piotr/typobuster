@@ -12,6 +12,8 @@ class MenuBar(Gtk.MenuBar):
         self.settings = parent_window.settings
         self.set_take_focus(False)
 
+        self.parent_window = parent_window
+
         # Create the File menu
         file_menu = Gtk.Menu()
         file_menu_item = Gtk.MenuItem(label="File")
@@ -42,6 +44,19 @@ class MenuBar(Gtk.MenuBar):
         edit_menu = Gtk.Menu()
         edit_menu_item = Gtk.MenuItem(label="Edit")
         edit_menu_item.set_submenu(edit_menu)
+        edit_menu.connect("show", self.update_undo_redo_sensitivity)
+
+        # Create the Undo menu item
+        self.undo_menu_item = Gtk.MenuItem(label="Undo")
+        edit_menu.append(self.undo_menu_item)
+        self.undo_menu_item.connect("activate", parent_window.undo)
+
+        # Create the Redo menu item
+        self.redo_menu_item = Gtk.MenuItem(label="Redo")
+        edit_menu.append(self.redo_menu_item)
+        self.redo_menu_item.connect("activate", parent_window.redo)
+
+        self.update_undo_redo_sensitivity()
 
         # Create the Cut menu item
         cut_menu_item = Gtk.MenuItem(label="Cut")
@@ -99,6 +114,10 @@ class MenuBar(Gtk.MenuBar):
         self.append(tools_menu_item)
         self.append(help_menu_item)
 
+    def update_undo_redo_sensitivity(self, *args):
+        self.undo_menu_item.set_sensitive(self.parent_window.buffer.can_undo())
+        self.redo_menu_item.set_sensitive(self.parent_window.buffer.can_redo())
+
 
 class CustomMenuItem(Gtk.MenuItem):
     def __init__(self, settings, icon_name, label):
@@ -118,12 +137,12 @@ class CustomMenuItem(Gtk.MenuItem):
 
 class SanitizationDialog(Gtk.Window):
     def __init__(self, parent_window, buffer):
-
         super().__init__(title="Sanitize Text")
         self.set_transient_for(parent_window)
         self.set_modal(True)
         self.parent_window = parent_window
         self.settings = parent_window.settings
+        self.text_states = parent_window.text_states  # Stack to store text states
 
         self.connect("key-release-event", self.handle_keyboard_release)
 
@@ -164,7 +183,11 @@ class SanitizationDialog(Gtk.Window):
         hbox.pack_end(button, False, False, 0)
         button.connect("clicked", self.sanitize_text, buffer)
 
-        button = Gtk.Button(label="Cancel")
+        button = Gtk.Button(label="Undo")
+        hbox.pack_end(button, False, False, 0)
+        button.connect("clicked", self.undo_sanitization, buffer)
+
+        button = Gtk.Button(label="Close")
         hbox.pack_end(button, False, False, 0)
         button.connect("clicked", lambda x: self.destroy())
 
@@ -173,7 +196,6 @@ class SanitizationDialog(Gtk.Window):
     def handle_keyboard_release(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
             self.destroy()
-
 
     def switch_settings_key(self, chekbox, key):
         if key in self.settings:
@@ -184,6 +206,7 @@ class SanitizationDialog(Gtk.Window):
 
     def sanitize_text(self, widget, buffer):
         text, start_idx, end_idx = text_to_modify(buffer)
+        self.text_states.append(text)  # Save current text state
 
         if self.settings["sanitize-hyphens"]:
             text = sanitize_hyphens(text, start_idx, end_idx)
@@ -202,6 +225,11 @@ class SanitizationDialog(Gtk.Window):
 
         self.parent_window.update_text(text)
         self.destroy()
+
+    def undo_sanitization(self, widget, buffer):
+        if self.text_states:
+            last_text = self.text_states.pop()  # Restore last text state
+            self.parent_window.update_text(last_text)
 
 
 def text_to_modify(buffer):

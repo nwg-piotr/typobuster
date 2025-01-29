@@ -13,12 +13,13 @@ class Scratchpad(Gtk.Window):
         super().__init__(title="Untitled - Typobuster")
         self.set_default_size(800, 600)
         self.settings = load_settings()
+        self.text_states = []
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(vbox)
 
-        self.menu_bar = MenuBar(self)
-        vbox.pack_start(self.menu_bar, False, False, 0)
+        # self.menu_bar = MenuBar(self)
+        # vbox.pack_start(self.menu_bar, False, False, 0)
 
         # Create a GtkSourceView and configure it
         self.source_view = GtkSource.View()
@@ -34,6 +35,9 @@ class Scratchpad(Gtk.Window):
         self.buffer.set_language(language)
         self.source_view.set_buffer(self.buffer)
 
+        self.menu_bar = MenuBar(self)
+        vbox.pack_start(self.menu_bar, False, False, 0)
+
         # Create a scrollable window and add the source view
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_hexpand(True)
@@ -48,6 +52,14 @@ class Scratchpad(Gtk.Window):
 
         # Connect the delete event to quit the application
         self.connect("destroy", Gtk.main_quit)
+
+    def undo(self, widget):
+        if self.buffer.can_undo():
+            self.buffer.undo()
+
+    def redo(self, widget):
+        if self.buffer.can_redo():
+            self.buffer.redo()
 
     def toggle_line_numbers(self, widget):
         self.settings["view-line-numbers"] = not self.settings["view-line-numbers"]

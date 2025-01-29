@@ -105,8 +105,8 @@ def sanitize_hyphens(text, start_idx, end_idx):
 
 def sanitize_quotes(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
-    selection = selection.replace('„', '"')  # Replace German-style quotes with English-style quotes
-    selection = selection.replace('”', '"')  # Replace German-style quotes with English-style quotes
+    selection = selection.replace(',,', '"')  # Replace double comma with English-style quotes
+    selection = re.sub(r"[„”]", '"', selection) # Replace German-style quotes with English-style quotes
     return text[:start_idx] + selection + text[end_idx:]
 
 
