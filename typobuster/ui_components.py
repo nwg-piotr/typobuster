@@ -22,6 +22,7 @@ class MenuBar(Gtk.MenuBar):
         # Create the New menu item
         new_menu_item = Gtk.MenuItem(label="New")
         file_menu.append(new_menu_item)
+        new_menu_item.connect("activate", parent_window.new_file)
 
         # Create the Open menu item
         open_menu_item = Gtk.MenuItem(label="Open")

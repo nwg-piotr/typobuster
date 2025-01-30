@@ -73,6 +73,26 @@ class Scratchpad(Gtk.Window):
         filename = os.path.basename(path)
         self.set_title(f"{filename} - Typobuster")
 
+    def new_file(self, widget):
+        if self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True):
+            dialog = Gtk.MessageDialog(
+                transient_for=self,
+                flags=0,
+                message_type=Gtk.MessageType.QUESTION,
+                buttons=Gtk.ButtonsType.YES_NO,
+                text="Do you want to save the changes to Untitled?",
+            )
+            dialog.format_secondary_text("Your changes will be lost if you don't save them.")
+            response = dialog.run()
+            dialog.destroy()
+            if response == Gtk.ResponseType.YES:
+                self.save_file(self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True))
+
+        self.update_text("")
+        global file_path
+        file_path = ""
+        self.set_window_title("Untitled - Typobuster")
+
     def open_file(self, widget):
         dialog = Gtk.FileChooserDialog(
             title="Open File",
