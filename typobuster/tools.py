@@ -95,6 +95,16 @@ def load_text_file(path):
         return None
 
 
+def save_text_file(text, path):
+    try:
+        with open(path, 'w') as file:
+            file.write(text)
+            return "ok"
+    except Exception as e:
+        eprint(e)
+        return e
+
+
 def sanitize_hyphens(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
     selection = selection.replace("–", "-")  # Replace en-dashes with hyphens

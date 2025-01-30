@@ -26,14 +26,17 @@ class MenuBar(Gtk.MenuBar):
         # Create the Open menu item
         open_menu_item = Gtk.MenuItem(label="Open")
         file_menu.append(open_menu_item)
+        open_menu_item.connect("activate", parent_window.open_file)
 
         # Create the Save menu item
         save_menu_item = Gtk.MenuItem(label="Save")
         file_menu.append(save_menu_item)
+        save_menu_item.connect("activate", parent_window.save_file)
 
         # Create the Save As menu item
         save_as_menu_item = Gtk.MenuItem(label="Save As")
         file_menu.append(save_as_menu_item)
+        save_as_menu_item.connect("activate", parent_window.save_file_as)
 
         # Create the Quit menu item
         quit_menu_item = Gtk.MenuItem(label="Quit")

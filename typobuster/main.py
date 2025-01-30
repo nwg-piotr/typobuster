@@ -4,6 +4,8 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
 from gi.repository import Gtk, GtkSource
 
+file_path = ""
+
 from typobuster.ui_components import MenuBar, SanitizationDialog
 from typobuster.tools import *
 
@@ -17,9 +19,6 @@ class Scratchpad(Gtk.Window):
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
         self.add(vbox)
-
-        # self.menu_bar = MenuBar(self)
-        # vbox.pack_start(self.menu_bar, False, False, 0)
 
         # Create a GtkSourceView and configure it
         self.source_view = GtkSource.View()
@@ -48,7 +47,7 @@ class Scratchpad(Gtk.Window):
         vbox.add(scrolled_window)
 
         # Add sample text to the buffer
-        self.buffer.set_text("# This is a GtkSourceView example\nprint('Hello, World!')")
+        self.buffer.set_text("")
 
         # Connect the delete event to quit the application
         self.connect("destroy", Gtk.main_quit)
@@ -69,6 +68,67 @@ class Scratchpad(Gtk.Window):
 
     def sanitize_text(self, widget):
         d = SanitizationDialog(self, self.buffer)
+
+    def set_window_title(self, path):
+        filename = os.path.basename(path)
+        self.set_title(f"{filename} - Typobuster")
+
+    def open_file(self, widget):
+        dialog = Gtk.FileChooserDialog(
+            title="Open File",
+            parent=self,
+            action=Gtk.FileChooserAction.OPEN,
+        )
+        dialog.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
+        dialog.set_current_folder(os.getenv("HOME"))
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            filename = dialog.get_filename()
+            global file_path
+            file_path = filename
+            text = load_text_file(filename)
+            if text:
+                self.update_text(text)
+                self.set_window_title(filename)
+        dialog.destroy()
+
+    def save_file(self, widget):
+        if file_path:
+            text = self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True)
+            result = save_text_file(text, file_path)
+            if result == "ok":
+                print(f"Saved text to {file_path}")
+            else:
+                eprint(f"Error saving text to {file_path}: {result}")
+        else:
+            self.save_file_as(None)
+
+    def save_file_as(self, widget):
+        global file_path
+        dialog = Gtk.FileChooserDialog(
+            title="Save File",
+            parent=self,
+            action=Gtk.FileChooserAction.SAVE,
+        )
+        dialog.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
+        if file_path:
+            dialog.set_filename(file_path)
+        else:
+            dialog.set_current_folder(os.getenv("HOME"))
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            filename = dialog.get_filename()
+            text = self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True)
+            result = save_text_file(text, filename)
+            if result == "ok":
+                print(f"Saved text to {filename}")
+                file_path = filename
+                self.set_window_title(filename)
+            else:
+                eprint(f"Error saving text to {filename}: {result}")
+        dialog.destroy()
 
     def update_text(self, text):
         self.buffer.set_text(text)
