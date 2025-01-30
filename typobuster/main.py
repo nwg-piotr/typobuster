@@ -47,7 +47,9 @@ class Scratchpad(Gtk.Window):
         vbox.add(scrolled_window)
 
         # Add sample text to the buffer
-        self.buffer.set_text("")
+        self.buffer.begin_not_undoable_action()
+        self.buffer.set_text("Hello, there!")
+        self.buffer.end_not_undoable_action()
 
         # Connect the delete event to quit the application
         self.connect("destroy", Gtk.main_quit)
@@ -151,7 +153,11 @@ class Scratchpad(Gtk.Window):
         dialog.destroy()
 
     def update_text(self, text):
-        self.buffer.set_text(text)
+        start, end = self.buffer.get_bounds()
+        self.buffer.begin_user_action()  # Mark as a single undoable action
+        self.buffer.delete(start, end)
+        self.buffer.insert_at_cursor(text)
+        self.buffer.end_user_action()  # End the undoable action
 
     def quit(self, widget):
         Gtk.main_quit()
