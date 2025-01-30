@@ -2,7 +2,7 @@ import gi
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
-from gi.repository import Gtk, GtkSource
+from gi.repository import Gtk, GLib, GtkSource
 
 file_path = ""
 
@@ -159,6 +159,8 @@ class Scratchpad(Gtk.Window):
 
 # Run the application
 if __name__ == "__main__":
+    # set app_id for Wayland
+    GLib.set_prgname('typobuster')
     window = Scratchpad()
     window.show_all()
     Gtk.main()
