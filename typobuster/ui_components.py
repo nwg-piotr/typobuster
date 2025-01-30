@@ -65,18 +65,22 @@ class MenuBar(Gtk.MenuBar):
         # Create the Cut menu item
         cut_menu_item = Gtk.MenuItem(label="Cut")
         edit_menu.append(cut_menu_item)
+        cut_menu_item.connect("activate", parent_window.cut_text)
 
         # Create the Copy menu item
         copy_menu_item = Gtk.MenuItem(label="Copy")
         edit_menu.append(copy_menu_item)
+        copy_menu_item.connect("activate", parent_window.copy_text)
 
         # Create the Paste menu item
         paste_menu_item = Gtk.MenuItem(label="Paste")
         edit_menu.append(paste_menu_item)
+        paste_menu_item.connect("activate", parent_window.paste_text)
 
         # Create the Delete menu item
         delete_menu_item = Gtk.MenuItem(label="Delete")
         edit_menu.append(delete_menu_item)
+        delete_menu_item.connect("activate", parent_window.delete_text)
 
         # Create the View menu
         view_menu = Gtk.Menu()

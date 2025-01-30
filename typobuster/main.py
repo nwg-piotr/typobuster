@@ -2,7 +2,7 @@ import gi
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
-from gi.repository import Gtk, GLib, GtkSource
+from gi.repository import Gtk, Gdk, GLib, GtkSource
 
 file_path = ""
 
@@ -34,6 +34,8 @@ class Scratchpad(Gtk.Window):
         self.buffer.set_language(language)
         self.source_view.set_buffer(self.buffer)
 
+        self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+
         self.menu_bar = MenuBar(self)
         vbox.pack_start(self.menu_bar, False, False, 0)
 
@@ -61,6 +63,24 @@ class Scratchpad(Gtk.Window):
     def redo(self, widget):
         if self.buffer.can_redo():
             self.buffer.redo()
+
+    def cut_text(self, widget):
+        self.buffer.begin_user_action()
+        self.buffer.cut_clipboard(self.clipboard, True)  # True -> delete after copying
+        self.buffer.end_user_action()
+
+    def copy_text(self, widget):
+        self.buffer.copy_clipboard(self.clipboard)
+
+    def paste_text(self, widget):
+        self.buffer.begin_user_action()
+        self.buffer.paste_clipboard(self.clipboard, None, True)
+        self.buffer.end_user_action()
+
+    def delete_text(self, widget):
+        self.buffer.begin_user_action()
+        self.buffer.delete_selection(True, True)
+        self.buffer.end_user_action()
 
     def toggle_line_numbers(self, widget):
         self.settings["view-line-numbers"] = not self.settings["view-line-numbers"]
