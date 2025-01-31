@@ -17,79 +17,79 @@ class MenuBar(Gtk.MenuBar):
         # Create the File menu
         file_menu = Gtk.Menu()
         file_menu.connect("show", self.update_menu_items_sensitivity)
-        file_menu_item = Gtk.MenuItem(label="File")
+        file_menu_item = Gtk.MenuItem(label=parent_window.voc["file"])
         file_menu_item.set_submenu(file_menu)
 
         # Create the New menu item
-        self.new_menu_item = Gtk.MenuItem(label="New")
+        self.new_menu_item = Gtk.MenuItem(label=parent_window.voc["new"])
         file_menu.append(self.new_menu_item)
         self.new_menu_item.connect("activate", parent_window.new_file)
 
         # Create the Open menu item
-        open_menu_item = Gtk.MenuItem(label="Open")
+        open_menu_item = Gtk.MenuItem(label=parent_window.voc["open"])
         file_menu.append(open_menu_item)
         open_menu_item.connect("activate", parent_window.open_file)
 
         # Create the Save menu item
-        save_menu_item = Gtk.MenuItem(label="Save")
+        save_menu_item = Gtk.MenuItem(label=parent_window.voc["save"])
         file_menu.append(save_menu_item)
         save_menu_item.connect("activate", parent_window.save_file)
 
         # Create the Save As menu item
-        save_as_menu_item = Gtk.MenuItem(label="Save As")
+        save_as_menu_item = Gtk.MenuItem(label=parent_window.voc["save-as"])
         file_menu.append(save_as_menu_item)
         save_as_menu_item.connect("activate", parent_window.save_file_as)
 
         # Create the Quit menu item
-        quit_menu_item = Gtk.MenuItem(label="Quit")
+        quit_menu_item = Gtk.MenuItem(label=parent_window.voc["quit"])
         file_menu.append(quit_menu_item)
         quit_menu_item.connect("activate", parent_window.quit)
 
         # Create the Edit menu
         edit_menu = Gtk.Menu()
         edit_menu.connect("show", self.update_menu_items_sensitivity)
-        edit_menu_item = Gtk.MenuItem(label="Edit")
+        edit_menu_item = Gtk.MenuItem(label=parent_window.voc["edit"])
         edit_menu_item.set_submenu(edit_menu)
 
         # Create the Undo menu item
-        self.undo_menu_item = Gtk.MenuItem(label="Undo")
+        self.undo_menu_item = Gtk.MenuItem(label=parent_window.voc["undo"])
         edit_menu.append(self.undo_menu_item)
         self.undo_menu_item.connect("activate", parent_window.undo)
 
         # Create the Redo menu item
-        self.redo_menu_item = Gtk.MenuItem(label="Redo")
+        self.redo_menu_item = Gtk.MenuItem(label=parent_window.voc["redo"])
         edit_menu.append(self.redo_menu_item)
         self.redo_menu_item.connect("activate", parent_window.redo)
 
         # Create the Cut menu item
-        cut_menu_item = Gtk.MenuItem(label="Cut")
+        cut_menu_item = Gtk.MenuItem(label=parent_window.voc["cut"])
         edit_menu.append(cut_menu_item)
         cut_menu_item.connect("activate", parent_window.cut_text)
 
         # Create the Copy menu item
-        copy_menu_item = Gtk.MenuItem(label="Copy")
+        copy_menu_item = Gtk.MenuItem(label=parent_window.voc["copy"])
         edit_menu.append(copy_menu_item)
         copy_menu_item.connect("activate", parent_window.copy_text)
 
         # Create the Paste menu item
-        paste_menu_item = Gtk.MenuItem(label="Paste")
+        paste_menu_item = Gtk.MenuItem(label=parent_window.voc["paste"])
         edit_menu.append(paste_menu_item)
         paste_menu_item.connect("activate", parent_window.paste_text)
 
         # Create the Delete menu item
-        delete_menu_item = Gtk.MenuItem(label="Delete")
+        delete_menu_item = Gtk.MenuItem(label=parent_window.voc["delete"])
         edit_menu.append(delete_menu_item)
         delete_menu_item.connect("activate", parent_window.delete_text)
 
         # Create the View menu
         view_menu = Gtk.Menu()
         view_menu.set_reserve_toggle_size(False)
-        view_menu_item = Gtk.MenuItem(label="View")
+        view_menu_item = Gtk.MenuItem(label=parent_window.voc["view"])
         view_menu_item.set_submenu(view_menu)
 
         # Create the Line numbers menu item
         icon_name = "checkbox-checked-symbolic" if self.settings["view-line-numbers"] else "checkbox-symbolic"
-        self.line_numbers_menu_item = CustomMenuItem(self.settings, icon_name, "Line Numbers")
+        self.line_numbers_menu_item = CustomMenuItem(self.settings, icon_name, parent_window.voc["line-numbers"])
 
         view_menu.append(self.line_numbers_menu_item)
         self.line_numbers_menu_item.connect("activate", parent_window.toggle_line_numbers)
@@ -97,11 +97,11 @@ class MenuBar(Gtk.MenuBar):
         # Create the Tools menu
         tools_menu = Gtk.Menu()
         tools_menu.connect("show", self.update_menu_items_sensitivity)
-        tools_menu_item = Gtk.MenuItem(label="Tools")
+        tools_menu_item = Gtk.MenuItem(label=parent_window.voc["tools"])
         tools_menu_item.set_submenu(tools_menu)
 
         # Create the Sanitize menu item
-        self.sanitize_menu_item = Gtk.MenuItem(label="Sanitization")
+        self.sanitize_menu_item = Gtk.MenuItem(label=parent_window.voc["sanitization"])
         tools_menu.append(self.sanitize_menu_item)
         self.sanitize_menu_item.connect("show", self.update_menu_items_sensitivity)
         self.sanitize_menu_item.connect("activate", parent_window.sanitize_text)
@@ -109,11 +109,11 @@ class MenuBar(Gtk.MenuBar):
 
         # Create the Help menu
         help_menu = Gtk.Menu()
-        help_menu_item = Gtk.MenuItem(label="Help")
+        help_menu_item = Gtk.MenuItem(label=parent_window.voc["help"])
         help_menu_item.set_submenu(help_menu)
 
         # Create the About menu item
-        about_menu_item = Gtk.MenuItem(label="About")
+        about_menu_item = Gtk.MenuItem(label=parent_window.voc["about"])
         help_menu.append(about_menu_item)
         about_menu_item.connect("activate", parent_window.show_about)
 
@@ -156,7 +156,6 @@ class SanitizationDialog(Gtk.Window):
         self.set_modal(True)
         self.parent_window = parent_window
         self.settings = parent_window.settings
-        self.text_states = parent_window.text_states  # Stack to store text states
 
         self.connect("key-release-event", self.handle_keyboard_release)
 
@@ -216,7 +215,6 @@ class SanitizationDialog(Gtk.Window):
 
     def sanitize_text(self, widget, buffer):
         text, start_idx, end_idx = text_to_modify(buffer)
-        self.text_states.append(text)  # Save current text state
 
         if self.settings["sanitize-hyphens"]:
             text = sanitize_hyphens(text, start_idx, end_idx)
@@ -242,7 +240,7 @@ class AboutWindow(Gtk.AboutDialog):
         super().__init__()
         self.set_transient_for(parent_window)
         self.set_program_name("Typobuster")
-        self.set_comments("A simple text editor with sanitization tools")
+        self.set_comments(parent_window.voc["description"])
         self.set_website("https://github.com/nwg-piotr/typobuster")
         self.set_website_label("GitHub repository")
         # self.set_authors(["Piotr Miller"])

@@ -4,12 +4,41 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
 from gi.repository import Gtk, Gdk, GLib, GtkSource
 
-file_path = ""
-
 from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow
 from typobuster.tools import *
 
-from typobuster.__about__ import __version__
+dir_name = os.path.dirname(__file__)
+file_path = ""
+voc = {}
+
+
+def load_vocabulary():
+    global voc
+    # basic vocabulary (for en_US)
+    voc = load_json(os.path.join(dir_name, "langs", "en_US.json"))
+    if not voc:
+        eprint("Failed loading vocabulary, terminating")
+        sys.exit(1)
+
+    shell_data = load_shell_data()
+
+    lang = os.getenv("LANG")
+    if lang is None:
+        lang = "en_US"
+    else:
+        lang = lang.split(".")[0] if not shell_data["interface-locale"] else shell_data["interface-locale"]
+
+    # translate if translation available
+    if lang != "en_US":
+        loc_file = os.path.join(dir_name, "langs", "{}.json".format(lang))
+        if os.path.isfile(loc_file):
+            # localized vocabulary
+            loc = load_json(loc_file)
+            if not loc:
+                eprint("Failed loading translation into '{}'".format(lang))
+            else:
+                for key in loc:
+                    voc[key] = loc[key]
 
 
 class Scratchpad(Gtk.Window):
@@ -17,7 +46,7 @@ class Scratchpad(Gtk.Window):
         super().__init__(title="Untitled - Typobuster")
         self.set_default_size(800, 600)
         self.settings = load_settings()
-        self.text_states = []
+        self.voc = voc
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(vbox)
@@ -94,7 +123,6 @@ class Scratchpad(Gtk.Window):
         about = AboutWindow(self)
         about.run()
 
-
     def sanitize_text(self, widget):
         d = SanitizationDialog(self, self.buffer)
 
@@ -120,7 +148,7 @@ class Scratchpad(Gtk.Window):
         self.update_text("")
         global file_path
         file_path = ""
-        self.set_window_title("Untitled - Typobuster")
+        self.set_window_title(f"{voc['view']} - Typobuster")
 
     def open_file(self, widget):
         dialog = Gtk.FileChooserDialog(
@@ -194,6 +222,8 @@ class Scratchpad(Gtk.Window):
 if __name__ == "__main__":
     # set app_id for Wayland
     GLib.set_prgname('typobuster')
+    load_vocabulary()
+    print(voc)
     window = Scratchpad()
     window.show_all()
     Gtk.main()
