@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+
+Name=Typobuster
+Name[pl]=Typobuster
+
+GenericName=Simple text editor
+GenericName[pl]=Prosty edytor tekstu
+
+Comment=Simple text editor with text sanitization tools
+Comment[pl]=Prosty edytor tekstu z narzędziami do oczyszczania tekstu
+
+Exec=typobuster
+Icon=typobuster
+Terminal=false
+Categories=Settings;DesktopSettings;
