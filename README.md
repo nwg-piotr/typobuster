@@ -10,10 +10,10 @@ waste of time. To make life easier, I'm writing a simple editor based on gtksour
 Besides, it is supposed to contain only the basic tools that I actually use in my work, (e.g. changing the case of 
 characters), and nothing more.
 
-I've been using Mousepad on a daily basis, but it has a lot of options I don't use and a few that drive me crazy 
-(multiple tabs). Since I have to work with submitted text and feed it to Wordpress every day, I missed the option 
-to remove the most common typos in a single click. I've named the program "Typobuster", as its basic purpose is to 
-correct common mistakes. I plan to add only those Mousepad options that I actually use.
+Mousepad on has a lot of options I don't use and a few that drive me crazy (multiple tabs). Since I have to work 
+with submitted text and feed it to Wordpress every day, I missed the option to remove the most common typos in 
+a single click. I've named the program "Typobuster", as its basic purpose is to correct common mistakes. 
+I plan to add only those Mousepad options that I actually use.
 
 ## Installation
 
