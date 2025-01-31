@@ -7,8 +7,8 @@ Name[pl]=Typobuster
 GenericName=Simple text editor
 GenericName[pl]=Prosty edytor tekstu
 
-Comment=Simple text editor with text sanitization tools
-Comment[pl]=Prosty edytor tekstu z narzędziami do oczyszczania tekstu
+Comment=Simple text editor that helps you correct common typos
+Comment[pl]=Prosty edytor tekstu, który pomaga korygować typowe literówki
 
 Exec=typobuster
 Icon=typobuster
