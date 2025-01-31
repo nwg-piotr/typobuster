@@ -218,11 +218,15 @@ class Typobuster(Gtk.Window):
         Gtk.main_quit()
 
 
-# Run the application
-if __name__ == "__main__":
-    # set app_id for Wayland
+def main():
     GLib.set_prgname('typobuster')
     load_vocabulary()
     window = Typobuster()
     window.show_all()
     Gtk.main()
+
+
+# Run the application
+if __name__ == "__main__":
+    sys.exit(main())
+
