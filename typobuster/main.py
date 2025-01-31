@@ -6,7 +6,7 @@ from gi.repository import Gtk, Gdk, GLib, GtkSource
 
 file_path = ""
 
-from typobuster.ui_components import MenuBar, SanitizationDialog
+from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow
 from typobuster.tools import *
 
 
@@ -50,7 +50,7 @@ class Scratchpad(Gtk.Window):
 
         # Add sample text to the buffer
         self.buffer.begin_not_undoable_action()
-        self.buffer.set_text("Hello, there!")
+        self.buffer.set_text("")
         self.buffer.end_not_undoable_action()
 
         # Connect the delete event to quit the application
@@ -87,6 +87,11 @@ class Scratchpad(Gtk.Window):
         self.source_view.set_show_line_numbers(self.settings["view-line-numbers"])
         save_settings(self.settings)
         self.menu_bar.line_numbers_menu_item.set_image("view-line-numbers")
+
+    def show_about(self, widget):
+        about = AboutWindow(self)
+        about.run()
+
 
     def sanitize_text(self, widget):
         d = SanitizationDialog(self, self.buffer)
