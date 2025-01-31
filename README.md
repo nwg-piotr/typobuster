@@ -3,6 +3,8 @@ Work in progress: a simple text editor designed to automatically fix common typo
 
 **The program is still quite far from its target functionality. Please check back later.**
 
+![image](https://github.com/user-attachments/assets/8f0aadec-dad3-43d5-b590-0b1f812ef703)
+
 In my work with Wordpress, every day I receive texts in various formats (MS Word, LibreOffice, email), which constantly 
 contain the same errors: misplaced spaces, multiple spaces and line breaks, German-style quotation marks, etc. 
 Up until now, I have used Mousepad to proofread, either manually or via search and replace, but that was kind of 
