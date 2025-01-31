@@ -170,8 +170,8 @@ class Typobuster(Gtk.Window):
                 self.save_file(self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True))
 
         self.update_text("")
-        global file_path
-        file_path = ""
+        # global file_path
+        # file_path = ""
         self.set_window_title(f"{voc['view']} - Typobuster")
 
     def load_file_on_startup(self, path):
