@@ -67,6 +67,11 @@ class Typobuster(Gtk.Window):
         # self.source_view.set_highlight_current_line(True)  # Highlight the current line
         self.source_view.set_wrap_mode(Gtk.WrapMode.WORD)
 
+        # Enable drag-and-drop for URI (file paths)
+        self.source_view.drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY)
+        self.source_view.drag_dest_add_uri_targets()
+        self.source_view.connect("drag-data-received", self.on_drag_data_received)
+
         # Set a language for syntax highlighting
         lang_manager = GtkSource.LanguageManager()
         language = lang_manager.get_language("none")  # Set Python syntax
@@ -131,6 +136,15 @@ class Typobuster(Gtk.Window):
     def show_about(self, widget):
         about = AboutWindow(self)
         about.run()
+
+    def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
+        """Handle file drop event."""
+        uris = data.get_uris()
+        if uris:
+            f_p = uris[0].replace("file://", "").strip()
+            self.load_file_on_startup(f_p)
+            global file_path
+            file_path = f_p
 
     def sanitize_text(self, widget):
         d = SanitizationDialog(self, self.buffer)
