@@ -243,7 +243,7 @@ class AboutWindow(Gtk.AboutDialog):
         self.set_comments(parent_window.voc["description"])
         self.set_website("https://github.com/nwg-piotr/typobuster")
         self.set_website_label("GitHub repository")
-        # self.set_authors(["Piotr Miller"])
+        self.set_authors(["Piotr Miller"])
         self.set_license_type(Gtk.License.GPL_3_0)
         self.set_version(f"Version: {__version__}")
 
