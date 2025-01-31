@@ -3,7 +3,7 @@ Work in progress: a simple text editor designed to automatically fix common typo
 
 **The program is still quite far from its target functionality. Please check back later.**
 
-![image](https://github.com/user-attachments/assets/8f0aadec-dad3-43d5-b590-0b1f812ef703)
+![image](https://github.com/user-attachments/assets/409850d3-74b2-4b99-b544-8e9f940eb620)
 
 In my work with Wordpress, every day I receive texts in various formats (MS Word, LibreOffice, email), which constantly 
 contain the same errors: misplaced spaces, multiple spaces and line breaks, German-style quotation marks, etc. 
