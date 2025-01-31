@@ -1,3 +1,11 @@
+"""
+A simple text editor that helps you correct common typos.
+Project: https://github.com/nwg-piotr/typobuster
+Author's email: nwg.piotr@gmail.com
+Copyright (c) 2025 Piotr Miller
+License: GPL3
+"""
+
 import argparse
 import gi
 
