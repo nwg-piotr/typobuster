@@ -4,7 +4,7 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Gdk, GdkPixbuf
 
 from typobuster.tools import *
-
+from typobuster.__about__ import __version__
 
 class MenuBar(Gtk.MenuBar):
     def __init__(self, parent_window):
@@ -47,9 +47,9 @@ class MenuBar(Gtk.MenuBar):
 
         # Create the Edit menu
         edit_menu = Gtk.Menu()
+        edit_menu.connect("show", self.update_menu_items_sensitivity)
         edit_menu_item = Gtk.MenuItem(label="Edit")
         edit_menu_item.set_submenu(edit_menu)
-        edit_menu.connect("show", self.update_menu_items_sensitivity)
 
         # Create the Undo menu item
         self.undo_menu_item = Gtk.MenuItem(label="Undo")
@@ -60,8 +60,6 @@ class MenuBar(Gtk.MenuBar):
         self.redo_menu_item = Gtk.MenuItem(label="Redo")
         edit_menu.append(self.redo_menu_item)
         self.redo_menu_item.connect("activate", parent_window.redo)
-
-        self.update_menu_items_sensitivity()
 
         # Create the Cut menu item
         cut_menu_item = Gtk.MenuItem(label="Cut")
@@ -98,14 +96,16 @@ class MenuBar(Gtk.MenuBar):
 
         # Create the Tools menu
         tools_menu = Gtk.Menu()
+        tools_menu.connect("show", self.update_menu_items_sensitivity)
         tools_menu_item = Gtk.MenuItem(label="Tools")
         tools_menu_item.set_submenu(tools_menu)
 
         # Create the Sanitize menu item
-        sanitize_menu_item = Gtk.MenuItem(label="Sanitization")
-        tools_menu.append(sanitize_menu_item)
-        sanitize_menu_item.connect("activate", parent_window.sanitize_text)
-        sanitize_menu_item.set_can_focus(False)
+        self.sanitize_menu_item = Gtk.MenuItem(label="Sanitization")
+        tools_menu.append(self.sanitize_menu_item)
+        self.sanitize_menu_item.connect("show", self.update_menu_items_sensitivity)
+        self.sanitize_menu_item.connect("activate", parent_window.sanitize_text)
+        self.sanitize_menu_item.set_can_focus(False)
 
         # Create the Help menu
         help_menu = Gtk.Menu()
@@ -124,10 +124,13 @@ class MenuBar(Gtk.MenuBar):
         self.append(tools_menu_item)
         self.append(help_menu_item)
 
+        self.update_menu_items_sensitivity()
+
     def update_menu_items_sensitivity(self, *args):
         self.undo_menu_item.set_sensitive(self.parent_window.buffer.can_undo())
         self.redo_menu_item.set_sensitive(self.parent_window.buffer.can_redo())
         self.new_menu_item.set_sensitive(self.parent_window.buffer.get_char_count() > 0)
+        self.sanitize_menu_item.set_sensitive(self.parent_window.buffer.get_char_count() > 0)
 
 
 class CustomMenuItem(Gtk.MenuItem):
@@ -239,12 +242,12 @@ class AboutWindow(Gtk.AboutDialog):
         super().__init__()
         self.set_transient_for(parent_window)
         self.set_program_name("Typobuster")
-        self.set_comments("A simple text editor with text sanitization tools")
+        self.set_comments("A simple text editor with sanitization tools")
         self.set_website("https://github.com/nwg-piotr/typobuster")
         self.set_website_label("GitHub repository")
-        self.set_authors(["Piotr Miller"])
+        # self.set_authors(["Piotr Miller"])
         self.set_license_type(Gtk.License.GPL_3_0)
-        self.set_version("0.1")
+        self.set_version(f"Version: {__version__}")
 
         # Load icon by name from the system theme
         icon_theme = Gtk.IconTheme.get_default()

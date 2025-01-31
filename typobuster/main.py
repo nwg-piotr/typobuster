@@ -9,6 +9,8 @@ file_path = ""
 from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow
 from typobuster.tools import *
 
+from typobuster.__about__ import __version__
+
 
 class Scratchpad(Gtk.Window):
     def __init__(self):
@@ -17,7 +19,7 @@ class Scratchpad(Gtk.Window):
         self.settings = load_settings()
         self.text_states = []
 
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(vbox)
 
         # Create a GtkSourceView and configure it
