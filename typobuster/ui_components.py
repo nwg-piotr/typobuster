@@ -6,6 +6,7 @@ from gi.repository import Gtk, Gdk, GdkPixbuf
 from typobuster.tools import *
 from typobuster.__about__ import __version__
 
+
 class MenuBar(Gtk.MenuBar):
     def __init__(self, parent_window):
         super().__init__()

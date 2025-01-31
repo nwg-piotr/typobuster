@@ -147,6 +147,7 @@ class Typobuster(Gtk.Window):
             file_path = f_p
 
     def sanitize_text(self, widget):
+        # Apply some basic predefined sanitization
         d = SanitizationDialog(self, self.buffer)
 
     def set_window_title(self, path):
@@ -160,9 +161,9 @@ class Typobuster(Gtk.Window):
                 flags=0,
                 message_type=Gtk.MessageType.QUESTION,
                 buttons=Gtk.ButtonsType.YES_NO,
-                text="Do you want to save the changes to Untitled?",
+                text=f"Do you want to save the changes to {file_path.split("/")[-1]}?",
             )
-            dialog.format_secondary_text("Your changes will be lost if you don't save them.")
+            dialog.format_secondary_text(self.voc["chages-will-be-lost"])
             response = dialog.run()
             dialog.destroy()
             if response == Gtk.ResponseType.YES:
