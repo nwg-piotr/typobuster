@@ -171,6 +171,11 @@ class Typobuster(Gtk.Window):
         dialog.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
         dialog.set_current_folder(os.getenv("HOME"))
 
+        filter_text = Gtk.FileFilter()
+        filter_text.set_name("Text files")
+        filter_text.add_mime_type("text/plain")
+        dialog.add_filter(filter_text)
+
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             filename = dialog.get_filename()
