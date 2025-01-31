@@ -1,3 +1,4 @@
+import argparse
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -150,6 +151,17 @@ class Typobuster(Gtk.Window):
         file_path = ""
         self.set_window_title(f"{voc['view']} - Typobuster")
 
+    def load_file_on_startup(self, path):
+        global file_path
+        file_path = os.path.abspath(path)
+        print(file_path)
+
+        text = ""
+        if os.path.isfile(path):
+            text = load_text_file(path)
+        self.update_text(text)
+        self.set_window_title(path)
+
     def open_file(self, widget):
         dialog = Gtk.FileChooserDialog(
             title="Open File",
@@ -219,9 +231,21 @@ class Typobuster(Gtk.Window):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Simple text editor")
+    parser.add_argument("file_path", type=str, nargs="?", help="Path of the file to open")
+    args = parser.parse_args()
+
+    if args.file_path:
+        global file_path
+        file_path = args.file_path
+
     GLib.set_prgname('typobuster')
     load_vocabulary()
     window = Typobuster()
+
+    if args.file_path:
+        window.load_file_on_startup(args.file_path)
+
     window.show_all()
     Gtk.main()
 

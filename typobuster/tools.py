@@ -92,7 +92,7 @@ def load_text_file(path):
             return data
     except Exception as e:
         eprint(e)
-        return None
+        return ""
 
 
 def save_text_file(text, path):
