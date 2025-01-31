@@ -41,7 +41,7 @@ def load_vocabulary():
                     voc[key] = loc[key]
 
 
-class Scratchpad(Gtk.Window):
+class Typobuster(Gtk.Window):
     def __init__(self):
         super().__init__(title="Untitled - Typobuster")
         self.set_default_size(800, 600)
@@ -223,7 +223,6 @@ if __name__ == "__main__":
     # set app_id for Wayland
     GLib.set_prgname('typobuster')
     load_vocabulary()
-    print(voc)
-    window = Scratchpad()
+    window = Typobuster()
     window.show_all()
     Gtk.main()
