@@ -12,9 +12,11 @@ characters), and nothing more.
 
 ## Installation
 
-`git clone https://github.com/nwg-piotr/typobuster.git`
-`cd typobuster`
-`sudo ./install.sh`
+```
+git clone https://github.com/nwg-piotr/typobuster.git
+cd typobuster
+sudo ./install.sh
+```
 
 ## Uninstallation
 
