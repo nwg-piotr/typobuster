@@ -9,3 +9,13 @@ Up until now, I have used Mousepad to proofread, either manually or via search a
 waste of time. To make life easier, I'm writing a simple editor based on gtksourceview4, that will do it automatically. 
 Besides, it is supposed to contain only the basic tools that I actually use in my work, (e.g. changing the case of 
 characters), and nothing more.
+
+#Installation
+
+`git clone https://github.com/nwg-piotr/typobuster.git`
+`cd typobuster`
+`sudo ./install.sh`
+
+#Uninstallation
+
+`sudo ./uninstall.sh`
