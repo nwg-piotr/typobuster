@@ -7,6 +7,8 @@ License: GPL3
 """
 
 import argparse
+import os.path
+
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -143,7 +145,7 @@ class Typobuster(Gtk.Window):
         uris = data.get_uris()
         if uris:
             f_p = uris[0].replace("file://", "").strip()
-            self.load_file_on_startup(f_p)
+            self.load_file(None, f_p)
             global file_path
             file_path = f_p
 
@@ -202,20 +204,20 @@ class Typobuster(Gtk.Window):
                 self.save_file(self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True))
 
         self.update_text("")
-        # global file_path
-        # file_path = ""
         self.set_window_title(f"{voc['view']} - Typobuster")
 
-    def load_file_on_startup(self, path):
+    def load_file(self, widget, path):
         global file_path
         file_path = os.path.abspath(path)
-        print(file_path)
+        print(f"Opening {file_path}")
 
         text = ""
         if os.path.isfile(path):
             text = load_text_file(path)
+            self.update_recent(path)
         self.update_text(text)
         self.set_window_title(path)
+
 
     def open_file(self, widget):
         dialog = Gtk.FileChooserDialog(
@@ -234,12 +236,7 @@ class Typobuster(Gtk.Window):
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             filename = dialog.get_filename()
-            global file_path
-            file_path = filename
-            text = load_text_file(filename)
-            if text:
-                self.update_text(text)
-                self.set_window_title(filename)
+            self.load_file(None, filename)
         dialog.destroy()
 
     def save_file(self, widget):
@@ -286,6 +283,17 @@ class Typobuster(Gtk.Window):
         self.buffer.insert_at_cursor(text)
         self.buffer.end_user_action()  # End the undoable action
 
+    def update_recent(self, path):
+        recent_file = os.path.join(config_dir(), "recent")
+        recent_paths = load_text_file(recent_file).splitlines() if os.path.isfile(recent_file) else []
+        if path in recent_paths:
+            recent_paths.remove(path)
+        if len(recent_paths) >= 10:
+            last = recent_paths.pop()
+            print(f"Removing from recent: '{last}'")
+        recent_paths.insert(0, path)
+        save_text_file("\n".join(recent_paths), recent_file)
+
     def quit(self, widget):
         Gtk.main_quit()
 
@@ -304,7 +312,7 @@ def main():
     window = Typobuster()
 
     if args.file_path:
-        window.load_file_on_startup(args.file_path)
+        window.load_file(None, args.file_path)
 
     window.show_all()
     Gtk.main()

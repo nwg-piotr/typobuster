@@ -31,6 +31,13 @@ class MenuBar(Gtk.MenuBar):
         file_menu.append(open_menu_item)
         open_menu_item.connect("activate", parent_window.open_file)
 
+        # Create the Recent files menu item
+        recent_menu_item = Gtk.MenuItem(label=parent_window.voc["recent-files"])
+        file_menu.append(recent_menu_item)
+        recent_menu_item.set_sensitive(os.path.isfile(os.path.join(config_dir(), "recent")))
+        recent_menu = RecentMenu(self.parent_window)
+        recent_menu_item.set_submenu(recent_menu)
+
         # Create the Save menu item
         save_menu_item = Gtk.MenuItem(label=parent_window.voc["save"])
         file_menu.append(save_menu_item)
@@ -123,7 +130,6 @@ class MenuBar(Gtk.MenuBar):
         transform_menu_item.get_submenu().append(transform_unoreder_list_menu_item)
         transform_unoreder_list_menu_item.connect("activate", parent_window.transform_text, "unordered")
 
-
         # Create the View menu
         view_menu = Gtk.Menu()
         view_menu.set_reserve_toggle_size(False)
@@ -190,6 +196,17 @@ class CustomMenuItem(Gtk.MenuItem):
     def set_image(self, config_key):
         icon_name = "checkbox-checked-symbolic" if self.settings[config_key] else "checkbox-symbolic"
         self.image.set_from_icon_name(icon_name, Gtk.IconSize.MENU)
+
+
+class RecentMenu(Gtk.Menu):
+    def __init__(self, parent_window):
+        super().__init__()
+        recent_file = os.path.join(config_dir(), "recent")
+        recent_paths = load_text_file(recent_file).splitlines() if os.path.isfile(recent_file) else []
+        for path in recent_paths:
+            item = Gtk.MenuItem(label=path)
+            item.connect("activate", parent_window.load_file, path)
+            self.append(item)
 
 
 class SanitizationDialog(Gtk.Window):
