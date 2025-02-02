@@ -31,12 +31,12 @@ class MenuBar(Gtk.MenuBar):
         file_menu.append(open_menu_item)
         open_menu_item.connect("activate", parent_window.open_file)
 
-        # Create the Recent files menu item
-        recent_menu_item = Gtk.MenuItem(label=parent_window.voc["recent-files"])
-        file_menu.append(recent_menu_item)
-        recent_menu_item.set_sensitive(os.path.isfile(os.path.join(config_dir(), "recent")))
-        recent_menu = RecentMenu(self.parent_window)
-        recent_menu_item.set_submenu(recent_menu)
+        # Create the Open recent files menu item
+        self.recent_menu_item = Gtk.MenuItem(label=parent_window.voc["recent-files"])
+        file_menu.append(self.recent_menu_item)
+        self.recent_menu_item.set_sensitive(os.path.isfile(os.path.join(config_dir(), "recent")))
+        file_menu.connect("show", add_recent_menu, self.recent_menu_item, self.parent_window)
+        # self.recent_menu_item.set_submenu(recent_menu)
 
         # Create the Save menu item
         save_menu_item = Gtk.MenuItem(label=parent_window.voc["save"])
@@ -198,15 +198,21 @@ class CustomMenuItem(Gtk.MenuItem):
         self.image.set_from_icon_name(icon_name, Gtk.IconSize.MENU)
 
 
-class RecentMenu(Gtk.Menu):
-    def __init__(self, parent_window):
-        super().__init__()
-        recent_file = os.path.join(config_dir(), "recent")
-        recent_paths = load_text_file(recent_file).splitlines() if os.path.isfile(recent_file) else []
-        for path in recent_paths:
-            item = Gtk.MenuItem(label=path)
-            item.connect("activate", parent_window.load_file, path)
-            self.append(item)
+def add_recent_menu(widget, parent_item, parent_window):
+    menu = recent_menu(parent_window)
+    parent_item.set_submenu(menu)
+
+
+def recent_menu(parent_window):
+    menu = Gtk.Menu()
+    recent_file = os.path.join(config_dir(), "recent")
+    recent_paths = load_text_file(recent_file).splitlines() if os.path.isfile(recent_file) else []
+    for path in recent_paths:
+        item = Gtk.MenuItem(label=path)
+        item.connect("activate", parent_window.load_file, path)
+        menu.append(item)
+        menu.show_all()
+    return menu
 
 
 class SanitizationDialog(Gtk.Window):
