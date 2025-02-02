@@ -182,8 +182,10 @@ def to_kebab_case(text):
     text = text.lower().replace(" ", "-")
     return text
 
+
 def to_camel_case(text):
-    return ''.join(x for x in text.title() if not x.isspace())
+    text = ''.join(x for x in text.title() if not x.isspace())
+    return text[0].lower() + text[1:]
 
 
 def to_upper(text):
