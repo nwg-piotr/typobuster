@@ -199,11 +199,6 @@ class CustomMenuItem(Gtk.MenuItem):
 
 
 def add_recent_menu(widget, parent_item, parent_window):
-    menu = recent_menu(parent_window)
-    parent_item.set_submenu(menu)
-
-
-def recent_menu(parent_window):
     menu = Gtk.Menu()
     recent_file = os.path.join(config_dir(), "recent")
     recent_paths = load_text_file(recent_file).splitlines() if os.path.isfile(recent_file) else []
@@ -212,7 +207,7 @@ def recent_menu(parent_window):
         item.connect("activate", parent_window.load_file, path)
         menu.append(item)
         menu.show_all()
-    return menu
+    parent_item.set_submenu(menu)
 
 
 class SanitizationDialog(Gtk.Window):

@@ -60,6 +60,8 @@ class Typobuster(Gtk.Window):
         self.voc = voc
         self.set_title(f"{voc['untitled']} - Typobuster")
 
+        self.last_dir_path = ""
+
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(vbox)
 
@@ -213,11 +215,11 @@ class Typobuster(Gtk.Window):
 
         text = ""
         if os.path.isfile(path):
+            self.last_dir_path = os.path.dirname(path)  # remember last opened dir for file chooser
             text = load_text_file(path)
             self.update_recent(path)
         self.update_text(text)
         self.set_window_title(path)
-
 
     def open_file(self, widget):
         dialog = Gtk.FileChooserDialog(
@@ -226,7 +228,7 @@ class Typobuster(Gtk.Window):
             action=Gtk.FileChooserAction.OPEN,
         )
         dialog.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
-        dialog.set_current_folder(os.getenv("HOME"))
+        dialog.set_current_folder(self.last_dir_path) if self.last_dir_path else os.getenv("HOME")
 
         filter_text = Gtk.FileFilter()
         filter_text.set_name("Text files")
@@ -321,4 +323,3 @@ def main():
 # Run the application
 if __name__ == "__main__":
     sys.exit(main())
-
