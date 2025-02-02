@@ -207,7 +207,8 @@ def unordered_with_hyphens(text):
     output = []
     for line in lines:
         line = line.strip().rstrip()
-        line = "- " + line
+        if not line.startswith('- '):
+            line = "- " + line
         output.append(line)
 
     return "\n".join(output)
