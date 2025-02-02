@@ -228,7 +228,11 @@ class Typobuster(Gtk.Window):
             action=Gtk.FileChooserAction.OPEN,
         )
         dialog.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
-        dialog.set_current_folder(self.last_dir_path) if self.last_dir_path else os.getenv("HOME")
+        print(">>>", self.last_dir_path)
+        if self.last_dir_path:
+            dialog.set_current_folder(self.last_dir_path)
+        else:
+            dialog.set_current_folder(os.getenv("HOME"))
 
         filter_text = Gtk.FileFilter()
         filter_text.set_name("Text files")
