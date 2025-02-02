@@ -1,5 +1,7 @@
 {
   "about": "O programie",
+  "as-in-sentence": "Jak w zdaniu",
+  "camelcase": "Camel Case",
   "chages-will-be-lost": "Zmiany będą utracone jeśli ich nie zapiszesz.",
   "copy": "Kopiuj",
   "cut": "Wytnij",
@@ -8,7 +10,9 @@
   "edit": "Edycja",
   "file": "Plik",
   "help": "Pomoc",
+  "kebabcase": "kebab-case",
   "line-numbers": "Numery wierszy",
+  "lowercase": "małe litery",
   "new": "Nowy",
   "open": "Otwórz",
   "paste": "Wklej",
@@ -19,7 +23,10 @@
   "save-as": "Zapisz jako",
   "select-all": "Wybierz wszystko",
   "tools": "Narzędzia",
+  "transform": "Przekształć",
+  "snakecase": "snake_case",
   "undo": "Cofnij",
   "untitled": "Bez tytułu",
+  "uppercase": "WIELKIE LITERY",
   "view": "Widok"
 }

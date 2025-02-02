@@ -82,6 +82,42 @@ class MenuBar(Gtk.MenuBar):
         edit_menu.append(delete_menu_item)
         delete_menu_item.connect("activate", parent_window.delete_text)
 
+        # Create the Transform menu item
+        transform_menu_item = Gtk.MenuItem(label=parent_window.voc["transform"])
+        edit_menu.append(transform_menu_item)
+
+        # Create the As in sentence menu item
+        transform_as_in_sentence_menu_item = Gtk.MenuItem(label=parent_window.voc["as-in-sentence"])
+        transform_menu_item.set_submenu(Gtk.Menu())
+
+        transform_menu_item.get_submenu().append(transform_as_in_sentence_menu_item)
+        transform_as_in_sentence_menu_item.connect("activate", parent_window.transform_text, "sentence")
+
+        # Create the Transform to Uppercase menu item
+        transform_uppercase_menu_item = Gtk.MenuItem(label=parent_window.voc["uppercase"])
+        transform_menu_item.get_submenu().append(transform_uppercase_menu_item)
+        transform_uppercase_menu_item.connect("activate", parent_window.transform_text, "uppercase")
+
+        # Create the Transform to Lowercase menu item
+        transform_lowercase_menu_item = Gtk.MenuItem(label=parent_window.voc["lowercase"])
+        transform_menu_item.get_submenu().append(transform_lowercase_menu_item)
+        transform_lowercase_menu_item.connect("activate", parent_window.transform_text, "lowercase")
+
+        # Create the Transform to CamelCase menu item
+        transform_camelcase_menu_item = Gtk.MenuItem(label=parent_window.voc["camelcase"])
+        transform_menu_item.get_submenu().append(transform_camelcase_menu_item)
+        transform_camelcase_menu_item.connect("activate", parent_window.transform_text, "camelcase")
+
+        # Create the Transform to Snake Case menu item
+        transform_snakecase_menu_item = Gtk.MenuItem(label=parent_window.voc["snakecase"])
+        transform_menu_item.get_submenu().append(transform_snakecase_menu_item)
+        transform_snakecase_menu_item.connect("activate", parent_window.transform_text, "snakecase")
+
+        # Create the Transform to Kebab Case menu item
+        transform_kebabcase_menu_item = Gtk.MenuItem(label=parent_window.voc["kebabcase"])
+        transform_menu_item.get_submenu().append(transform_kebabcase_menu_item)
+        transform_kebabcase_menu_item.connect("activate", parent_window.transform_text, "kebabcase")
+
         # Create the View menu
         view_menu = Gtk.Menu()
         view_menu.set_reserve_toggle_size(False)

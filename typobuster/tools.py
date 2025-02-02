@@ -171,3 +171,29 @@ def load_shell_data():
             shell_data[key] = defaults[key]
 
     return shell_data
+
+
+def to_snake_case(text):
+    text = text.lower().replace(" ", "_")
+    return text
+
+
+def to_kebab_case(text):
+    text = text.lower().replace(" ", "-")
+    return text
+
+def to_camel_case(text):
+    return ''.join(x for x in text.title() if not x.isspace())
+
+
+def to_upper(text):
+    return text.upper()
+
+
+def to_lower_case(text):
+    return text.lower()
+
+
+def as_in_sentence(text):
+    text = text.lower()
+    return text[0].upper() + text[1:]

@@ -1,5 +1,7 @@
 {
   "about": "About",
+  "as-in-sentence": "As in sentence",
+  "camel-case": "Camel Case",
   "chages-will-be-lost": "Your changes will be lost if you don't save them.",
   "copy": "Copy",
   "cut": "Cut",
@@ -8,7 +10,9 @@
   "edit": "Edit",
   "file": "File",
   "help": "Help",
+  "kebab-case": "kebab-case",
   "line-numbers": "Line numbers",
+  "lowercase": "lowercase",
   "new": "New",
   "open": "Open",
   "paste": "Paste",
@@ -19,7 +23,10 @@
   "save-as": "Save As",
   "select-all": "Select All",
   "tools": "Tools",
+  "transform": "Transform",
+  "snakecase": "snake_case",
   "undo": "Undo",
+  "uppercase": "UPPERCASE",
   "untitled": "Untitled",
   "view": "View"
 }

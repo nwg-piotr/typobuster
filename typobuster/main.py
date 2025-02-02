@@ -52,10 +52,11 @@ def load_vocabulary():
 
 class Typobuster(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Untitled - Typobuster")
+        super().__init__()
         self.set_default_size(800, 600)
         self.settings = load_settings()
         self.voc = voc
+        self.set_title(f"{voc['untitled']} - Typobuster")
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(vbox)
@@ -145,6 +146,35 @@ class Typobuster(Gtk.Window):
             self.load_file_on_startup(f_p)
             global file_path
             file_path = f_p
+
+    def transform_text(self, widget, transformation):
+        try:
+            start, end = self.buffer.get_selection_bounds()  # Try to get selection bounds
+        except ValueError:
+            print("No text selected")
+            return
+        if start and end:
+            text = self.buffer.get_text(start, end, True)
+
+            if transformation == "sentence":
+                transformed_text = as_in_sentence(text)
+            elif transformation == "lowercase":
+                transformed_text = to_lower_case(text)
+            elif transformation == "uppercase":
+                transformed_text = to_upper(text)
+            elif transformation == "camelcase":
+                transformed_text = to_camel_case(text)
+            elif transformation == "snakecase":
+                transformed_text = to_snake_case(text)
+            elif transformation == "kebabcase":
+                transformed_text = to_kebab_case(text)
+            else:
+                transformed_text = text
+
+            self.buffer.begin_user_action()
+            self.buffer.delete(start, end)
+            self.buffer.insert(start, transformed_text)
+            self.buffer.end_user_action()
 
     def sanitize_text(self, widget):
         # Apply some basic predefined sanitization
