@@ -118,6 +118,12 @@ class MenuBar(Gtk.MenuBar):
         transform_menu_item.get_submenu().append(transform_kebabcase_menu_item)
         transform_kebabcase_menu_item.connect("activate", parent_window.transform_text, "kebabcase")
 
+        # Create the Transform to unordered list menu item
+        transform_unoreder_list_menu_item = Gtk.MenuItem(label=parent_window.voc["unordered-with-hyphens"])
+        transform_menu_item.get_submenu().append(transform_unoreder_list_menu_item)
+        transform_unoreder_list_menu_item.connect("activate", parent_window.transform_text, "unordered")
+
+
         # Create the View menu
         view_menu = Gtk.Menu()
         view_menu.set_reserve_toggle_size(False)

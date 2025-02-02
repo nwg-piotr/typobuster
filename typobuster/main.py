@@ -168,6 +168,8 @@ class Typobuster(Gtk.Window):
                 transformed_text = to_snake_case(text)
             elif transformation == "kebabcase":
                 transformed_text = to_kebab_case(text)
+            elif transformation == "unordered":
+                transformed_text = unordered_with_hyphens(text)
             else:
                 transformed_text = text
 

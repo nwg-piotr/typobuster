@@ -199,3 +199,19 @@ def to_lower_case(text):
 def as_in_sentence(text):
     text = text.lower()
     return text[0].upper() + text[1:]
+
+
+def unordered_with_hyphens(text):
+    text = remove_empty_lines(text)
+    lines = text.splitlines()
+    output = []
+    for line in lines:
+        line = line.strip().rstrip()
+        line = "- " + line
+        output.append(line)
+
+    return "\n".join(output)
+
+
+def remove_empty_lines(text):
+    return "\n".join(line for line in text.splitlines() if line.strip())

@@ -26,6 +26,7 @@
   "transform": "Transform",
   "snakecase": "snake_case",
   "undo": "Undo",
+  "unordered-with-hyphens": "- unordered list with hyphens",
   "uppercase": "UPPERCASE",
   "untitled": "Untitled",
   "view": "View"
