@@ -15,6 +15,7 @@
   "lowercase": "lowercase",
   "new": "New",
   "open": "Open",
+  "ordered-list": "1. ordered list",
   "paste": "Paste",
   "quit": "Quit",
   "recent-files": "Recent files",
@@ -27,7 +28,7 @@
   "transform": "Transform",
   "snakecase": "snake_case",
   "undo": "Undo",
-  "unordered-with-hyphens": "- unordered list with hyphens",
+  "unordered-list": "- unordered list",
   "uppercase": "UPPERCASE",
   "untitled": "Untitled",
   "view": "View"

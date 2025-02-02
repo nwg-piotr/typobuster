@@ -15,6 +15,7 @@
   "lowercase": "małe litery",
   "new": "Nowy",
   "open": "Otwórz",
+  "ordered-list": "1. lista uporządkowana",
   "paste": "Wklej",
   "quit": "Zakończ",
   "recent-files": "Ostatnie pliki",
@@ -27,7 +28,7 @@
   "transform": "Przekształć",
   "snakecase": "snake_case",
   "undo": "Cofnij",
-  "unordered-with-hyphens": "- lista nieuporządkowana z myślnikami",
+  "unordered-list": "- lista nieuporządkowana",
   "untitled": "Bez tytułu",
   "uppercase": "WIELKIE LITERY",
   "view": "Widok"

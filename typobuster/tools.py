@@ -201,7 +201,7 @@ def as_in_sentence(text):
     return text[0].upper() + text[1:]
 
 
-def unordered_with_hyphens(text):
+def unordered_list(text):
     text = remove_empty_lines(text)
     lines = text.splitlines()
     output = []
@@ -212,6 +212,20 @@ def unordered_with_hyphens(text):
         output.append(line)
 
     return "\n".join(output)
+
+
+def ordered_list(text):
+    text = remove_empty_lines(text)
+    lines = text.splitlines()
+    output = []
+    for i in range(len(lines)):
+        line = lines[i]
+        line = line.strip().rstrip()
+        line = f"{i+1}. {line}"
+        output.append(line)
+
+    return "\n".join(output)
+
 
 
 def remove_empty_lines(text):

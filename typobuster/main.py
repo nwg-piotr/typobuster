@@ -173,7 +173,9 @@ class Typobuster(Gtk.Window):
             elif transformation == "kebabcase":
                 transformed_text = to_kebab_case(text)
             elif transformation == "unordered":
-                transformed_text = unordered_with_hyphens(text)
+                transformed_text = unordered_list(text)
+            elif transformation == "ordered":
+                transformed_text = ordered_list(text)
             else:
                 transformed_text = text
 
