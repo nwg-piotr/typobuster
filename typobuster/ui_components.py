@@ -344,9 +344,10 @@ class SearchBar(Gtk.Box):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
         self.set_property("margin", 3)
         self.parent_window = parent_window
-        self.search_entry = Gtk.SearchEntry()
         self.matches = None
         self.match_idx = -1
+
+        self.search_entry = Gtk.SearchEntry()
         self.pack_start(self.search_entry, False, False, 1)
         self.search_entry.set_property("name", "searchentry")
         self.search_entry.connect("search-changed", self.on_search_changed, parent_window.buffer)
@@ -420,3 +421,4 @@ class SearchBar(Gtk.Box):
 
     def clear(self):
         self.search_entry.set_text("")
+        self.replace_entry.set_text("")

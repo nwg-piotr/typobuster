@@ -61,6 +61,7 @@ class Typobuster(Gtk.Window):
         self.set_title(f"{voc['untitled']} - Typobuster")
 
         self.last_dir_path = ""
+        self.search_bar = None
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(vbox)
@@ -98,8 +99,8 @@ class Typobuster(Gtk.Window):
         # Add the scrollable window to the main window
         vbox.add(scrolled_window)
 
-        search_bar = SearchBar(self)
-        vbox.pack_end(search_bar, False, False, 0)
+        self.search_bar = SearchBar(self)
+        vbox.pack_end(self.search_bar, False, False, 0)
 
         # Add sample text to the buffer
         self.buffer.begin_not_undoable_action()
@@ -238,6 +239,9 @@ class Typobuster(Gtk.Window):
             self.update_recent(path)
         self.update_text(text)
         self.set_window_title(path)
+
+        self.search_bar.clear()
+        self.source_view.grab_focus()
 
     def open_file(self, widget):
         dialog = Gtk.FileChooserDialog(
