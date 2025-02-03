@@ -155,7 +155,7 @@ class MenuBar(Gtk.MenuBar):
         tools_menu_item.set_submenu(tools_menu)
 
         # Create the Sanitize menu item
-        self.sanitize_menu_item = Gtk.MenuItem(label=parent_window.voc["sanitization"])
+        self.sanitize_menu_item = Gtk.MenuItem(label=parent_window.voc["web-cleanup"])
         tools_menu.append(self.sanitize_menu_item)
         self.sanitize_menu_item.connect("show", self.update_menu_items_sensitivity)
         self.sanitize_menu_item.connect("activate", parent_window.sanitize_text)
