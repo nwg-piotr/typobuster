@@ -395,6 +395,8 @@ class SearchBar(Gtk.Box):
 
                 start, end = self.matches[self.match_idx].span()
                 self.parent_window.select_range(start, end)
+                iter_start = self.parent_window.buffer.get_iter_at_offset(start)
+                self.parent_window.source_view.scroll_to_iter(iter_start, 0.2, False, 0.5, 0.5)
 
                 if self.match_idx < len(self.matches) - 1:
                     self.match_idx += 1
@@ -407,6 +409,8 @@ class SearchBar(Gtk.Box):
 
                 start, end = self.matches[self.match_idx].span()
                 self.parent_window.select_range(start, end)
+                iter_start = self.parent_window.buffer.get_iter_at_offset(start)
+                self.parent_window.source_view.scroll_to_iter(iter_start, 0.2, False, 0.5, 0.5)
 
                 if self.match_idx > 0:
                     self.match_idx -= 1
