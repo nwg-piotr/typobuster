@@ -280,7 +280,7 @@ class SanitizationDialog(Gtk.Window):
             print(f"Key '{key}' not found in settings")
 
     def sanitize_text(self, widget, buffer):
-        text, start_idx, end_idx = text_to_modify(buffer)
+        text, start_idx, end_idx = selected_text(buffer)
 
         if self.settings["sanitize-hyphens"]:
             text = sanitize_hyphens(text, start_idx, end_idx)
@@ -326,7 +326,7 @@ class AboutWindow(Gtk.AboutDialog):
         self.show_all()
 
 
-def text_to_modify(buffer):
+def selected_text(buffer):
     start = buffer.get_start_iter()
     end = buffer.get_end_iter()
 
@@ -337,3 +337,86 @@ def text_to_modify(buffer):
         end_iter = end
 
     return buffer.get_text(start, end, True), start_iter.get_offset(), end_iter.get_offset()
+
+
+class SearchBar(Gtk.Box):
+    def __init__(self, parent_window):
+        Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
+        self.set_property("margin", 3)
+        self.parent_window = parent_window
+        self.search_entry = Gtk.SearchEntry()
+        self.matches = None
+        self.match_idx = -1
+        self.pack_start(self.search_entry, False, False, 1)
+        self.search_entry.set_property("name", "searchentry")
+        self.search_entry.connect("search-changed", self.on_search_changed, parent_window.buffer)
+
+        btn = Gtk.Button.new_from_icon_name("go-up-symbolic", Gtk.IconSize.MENU)
+        self.pack_start(btn, False, False, 0)
+        btn.connect("clicked", self.highlight_match, "up")
+
+        btn = Gtk.Button.new_from_icon_name("go-down-symbolic", Gtk.IconSize.MENU)
+        self.pack_start(btn, False, False, 0)
+        btn.connect("clicked", self.highlight_match, "down")
+
+        lbl = Gtk.Label.new(parent_window.voc["replace-all-with"])
+        self.pack_start(lbl, False, False, 6)
+
+        self.replace_entry = Gtk.Entry()
+        self.pack_start(self.replace_entry, False, False, 0)
+
+        btn = Gtk.Button.new_from_icon_name("emblem-ok-symbolic", Gtk.IconSize.MENU)
+        self.pack_start(btn, False, False, 0)
+        btn.connect("clicked", self.replace)
+
+        self.show_all()
+
+    def on_search_changed(self, widget, buffer):
+        self.match_idx = -1
+        phrase = self.search_entry.get_text()
+        if phrase:
+            start = buffer.get_start_iter()
+            end = buffer.get_end_iter()
+            text = buffer.get_text(start, end, True)
+
+            if phrase in text:
+                self.search_entry.set_property("name", "searchentry")
+            else:
+                self.search_entry.set_property("name", "searchentry-error")
+
+            self.matches = list(re.finditer(re.escape(phrase), text))
+
+    def highlight_match(self, widget, direction):
+        if self.search_entry.get_text():
+            if direction == "down":
+                if self.match_idx == -1:
+                    self.match_idx = 0
+
+                start, end = self.matches[self.match_idx].span()
+                self.parent_window.select_range(start, end)
+
+                if self.match_idx < len(self.matches) - 1:
+                    self.match_idx += 1
+                else:
+                    self.match_idx = 0
+
+            elif direction == "up":
+                if self.match_idx == -1:
+                    self.match_idx = len(self.matches) - 1
+
+                start, end = self.matches[self.match_idx].span()
+                self.parent_window.select_range(start, end)
+
+                if self.match_idx > 0:
+                    self.match_idx -= 1
+                else:
+                    self.match_idx = len(self.matches) - 1
+
+    def replace(self, widget):
+        old = self.search_entry.get_text()
+        new = self.replace_entry.get_text()
+        if old and new:
+            self.parent_window.replace(old, new)
+
+    def clear(self):
+        self.search_entry.set_text("")

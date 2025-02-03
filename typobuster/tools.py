@@ -105,6 +105,10 @@ def save_text_file(text, path):
         return e
 
 
+def replace_all(text, old, new):
+    return re.sub(re.escape(old), new, text)
+
+
 def sanitize_hyphens(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
     selection = selection.replace("–", "-")  # Replace en-dashes with hyphens

@@ -15,7 +15,7 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
 from gi.repository import Gtk, Gdk, GLib, GtkSource
 
-from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow
+from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow, SearchBar
 from typobuster.tools import *
 
 dir_name = os.path.dirname(__file__)
@@ -97,6 +97,9 @@ class Typobuster(Gtk.Window):
 
         # Add the scrollable window to the main window
         vbox.add(scrolled_window)
+
+        search_bar = SearchBar(self)
+        vbox.pack_end(search_bar, False, False, 0)
 
         # Add sample text to the buffer
         self.buffer.begin_not_undoable_action()
@@ -184,9 +187,22 @@ class Typobuster(Gtk.Window):
             self.buffer.insert(start, transformed_text)
             self.buffer.end_user_action()
 
+    def select_range(self, start, end):
+        start_iter = self.buffer.get_iter_at_offset(start)
+        end_iter = self.buffer.get_iter_at_offset(end)
+        self.buffer.select_range(start_iter, end_iter)
+
     def sanitize_text(self, widget):
         # Apply some basic predefined sanitization
         d = SanitizationDialog(self, self.buffer)
+
+    def replace(self, old, new):
+        start = self.buffer.get_start_iter()
+        end = self.buffer.get_end_iter()
+
+        text = self.buffer.get_text(start, end, True)
+        text = replace_all(text, old, new)
+        self.update_text(text)
 
     def set_window_title(self, path):
         filename = os.path.basename(path)
@@ -316,7 +332,22 @@ def main():
 
     GLib.set_prgname('typobuster')
     load_vocabulary()
+
     window = Typobuster()
+
+    screen = Gdk.Screen.get_default()
+    provider = Gtk.CssProvider()
+    style_context = Gtk.StyleContext()
+    style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    css = b"""
+        #searchentry {
+            color: white;
+        }
+        #searchentry-error {
+            color: red;
+        }
+        """
+    provider.load_from_data(css)
 
     if args.file_path:
         window.load_file(None, args.file_path)
