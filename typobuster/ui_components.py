@@ -36,7 +36,6 @@ class MenuBar(Gtk.MenuBar):
         file_menu.append(self.recent_menu_item)
         self.recent_menu_item.set_sensitive(os.path.isfile(os.path.join(config_dir(), "recent")))
         file_menu.connect("show", add_recent_menu, self.recent_menu_item, self.parent_window)
-        # self.recent_menu_item.set_submenu(recent_menu)
 
         # Create the Save menu item
         save_menu_item = Gtk.MenuItem(label=parent_window.voc["save"])
@@ -137,9 +136,14 @@ class MenuBar(Gtk.MenuBar):
 
         # Create the View menu
         view_menu = Gtk.Menu()
-        view_menu.set_reserve_toggle_size(False)
+        # view_menu.set_reserve_toggle_size(False)
         view_menu_item = Gtk.MenuItem(label=parent_window.voc["view"])
         view_menu_item.set_submenu(view_menu)
+
+        # Syntax menu item
+        syntax_menu_item = Gtk.MenuItem(label=parent_window.voc["syntax-highlight"])
+        view_menu.append(syntax_menu_item)
+        view_menu.connect("show", add_syntax_menu, syntax_menu_item, self.parent_window)
 
         # Create the Line numbers menu item
         icon_name = "checkbox-checked-symbolic" if self.settings["view-line-numbers"] else "checkbox-symbolic"
@@ -212,6 +216,19 @@ def add_recent_menu(widget, parent_item, parent_window):
         item.connect("activate", parent_window.load_file, path)
         menu.append(item)
         menu.show_all()
+    parent_item.set_submenu(menu)
+
+
+def add_syntax_menu(widget, parent_item, parent_window):
+    menu = Gtk.Menu()
+    item = Gtk.MenuItem(label=parent_window.voc["plain-text"])
+    item.connect("activate", parent_window.set_syntax, "none")
+    menu.append(item)
+    for key in parent_window.syntax_dict:
+        item = Gtk.MenuItem(label=parent_window.syntax_dict[key])
+        item.connect("activate", parent_window.set_syntax, key)
+        menu.append(item)
+    menu.show_all()
     parent_item.set_submenu(menu)
 
 

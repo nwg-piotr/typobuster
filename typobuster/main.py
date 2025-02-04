@@ -81,10 +81,10 @@ class Typobuster(Gtk.Window):
         self.source_view.connect("drag-data-received", self.on_drag_data_received)
 
         # Set a language for syntax highlighting
-        lang_manager = GtkSource.LanguageManager()
-        language = lang_manager.get_language("none")  # Set Python syntax
+        self.lang_manager = GtkSource.LanguageManager()
         self.buffer = GtkSource.Buffer()
-        self.buffer.set_language(language)
+        if "syntax" in self.settings:
+            self.set_syntax(None, self.settings["syntax"])
         self.source_view.set_buffer(self.buffer)
 
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
@@ -111,6 +111,13 @@ class Typobuster(Gtk.Window):
 
         # Connect the delete event to quit the application
         self.connect("destroy", Gtk.main_quit)
+
+    def set_syntax(self, widget, name):
+        print(f"Setting syntax highlight to '{name}'")
+        language = self.lang_manager.get_language(name)
+        self.buffer.set_language(language)
+        self.settings["syntax"] = name
+        save_settings(self.settings)
 
     def undo(self, widget):
         if self.buffer.can_undo():
