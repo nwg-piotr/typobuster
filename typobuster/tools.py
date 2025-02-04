@@ -47,6 +47,7 @@ def load_settings():
         "sanitize-hyphens": True,
         "sanitize-quotes": True,
         "sanitize-eol": True,
+        "syntax": "none",
         "view-line-numbers": True,
     }
     settings = load_json(config_path)
@@ -85,6 +86,86 @@ def save_settings(settings):
         eprint(f"Error saving settings to {config_path}: {result}")
 
 
+def load_json(path):
+    try:
+        with open(path, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        eprint("Error loading json: {}".format(e))
+        return {}
+
+
+def save_json(src_dict, path):
+    try:
+        with open(path, 'w') as f:
+            json.dump(src_dict, f, indent=2)
+        return "ok"
+    except Exception as e:
+        return e
+
+
+def load_syntax():
+    # check if config dir exists, create if not
+    if not os.path.isdir(config_dir()):
+        os.makedirs(config_dir())
+        print(f"Created {config_dir()}")
+
+    syntax_path = os.path.join(config_dir(), "syntax")
+
+    defaults = {
+        'c': 'C',
+        'c-sharp': 'C#',
+        'cpp': 'C++',
+        'changelog': "ChangeLog",
+        'css': 'CSS',
+        'csv': 'CSV',
+        'desktop': '.desktop',
+        'diff': 'Diff',
+        'fish': 'fish',
+        'go': 'Go',
+        'html': 'HTML',
+        'java': 'Java',
+        'js': 'JavaScript',
+        'json': 'JSON',
+        'kotlin': 'Kotlin',
+        'makefile': 'Makefile',
+        'markdown': 'Markdown',
+        'meson': 'Meson',
+        'php': 'PHP',
+        'python3': 'Python',
+        'python': 'Python 2',
+        'r': 'R',
+        'sh': 'sh',
+        'sql': 'SQL',
+        'vala': 'Vala',
+        'xml': 'XML',
+        'yaml': 'YAML'
+    }
+    syntax = load_json(syntax_path)
+
+    # if syntax file empty or not found
+    if not syntax:
+        result = save_json(defaults, syntax_path)
+        if result == "ok":
+            print(f"Saved default syntax dictionary to {syntax_path}")
+        else:
+            eprint(f"Error saving default settings to {syntax_path}: {result}")
+
+    # add missing keys
+    changed = False
+    for key in defaults:
+        if key not in syntax:
+            syntax[key] = defaults[key]
+            changed = True
+
+    if changed:
+        result = save_json(syntax, syntax_path)
+        if result != "ok":
+            eprint(f"Error updating settings in {syntax_path}: {result}")
+
+    return syntax
+
+
 def load_text_file(path):
     try:
         with open(path, 'r') as file:
@@ -120,7 +201,7 @@ def sanitize_hyphens(text, start_idx, end_idx):
 def sanitize_quotes(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
     selection = selection.replace(',,', '"')  # Replace double comma with English-style quotes
-    selection = re.sub(r"[„”]", '"', selection) # Replace German-style quotes with English-style quotes
+    selection = re.sub(r"[„”]", '"', selection)  # Replace German-style quotes with English-style quotes
     return text[:start_idx] + selection + text[end_idx:]
 
 
@@ -225,11 +306,10 @@ def ordered_list(text):
     for i in range(len(lines)):
         line = lines[i]
         line = line.strip().rstrip()
-        line = f"{i+1}. {line}"
+        line = f"{i + 1}. {line}"
         output.append(line)
 
     return "\n".join(output)
-
 
 
 def remove_empty_lines(text):

@@ -57,6 +57,8 @@ class Typobuster(Gtk.Window):
         super().__init__()
         self.set_default_size(800, 600)
         self.settings = load_settings()
+        self.syntax_dict = load_syntax()
+
         self.voc = voc
         self.set_title(f"{voc['untitled']} - Typobuster")
 
