@@ -237,6 +237,7 @@ class Typobuster(Gtk.Window):
             self.last_dir_path = os.path.dirname(path)  # remember last opened dir for file chooser
             text = load_text_file(path)
             self.update_recent(path)
+            self.menu_bar.recent_menu_item.set_sensitive(True)
         self.update_text(text)
         self.set_window_title(path)
 
