@@ -86,30 +86,7 @@ def save_settings(settings):
         eprint(f"Error saving settings to {config_path}: {result}")
 
 
-def load_json(path):
-    try:
-        with open(path, 'r') as f:
-            return json.load(f)
-    except Exception as e:
-        eprint("Error loading json: {}".format(e))
-        return {}
-
-
-def save_json(src_dict, path):
-    try:
-        with open(path, 'w') as f:
-            json.dump(src_dict, f, indent=2)
-        return "ok"
-    except Exception as e:
-        return e
-
-
 def load_syntax():
-    # check if config dir exists, create if not
-    if not os.path.isdir(config_dir()):
-        os.makedirs(config_dir())
-        print(f"Created {config_dir()}")
-
     syntax_path = os.path.join(config_dir(), "syntax")
 
     defaults = {
@@ -133,7 +110,7 @@ def load_syntax():
         'meson': 'Meson',
         'php': 'PHP',
         'python3': 'Python',
-        'python': 'Python 2',
+        'python': 'Python2',
         'r': 'R',
         'sh': 'sh',
         'sql': 'SQL',

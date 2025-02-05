@@ -1,7 +1,7 @@
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gdk, GdkPixbuf
+from gi.repository import Gtk, Gdk
 
 from typobuster.tools import *
 from typobuster.__about__ import __version__
@@ -58,33 +58,49 @@ class MenuBar(Gtk.MenuBar):
         edit_menu_item = Gtk.MenuItem(label=parent_window.voc["edit"])
         edit_menu_item.set_submenu(edit_menu)
 
+        # Create key accelerator
+        accel_group = Gtk.AccelGroup()
+        parent_window.add_accel_group(accel_group)
+
         # Create the Undo menu item
         self.undo_menu_item = Gtk.MenuItem(label=parent_window.voc["undo"])
+        key, mod = Gtk.accelerator_parse("<Control>Z")
+        self.undo_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(self.undo_menu_item)
         self.undo_menu_item.connect("activate", parent_window.undo)
 
         # Create the Redo menu item
         self.redo_menu_item = Gtk.MenuItem(label=parent_window.voc["redo"])
+        key, mod = Gtk.accelerator_parse("<Control>Y")
+        self.redo_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(self.redo_menu_item)
         self.redo_menu_item.connect("activate", parent_window.redo)
 
         # Create the Cut menu item
         cut_menu_item = Gtk.MenuItem(label=parent_window.voc["cut"])
+        key, mod = Gtk.accelerator_parse("<Control>X")
+        cut_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(cut_menu_item)
         cut_menu_item.connect("activate", parent_window.cut_text)
 
         # Create the Copy menu item
         copy_menu_item = Gtk.MenuItem(label=parent_window.voc["copy"])
+        key, mod = Gtk.accelerator_parse("<Control>C")
+        copy_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(copy_menu_item)
         copy_menu_item.connect("activate", parent_window.copy_text)
 
         # Create the Paste menu item
         paste_menu_item = Gtk.MenuItem(label=parent_window.voc["paste"])
+        key, mod = Gtk.accelerator_parse("<Control>V")
+        paste_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(paste_menu_item)
         paste_menu_item.connect("activate", parent_window.paste_text)
 
         # Create the Delete menu item
         delete_menu_item = Gtk.MenuItem(label=parent_window.voc["delete"])
+        key, mod = Gtk.accelerator_parse("Delete")
+        delete_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(delete_menu_item)
         delete_menu_item.connect("activate", parent_window.delete_text)
 
@@ -134,23 +150,30 @@ class MenuBar(Gtk.MenuBar):
         transform_menu_item.get_submenu().append(transform_ordered_list_menu_item)
         transform_ordered_list_menu_item.connect("activate", parent_window.transform_text, "ordered")
 
+        separator = Gtk.SeparatorMenuItem()
+        edit_menu.append(separator)
+
+        # Create the Preferences menu item
+        preferences_menu_item = Gtk.MenuItem(label=parent_window.voc["preferences"])
+        edit_menu.append(preferences_menu_item)
+        preferences_menu_item.connect("activate", parent_window.show_preferences)
+
         # Create the View menu
         view_menu = Gtk.Menu()
         # view_menu.set_reserve_toggle_size(False)
         view_menu_item = Gtk.MenuItem(label=parent_window.voc["view"])
         view_menu_item.set_submenu(view_menu)
 
+        # Create the Line numbers menu item
+        self.line_numbers_menu_item = Gtk.CheckMenuItem(parent_window.voc["line-numbers"])
+        view_menu.append(self.line_numbers_menu_item)
+        self.line_numbers_menu_item.set_active(self.settings["view-line-numbers"])
+        self.line_numbers_menu_item.connect("toggled", parent_window.toggle_line_numbers)
+
         # Syntax menu item
         syntax_menu_item = Gtk.MenuItem(label=parent_window.voc["syntax-highlight"])
         view_menu.append(syntax_menu_item)
         view_menu.connect("show", add_syntax_menu, syntax_menu_item, self.parent_window)
-
-        # Create the Line numbers menu item
-        icon_name = "checkbox-checked-symbolic" if self.settings["view-line-numbers"] else "checkbox-symbolic"
-        self.line_numbers_menu_item = CustomMenuItem(self.settings, icon_name, parent_window.voc["line-numbers"])
-
-        view_menu.append(self.line_numbers_menu_item)
-        self.line_numbers_menu_item.connect("activate", parent_window.toggle_line_numbers)
 
         # Create the Tools menu
         tools_menu = Gtk.Menu()
@@ -189,22 +212,6 @@ class MenuBar(Gtk.MenuBar):
         self.redo_menu_item.set_sensitive(self.parent_window.buffer.can_redo())
         self.new_menu_item.set_sensitive(self.parent_window.buffer.get_char_count() > 0)
         self.sanitize_menu_item.set_sensitive(self.parent_window.buffer.get_char_count() > 0)
-
-
-class CustomMenuItem(Gtk.MenuItem):
-    def __init__(self, settings, icon_name, label):
-        super().__init__()
-        self.settings = settings
-        box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-        self.add(box)
-        self.image = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.MENU)
-        box.pack_start(self.image, False, False, 6)
-        label = Gtk.Label(label)
-        box.pack_start(label, False, False, 0)
-
-    def set_image(self, config_key):
-        icon_name = "checkbox-checked-symbolic" if self.settings[config_key] else "checkbox-symbolic"
-        self.image.set_from_icon_name(icon_name, Gtk.IconSize.MENU)
 
 
 def add_recent_menu(widget, parent_item, parent_window):
@@ -343,6 +350,49 @@ class AboutWindow(Gtk.AboutDialog):
         self.show_all()
 
 
+class PreferencesDialog(Gtk.Dialog):
+    def __init__(self, parent):
+        super().__init__(title="Preferences", transient_for=parent, modal=True)
+
+        self.grid = Gtk.Grid(margin_top=10, margin_bottom=10, margin_start=10, margin_end=10, column_spacing=10, row_spacing=10)
+        self.get_content_area().pack_start(self.grid, False, False, 0)
+
+        # Theme Selector
+        self.theme_label = Gtk.Label(label="Theme:", halign=Gtk.Align.START)
+        self.theme_combo = Gtk.ComboBoxText()
+        self.theme_combo.append("light", "Light")
+        self.theme_combo.append("dark", "Dark")
+        self.theme_combo.set_active(0)  # Default to Light
+        self.theme_combo.connect("changed", self.on_theme_changed)
+
+        # Font Size Selector
+        self.font_size_label = Gtk.Label(label="Font Size:", halign=Gtk.Align.START)
+        self.font_size_spin = Gtk.SpinButton.new_with_range(8, 32, 1)
+        self.font_size_spin.set_value(12)  # Default value
+        self.font_size_spin.connect("value-changed", self.on_font_size_changed)
+
+        # Layout
+        self.grid.attach(self.theme_label, 0, 0, 1, 1)
+        self.grid.attach(self.theme_combo, 1, 0, 1, 1)
+        self.grid.attach(self.font_size_label, 0, 1, 1, 1)
+        self.grid.attach(self.font_size_spin, 1, 1, 1, 1)
+
+        # OK Button
+        self.ok_button = Gtk.Button(label="OK")
+        self.ok_button.connect("clicked", lambda x: self.close())
+        self.grid.attach(self.ok_button, 0, 2, 2, 1)
+
+        self.show_all()
+
+    def on_theme_changed(self, combo):
+        theme = combo.get_active_id()
+        print(f"Selected Theme: {theme}")
+
+    def on_font_size_changed(self, spin):
+        font_size = spin.get_value()
+        print(f"Selected Font Size: {font_size}")
+
+
 def selected_text(buffer):
     start = buffer.get_start_iter()
     end = buffer.get_end_iter()
@@ -386,6 +436,13 @@ class SearchBar(Gtk.Box):
         btn = Gtk.Button.new_from_icon_name("emblem-ok-symbolic", Gtk.IconSize.MENU)
         self.pack_start(btn, False, False, 0)
         btn.connect("clicked", self.replace)
+
+        if parent_window.settings["syntax"] == "none":
+            s_lbl = parent_window.voc["plain-text"]
+        else:
+            s_lbl = parent_window.syntax_dict[parent_window.settings["syntax"]]
+        self.syntax_lbl = Gtk.Label.new(s_lbl)
+        self.pack_end(self.syntax_lbl, False, False, 6)
 
         self.show_all()
 

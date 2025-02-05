@@ -15,7 +15,7 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
 from gi.repository import Gtk, Gdk, GLib, GtkSource
 
-from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow, SearchBar
+from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow, SearchBar, PreferencesDialog
 from typobuster.tools import *
 
 dir_name = os.path.dirname(__file__)
@@ -83,8 +83,7 @@ class Typobuster(Gtk.Window):
         # Set a language for syntax highlighting
         self.lang_manager = GtkSource.LanguageManager()
         self.buffer = GtkSource.Buffer()
-        if "syntax" in self.settings:
-            self.set_syntax(None, self.settings["syntax"])
+
         self.source_view.set_buffer(self.buffer)
 
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
@@ -104,6 +103,9 @@ class Typobuster(Gtk.Window):
         self.search_bar = SearchBar(self)
         vbox.pack_end(self.search_bar, False, False, 0)
 
+        if "syntax" in self.settings:
+            self.set_syntax(None, self.settings["syntax"])
+
         # Add sample text to the buffer
         self.buffer.begin_not_undoable_action()
         self.buffer.set_text("")
@@ -118,6 +120,11 @@ class Typobuster(Gtk.Window):
         self.buffer.set_language(language)
         self.settings["syntax"] = name
         save_settings(self.settings)
+        if self.settings["syntax"] == "none":
+            s_lbl = self.voc["plain-text"]
+        else:
+            s_lbl = self.syntax_dict[self.settings["syntax"]]
+        self.search_bar.syntax_lbl.set_text(s_lbl)
 
     def undo(self, widget):
         if self.buffer.can_undo():
@@ -146,14 +153,16 @@ class Typobuster(Gtk.Window):
         self.buffer.end_user_action()
 
     def toggle_line_numbers(self, widget):
-        self.settings["view-line-numbers"] = not self.settings["view-line-numbers"]
+        self.settings["view-line-numbers"] = widget.get_active()
         self.source_view.set_show_line_numbers(self.settings["view-line-numbers"])
         save_settings(self.settings)
-        self.menu_bar.line_numbers_menu_item.set_image("view-line-numbers")
 
     def show_about(self, widget):
         about = AboutWindow(self)
         about.run()
+
+    def show_preferences(self, widget):
+        PreferencesDialog(self)
 
     def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
         """Handle file drop event."""
