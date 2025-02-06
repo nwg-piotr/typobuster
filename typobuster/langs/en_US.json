@@ -42,6 +42,7 @@
   "web-cleanup": "Web cleanup",
   "unsaved-changes": "Unsaved changes",
   "unsaved-changes-question": "You have unsaved changes, you would like to save?",
+  "want-save-changes": "Do you want to save the changes to",
   "dont-save": "Don't save",
   "cancel": "Cancel"
 }

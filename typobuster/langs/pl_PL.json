@@ -42,6 +42,7 @@
   "web-cleanup": "Korekta WWW",
   "unsaved-changes": "Niezapisane zmiany",
   "unsaved-changes-question": "Masz niezapisane zmiany, chcesz zapisać?",
+  "want-save-changes": "Czy chcesz zapisać zmiany w",
   "dont-save": "Nie zapisuj",
   "cancel": "Anuluj"
 }
