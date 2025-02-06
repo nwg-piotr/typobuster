@@ -358,17 +358,18 @@ class PreferencesDialog(Gtk.Dialog):
         self.get_content_area().pack_start(self.grid, False, False, 0)
 
         # Theme Selector
-        self.theme_label = Gtk.Label(label="Theme:", halign=Gtk.Align.START)
+        self.theme_label = Gtk.Label(label=parent.voc["gtk-theme"], halign=Gtk.Align.START)
         self.grid.attach(self.theme_label, 0, 0, 1, 1)
 
         self.theme_combo = Gtk.ComboBoxText()
+        self.theme_combo.append("", parent.voc["system-default"])
         for name in get_theme_names():
             self.theme_combo.append(name, name)
 
         if parent.settings["gtk-theme-name"]:
             self.theme_combo.set_active_id(parent.settings["gtk-theme-name"])
         else:
-            self.theme_combo.set_active_id(parent.gtk_settings.get_property("gtk-theme-name"))
+            self.theme_combo.set_active_id("")
 
         self.theme_combo.connect("changed", parent.on_theme_changed)
         self.grid.attach(self.theme_combo, 1, 0, 1, 1)
