@@ -194,7 +194,7 @@ class Typobuster(Gtk.Window):
         save_settings(self.settings)
         self.set_gtk_theme(self.settings["gtk-theme-name"])
 
-    def set_gtk_theme(self, theme):
+    def set_gtk_theme(self):
         self.gtk_settings.set_property("gtk-theme-name", self.settings["gtk-theme-name"])
 
     def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
