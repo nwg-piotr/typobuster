@@ -99,8 +99,6 @@ class MenuBar(Gtk.MenuBar):
 
         # Create the Delete menu item
         delete_menu_item = Gtk.MenuItem(label=parent_window.voc["delete"])
-        key, mod = Gtk.accelerator_parse("Delete")
-        delete_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(delete_menu_item)
         delete_menu_item.connect("activate", parent_window.delete_text)
 
