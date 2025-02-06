@@ -370,8 +370,7 @@ class PreferencesDialog(Gtk.Dialog):
         else:
             self.theme_combo.set_active_id(parent.gtk_settings.get_property("gtk-theme-name"))
 
-        self.theme_combo.set_active(0)  # Default to Light
-        self.theme_combo.connect("changed", self.on_theme_changed)
+        self.theme_combo.connect("changed", parent.on_theme_changed)
         self.grid.attach(self.theme_combo, 1, 0, 1, 1)
 
         # Font Selector
@@ -390,10 +389,6 @@ class PreferencesDialog(Gtk.Dialog):
         self.grid.attach(self.ok_button, 0, 2, 2, 1)
 
         self.show_all()
-
-    def on_theme_changed(self, combo):
-        theme = combo.get_active_id()
-        print(f"Selected Theme: {theme}")
 
 
 def selected_text(buffer):

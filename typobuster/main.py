@@ -188,6 +188,11 @@ class Typobuster(Gtk.Window):
             style_context = self.source_view.get_style_context()
             style_context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
+    def on_theme_changed(self, combo):
+        self.settings["gtk-theme-name"] = combo.get_active_id()
+
+        save_settings(self.settings)
+
     def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
         """Handle file drop event."""
         uris = data.get_uris()
