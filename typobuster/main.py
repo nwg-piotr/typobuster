@@ -152,6 +152,7 @@ class Typobuster(Gtk.Window):
                 self.save_on_exit()
                 return False  # Allow closing
             elif response == Gtk.ResponseType.NO:
+                self.unsaved_changes = False
                 return False  # Allow closing
             else:
                 return True  # Prevent closing
@@ -162,6 +163,7 @@ class Typobuster(Gtk.Window):
             self.save_file_as(None)
         else:
             self.save_file(None)
+        self.unsaved_changes = False
 
     def set_syntax(self, widget, name):
         language = self.lang_manager.get_language(name)
@@ -328,6 +330,9 @@ class Typobuster(Gtk.Window):
         self.set_window_title(f"{voc['view']} - Typobuster")
 
     def load_file(self, widget, path):
+        if self.unsaved_changes:
+            self.on_close(None, None)
+
         global file_path
         file_path = os.path.abspath(path)
         print(f"Opening {file_path}")
@@ -344,7 +349,12 @@ class Typobuster(Gtk.Window):
         self.search_bar.clear()
         self.source_view.grab_focus()
 
+        self.unsaved_changes = False
+
     def open_file(self, widget):
+        if self.unsaved_changes:
+            self.on_close(None, None)
+
         dialog = Gtk.FileChooserDialog(
             title="Open File",
             parent=self,
