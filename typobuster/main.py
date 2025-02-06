@@ -53,6 +53,11 @@ def load_vocabulary():
                     voc[key] = loc[key]
 
 
+def on_destroy_event(widget):
+    print("Terminating gracefully")
+    Gtk.main_quit()
+
+
 class Typobuster(Gtk.Window):
     def __init__(self):
         super().__init__()
@@ -67,6 +72,9 @@ class Typobuster(Gtk.Window):
         self.search_bar = None
 
         self.gtk_settings = Gtk.Settings.get_default()
+
+        self.unsaved_changes = False
+        self.connect("delete-event", self.on_close)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(vbox)
@@ -89,6 +97,7 @@ class Typobuster(Gtk.Window):
         self.buffer = GtkSource.Buffer()
 
         self.source_view.set_buffer(self.buffer)
+        self.buffer.connect("changed", self.on_text_changed)
 
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
@@ -119,7 +128,40 @@ class Typobuster(Gtk.Window):
         self.set_gtk_theme()
 
         # Connect the delete event to quit the application
-        self.connect("destroy", Gtk.main_quit)
+        self.connect("destroy", on_destroy_event)
+
+    def on_text_changed(self, buffer):
+        self.unsaved_changes = True
+
+    def on_close(self, widget, event):
+        if self.unsaved_changes:
+            dialog = Gtk.MessageDialog(
+                transient_for=self,
+                flags=0,
+                message_type=Gtk.MessageType.WARNING,
+
+                text=self.voc["unsaved-changes"]
+            )
+            dialog.add_buttons(self.voc["save"], Gtk.ResponseType.YES, self.voc["dont-save"], Gtk.ResponseType.NO,
+                               self.voc["cancel"], Gtk.ResponseType.CANCEL)
+            dialog.format_secondary_text(self.voc["unsaved-changes-question"])
+            response = dialog.run()
+            dialog.destroy()
+
+            if response == Gtk.ResponseType.YES:
+                self.save_on_exit()
+                return False  # Allow closing
+            elif response == Gtk.ResponseType.NO:
+                return False  # Allow closing
+            else:
+                return True  # Prevent closing
+        return False  # Allow closing
+
+    def save_on_exit(self):
+        if self.get_title() == f"{voc['untitled']} - Typobuster":
+            self.save_file_as(None)
+        else:
+            self.save_file(None)
 
     def set_syntax(self, widget, name):
         language = self.lang_manager.get_language(name)
@@ -200,9 +242,9 @@ class Typobuster(Gtk.Window):
             self.gtk_settings.set_property("gtk-theme-name", self.settings["gtk-theme-name"])
         else:
             # TODO we need to get from gsettings and apply here
-            theme = subprocess.check_output("gsettings get org.gnome.desktop.interface gtk-theme", shell=True).decode("utf-8")
+            theme = subprocess.check_output("gsettings get org.gnome.desktop.interface gtk-theme", shell=True).decode(
+                "utf-8")
             self.gtk_settings.set_property("gtk-theme-name", theme[1:-2])
-
 
     def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
         """Handle file drop event."""
@@ -381,7 +423,7 @@ class Typobuster(Gtk.Window):
         save_text_file("\n".join(recent_paths), recent_file)
 
     def quit(self, widget):
-        Gtk.main_quit()
+        self.close()
 
 
 def main():

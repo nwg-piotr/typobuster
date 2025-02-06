@@ -39,5 +39,9 @@
   "untitled": "Bez tytułu",
   "uppercase": "WIELKIE LITERY",
   "view": "Widok",
-  "web-cleanup": "Korekta WWW"
+  "web-cleanup": "Korekta WWW",
+  "unsaved-changes": "Niezapisane zmiany",
+  "unsaved-changes-question": "Masz niezapisane zmiany, chcesz zapisać?",
+  "dont-save": "Nie zapisuj",
+  "cancel": "Anuluj"
 }

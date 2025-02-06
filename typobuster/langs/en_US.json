@@ -39,5 +39,9 @@
   "uppercase": "UPPERCASE",
   "untitled": "Untitled",
   "view": "View",
-  "web-cleanup": "Web cleanup"
+  "web-cleanup": "Web cleanup",
+  "unsaved-changes": "Unsaved changes",
+  "unsaved-changes-question": "You have unsaved changes, you would like to save?",
+  "dont-save": "Don't save",
+  "cancel": "Cancel"
 }
