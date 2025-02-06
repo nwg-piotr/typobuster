@@ -192,7 +192,7 @@ class Typobuster(Gtk.Window):
     def on_theme_changed(self, combo):
         self.settings["gtk-theme-name"] = combo.get_active_id()
         save_settings(self.settings)
-        self.set_gtk_theme(self.settings["gtk-theme-name"])
+        self.set_gtk_theme()
 
     def set_gtk_theme(self):
         self.gtk_settings.set_property("gtk-theme-name", self.settings["gtk-theme-name"])
