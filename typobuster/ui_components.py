@@ -375,7 +375,7 @@ class PreferencesDialog(Gtk.Dialog):
         self.grid.attach(self.theme_combo, 1, 0, 1, 1)
 
         # Font Selector
-        self.font_size_label = Gtk.Label(label=parent.voc["font"], halign=Gtk.Align.START)
+        self.font_size_label = Gtk.Label(label=parent.voc["editor-font"], halign=Gtk.Align.START)
         self.grid.attach(self.font_size_label, 0, 1, 1, 1)
 
         self.font_chooser_btn = Gtk.FontButton()
