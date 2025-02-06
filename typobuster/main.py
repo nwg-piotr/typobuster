@@ -258,11 +258,10 @@ class Typobuster(Gtk.Window):
             file_path = f_p
 
     def transform_text(self, widget, transformation):
-        try:
-            start, end = self.buffer.get_selection_bounds()  # Try to get selection bounds
-        except ValueError:
-            print("No text selected")
-            return
+        start = self.buffer.get_start_iter()
+        end = self.buffer.get_end_iter()
+        if self.buffer.get_has_selection():
+            start, end = self.buffer.get_selection_bounds()
         if start and end:
             text = self.buffer.get_text(start, end, True)
 
@@ -282,6 +281,10 @@ class Typobuster(Gtk.Window):
                 transformed_text = unordered_list(text)
             elif transformation == "ordered":
                 transformed_text = ordered_list(text)
+            elif transformation == "sort-asc":
+                transformed_text = sort_lines(text)
+            elif transformation == "sort-desc":
+                transformed_text = sort_lines(text, order="desc")
             else:
                 transformed_text = text
 

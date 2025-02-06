@@ -186,6 +186,19 @@ class MenuBar(Gtk.MenuBar):
         self.sanitize_menu_item.connect("activate", parent_window.sanitize_text)
         self.sanitize_menu_item.set_can_focus(False)
 
+        # Sort menu item
+        sort_menu_item = Gtk.MenuItem(label=parent_window.voc["sort-rows"])
+        tools_menu.append(sort_menu_item)
+
+        sort_menu = Gtk.Menu()
+        sort_asc_menu_item = Gtk.MenuItem(label=parent_window.voc["ascending"])
+        sort_menu.append(sort_asc_menu_item)
+        sort_asc_menu_item.connect("activate", parent_window.transform_text, "sort-asc")
+        sort_desc_menu_item = Gtk.MenuItem(label=parent_window.voc["descending"])
+        sort_menu.append(sort_desc_menu_item)
+        sort_desc_menu_item.connect("activate", parent_window.transform_text, "sort-desc")
+        sort_menu_item.set_submenu(sort_menu)
+
         # Create the Help menu
         help_menu = Gtk.Menu()
         help_menu_item = Gtk.MenuItem(label=parent_window.voc["help"])

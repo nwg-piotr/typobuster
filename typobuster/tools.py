@@ -338,5 +338,14 @@ def ordered_list(text):
     return "\n".join(output)
 
 
+def sort_lines(text, order="asc"):
+    lines = text.splitlines()
+    if order == "asc":
+        lines = sorted(lines)
+    else:
+        lines = sorted(lines, reverse=True)
+    return "\n".join(lines)
+
+
 def remove_empty_lines(text):
     return "\n".join(line for line in text.splitlines() if line.strip())
