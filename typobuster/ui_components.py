@@ -362,8 +362,14 @@ class PreferencesDialog(Gtk.Dialog):
         self.grid.attach(self.theme_label, 0, 0, 1, 1)
 
         self.theme_combo = Gtk.ComboBoxText()
-        self.theme_combo.append("light", "Light")
-        self.theme_combo.append("dark", "Dark")
+        for name in get_theme_names():
+            self.theme_combo.append(name, name)
+
+        if parent.settings["gtk-theme-name"]:
+            self.theme_combo.set_active_id(parent.settings["gtk-theme-name"])
+        else:
+            self.theme_combo.set_active_id(parent.gtk_settings.get_property("gtk-theme-name"))
+
         self.theme_combo.set_active(0)  # Default to Light
         self.theme_combo.connect("changed", self.on_theme_changed)
         self.grid.attach(self.theme_combo, 1, 0, 1, 1)

@@ -11,6 +11,53 @@ def config_dir():
     return os.path.join(config_home, "typobuster")
 
 
+def get_theme_names():
+    theme_dirs = []
+    for d in get_data_dirs():
+        p = os.path.join(d, "themes")
+        if os.path.isdir(p):
+            theme_dirs.append(p)
+
+    home = os.getenv("HOME")
+    if home:
+        p = os.path.join(home, ".themes")
+        if os.path.isdir(p):
+            theme_dirs.append(p)
+
+    names = []
+    exclusions = ["Default", "Emacs"]
+    for d in theme_dirs:
+        for item in os.listdir(d):
+            if os.path.isdir(os.path.join(d, item)) and item not in exclusions:
+                content = os.listdir(os.path.join(d, item))
+                for name in content:
+                    if name.startswith("gtk-"):
+                        if item not in names:
+                            names.append(item)
+                            break
+    names.sort()
+    return names
+
+
+def get_data_dirs():
+    dirs = [get_data_home()]
+    xdg_data_dirs = os.getenv("XDG_DATA_DIRS") if os.getenv("XDG_DATA_DIRS") else "/usr/local/share/:/usr/share/"
+    for d in xdg_data_dirs.split(":"):
+        dirs.append(d)
+    confirmed = []
+    for d in dirs:
+        if os.path.isdir(d):
+            confirmed.append(d)
+
+    return confirmed
+
+
+def get_data_home():
+    d_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.path.join(
+        os.getenv("HOME"), ".local/share")
+    return d_home
+
+
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
@@ -43,6 +90,7 @@ def load_settings():
 
     defaults = {
         "gtk-font-name": "",
+        "gtk-theme-name": "",
         "sanitize-spaces": True,
         "sanitize-punctuation-marks": True,
         "sanitize-hyphens": True,
