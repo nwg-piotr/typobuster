@@ -285,6 +285,8 @@ class Typobuster(Gtk.Window):
                 transformed_text = sort_lines(text)
             elif transformation == "sort-desc":
                 transformed_text = sort_lines(text, order="desc")
+            elif transformation == "remove-empty-rows":
+                transformed_text = remove_empty_lines(text)
             else:
                 transformed_text = text
 

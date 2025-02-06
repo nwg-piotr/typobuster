@@ -199,6 +199,10 @@ class MenuBar(Gtk.MenuBar):
         sort_desc_menu_item.connect("activate", parent_window.transform_text, "sort-desc")
         sort_menu_item.set_submenu(sort_menu)
 
+        remove_empty_rows_item = Gtk.MenuItem(label=parent_window.voc["remove-empty-rows"])
+        tools_menu.append(remove_empty_rows_item)
+        remove_empty_rows_item.connect("activate", parent_window.transform_text, "remove-empty-rows")
+
         # Create the Help menu
         help_menu = Gtk.Menu()
         help_menu_item = Gtk.MenuItem(label=parent_window.voc["help"])
