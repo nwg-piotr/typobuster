@@ -8,6 +8,7 @@ License: GPL3
 
 import argparse
 import os.path
+import subprocess
 
 import gi
 
@@ -199,7 +200,9 @@ class Typobuster(Gtk.Window):
             self.gtk_settings.set_property("gtk-theme-name", self.settings["gtk-theme-name"])
         else:
             # TODO we need to get from gsettings and apply here
-            pass
+            theme = subprocess.check_output("gsettings get org.gnome.desktop.interface gtk-theme", shell=True).decode("utf-8")
+            self.gtk_settings.set_property("gtk-theme-name", self.settings["gtk-theme-name"])
+
 
     def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
         """Handle file drop event."""
