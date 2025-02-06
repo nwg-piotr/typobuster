@@ -5,6 +5,7 @@
   "camelcase": "camelCase",
   "cancel": "Anuluj",
   "chages-will-be-lost": "Zmiany będą utracone jeśli ich nie zapiszesz.",
+  "close": "Zamknij",
   "copy": "Kopiuj",
   "cut": "Wytnij",
   "delete": "Usuń",
@@ -30,6 +31,7 @@
   "redo": "Powtórz",
   "replace-all-with": "Zamień wszystkie na",
   "sanitization": "Oczyszczanie",
+  "sanitize": "Wyczyść",
   "save": "Zapisz",
   "save-as": "Zapisz jako",
   "select-all": "Wybierz wszystko",
@@ -47,5 +49,10 @@
   "uppercase": "WIELKIE LITERY",
   "view": "Widok",
   "want-save-changes": "Czy chcesz zapisać zmiany w",
-  "web-cleanup": "Korekta WWW"
+  "web-cleanup": "Korekta WWW",
+  "hyphens": "Myślniki",
+  "quotes": "Cudzysłowy",
+  "punctuation-marks": "Znaki przestankowe",
+  "spaces": "Spacje",
+  "eol-chars": "Znaki końca wiersza"
 }

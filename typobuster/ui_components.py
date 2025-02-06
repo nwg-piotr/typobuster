@@ -264,27 +264,27 @@ class SanitizationDialog(Gtk.Window):
         vbox.set_property("margin", 12)
         self.add(vbox)
 
-        self.sanitize_hyphens = Gtk.CheckButton(label="Hyphens")
+        self.sanitize_hyphens = Gtk.CheckButton(label=parent_window.voc["hyphens"])
         self.sanitize_hyphens.set_active(self.settings["sanitize-hyphens"])
         self.sanitize_hyphens.connect("toggled", self.switch_settings_key, "sanitize-hyphens")
         vbox.pack_start(self.sanitize_hyphens, False, False, 0)
 
-        self.sanitize_quotes = Gtk.CheckButton(label="Quotes")
+        self.sanitize_quotes = Gtk.CheckButton(label=parent_window.voc["quotes"])
         self.sanitize_quotes.set_active(self.settings["sanitize-quotes"])
         self.sanitize_quotes.connect("toggled", self.switch_settings_key, "sanitize-quotes")
         vbox.pack_start(self.sanitize_quotes, False, False, 0)
 
-        self.sanitize_punctuation_marks = Gtk.CheckButton(label="Punctuation marks")
+        self.sanitize_punctuation_marks = Gtk.CheckButton(label=parent_window.voc["punctuation-marks"])
         self.sanitize_punctuation_marks.set_active(self.settings["sanitize-punctuation-marks"])
         self.sanitize_punctuation_marks.connect("toggled", self.switch_settings_key, "sanitize-punctuation-marks")
         vbox.pack_start(self.sanitize_punctuation_marks, False, False, 0)
 
-        self.sanitize_spaces = Gtk.CheckButton(label="Spaces")
+        self.sanitize_spaces = Gtk.CheckButton(label=parent_window.voc["spaces"])
         self.sanitize_spaces.set_active(self.settings["sanitize-spaces"])
         self.sanitize_spaces.connect("toggled", self.switch_settings_key, "sanitize-spaces")
         vbox.pack_start(self.sanitize_spaces, False, False, 0)
 
-        self.sanitize_eol = Gtk.CheckButton(label="End-of-line characters")
+        self.sanitize_eol = Gtk.CheckButton(label=parent_window.voc["eol-chars"])
         self.sanitize_eol.set_active(self.settings["sanitize-eol"])
         self.sanitize_eol.connect("toggled", self.switch_settings_key, "sanitize-eol")
         vbox.pack_start(self.sanitize_eol, False, False, 0)
@@ -293,11 +293,11 @@ class SanitizationDialog(Gtk.Window):
         hbox.set_property("margin-top", 12)
         vbox.pack_start(hbox, False, False, 0)
 
-        button = Gtk.Button(label="Sanitize")
+        button = Gtk.Button(label=parent_window.voc["sanitize"])
         hbox.pack_end(button, False, False, 0)
         button.connect("clicked", self.sanitize_text, buffer)
 
-        button = Gtk.Button(label="Close")
+        button = Gtk.Button(label=parent_window.voc["close"])
         hbox.pack_end(button, False, False, 0)
         button.connect("clicked", lambda x: self.destroy())
 

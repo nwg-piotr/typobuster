@@ -5,6 +5,7 @@
   "camel-case": "camelCase",
   "cancel": "Cancel",
   "chages-will-be-lost": "Your changes will be lost if you don't save them.",
+  "close": "Close",
   "copy": "Copy",
   "cut": "Cut",
   "delete": "Delete",
@@ -30,6 +31,7 @@
   "redo": "Redo",
   "replace-all-with": "Replace all with",
   "sanitization": "Sanitization",
+  "sanitize": "Sanitize",
   "save": "Save",
   "save-as": "Save As",
   "select-all": "Select All",
@@ -47,5 +49,10 @@
   "uppercase": "UPPERCASE",
   "view": "View",
   "want-save-changes": "Do you want to save the changes to",
-  "web-cleanup": "Web cleanup"
+  "web-cleanup": "Web cleanup",
+  "hyphens": "Hyphens",
+  "quotes": "Quotes",
+  "punctuation-marks": "Punctuation marks",
+  "spaces": "Spaces",
+  "eol-chars": "End-of-line characters"
 }
