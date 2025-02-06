@@ -115,6 +115,7 @@ class Typobuster(Gtk.Window):
         self.buffer.end_not_undoable_action()
 
         self.set_view_style()
+        self.set_gtk_theme()
 
         # Connect the delete event to quit the application
         self.connect("destroy", Gtk.main_quit)
