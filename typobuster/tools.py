@@ -42,6 +42,7 @@ def load_settings():
     config_path = os.path.join(config_dir(), "config")
 
     defaults = {
+        "gtk-font-name": "",
         "sanitize-spaces": True,
         "sanitize-punctuation-marks": True,
         "sanitize-hyphens": True,

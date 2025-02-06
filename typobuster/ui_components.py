@@ -359,23 +359,24 @@ class PreferencesDialog(Gtk.Dialog):
 
         # Theme Selector
         self.theme_label = Gtk.Label(label="Theme:", halign=Gtk.Align.START)
+        self.grid.attach(self.theme_label, 0, 0, 1, 1)
+
         self.theme_combo = Gtk.ComboBoxText()
         self.theme_combo.append("light", "Light")
         self.theme_combo.append("dark", "Dark")
         self.theme_combo.set_active(0)  # Default to Light
         self.theme_combo.connect("changed", self.on_theme_changed)
-
-        # Font Size Selector
-        self.font_size_label = Gtk.Label(label="Font Size:", halign=Gtk.Align.START)
-        self.font_size_spin = Gtk.SpinButton.new_with_range(8, 32, 1)
-        self.font_size_spin.set_value(12)  # Default value
-        self.font_size_spin.connect("value-changed", self.on_font_size_changed)
-
-        # Layout
-        self.grid.attach(self.theme_label, 0, 0, 1, 1)
         self.grid.attach(self.theme_combo, 1, 0, 1, 1)
+
+        # Font Selector
+        self.font_size_label = Gtk.Label(label=parent.voc["font"], halign=Gtk.Align.START)
         self.grid.attach(self.font_size_label, 0, 1, 1, 1)
-        self.grid.attach(self.font_size_spin, 1, 1, 1, 1)
+
+        self.font_chooser_btn = Gtk.FontButton()
+        self.font_chooser_btn.set_use_font(True)
+        self.font_chooser_btn.set_font_name(parent.settings["gtk-font-name"])
+        self.font_chooser_btn.connect("font-set", parent.on_font_selected)
+        self.grid.attach(self.font_chooser_btn, 1, 1, 1, 1)
 
         # OK Button
         self.ok_button = Gtk.Button(label="OK")
@@ -387,10 +388,6 @@ class PreferencesDialog(Gtk.Dialog):
     def on_theme_changed(self, combo):
         theme = combo.get_active_id()
         print(f"Selected Theme: {theme}")
-
-    def on_font_size_changed(self, spin):
-        font_size = spin.get_value()
-        print(f"Selected Font Size: {font_size}")
 
 
 def selected_text(buffer):

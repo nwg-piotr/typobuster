@@ -13,7 +13,7 @@ import gi
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
-from gi.repository import Gtk, Gdk, GLib, GtkSource
+from gi.repository import Gtk, Gdk, GLib, GtkSource, Pango
 
 from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow, SearchBar, PreferencesDialog
 from typobuster.tools import *
@@ -65,11 +65,14 @@ class Typobuster(Gtk.Window):
         self.last_dir_path = ""
         self.search_bar = None
 
+        self.gtk_settings = Gtk.Settings.get_default()
+
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(vbox)
 
         # Create a GtkSourceView and configure it
         self.source_view = GtkSource.View()
+        self.source_view.get_style_context().add_class("sourceview")
         if self.settings["view-line-numbers"]:
             self.source_view.set_show_line_numbers(True)  # Enable line numbers
         # self.source_view.set_highlight_current_line(True)  # Highlight the current line
@@ -111,11 +114,12 @@ class Typobuster(Gtk.Window):
         self.buffer.set_text("")
         self.buffer.end_not_undoable_action()
 
+        self.set_view_style()
+
         # Connect the delete event to quit the application
         self.connect("destroy", Gtk.main_quit)
 
     def set_syntax(self, widget, name):
-        print(f"Setting syntax highlight to '{name}'")
         language = self.lang_manager.get_language(name)
         self.buffer.set_language(language)
         self.settings["syntax"] = name
@@ -163,6 +167,26 @@ class Typobuster(Gtk.Window):
 
     def show_preferences(self, widget):
         PreferencesDialog(self)
+
+    def on_font_selected(self, font_btn):
+        self.settings["gtk-font-name"] = font_btn.get_font()
+        self.set_view_style()
+        save_settings(self.settings)
+
+    def set_view_style(self):
+        if self.settings["gtk-font-name"]:
+            # Create a CssProvider and parse "gtk-font-name" into CSS
+            css_provider = Gtk.CssProvider()
+            font = self.settings["gtk-font-name"].replace(",", "")
+            parts = font.split()
+            family = " ".join(parts[0:-1])
+            size = parts[-1]
+            css = f'.sourceview {{ font-family: "{family}"; font-size: {size}pt; }}'.encode()
+            css_provider.load_from_data(css)
+
+            # Get the style context of self.source_view and add the CSS provider
+            style_context = self.source_view.get_style_context()
+            style_context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
     def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
         """Handle file drop event."""

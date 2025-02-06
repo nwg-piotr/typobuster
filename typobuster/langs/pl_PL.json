@@ -9,6 +9,7 @@
   "description": "Prosty edytor tekstu, który pomaga korygować typowe literówki.",
   "edit": "Edycja",
   "file": "Plik",
+  "font": "Czcionka",
   "help": "Pomoc",
   "kebabcase": "kebab-case",
   "line-numbers": "Numery wierszy",

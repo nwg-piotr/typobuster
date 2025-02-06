@@ -9,6 +9,7 @@
   "description": "A simple text editor that helps you correct common typos.",
   "edit": "Edit",
   "file": "File",
+  "font": "Font",
   "help": "Help",
   "kebab-case": "kebab-case",
   "line-numbers": "Line numbers",
