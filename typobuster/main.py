@@ -195,7 +195,9 @@ class Typobuster(Gtk.Window):
         self.set_gtk_theme()
 
     def set_gtk_theme(self):
-        self.gtk_settings.set_property("gtk-theme-name", self.settings["gtk-theme-name"])
+        if self.settings["gtk-theme-name"]:
+            self.gtk_settings.set_property("gtk-theme-name", self.settings["gtk-theme-name"])
+        self.gtk_settings.set_property("gtk-theme-name", None)
 
     def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
         """Handle file drop event."""
