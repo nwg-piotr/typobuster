@@ -393,6 +393,7 @@ class Typobuster(Gtk.Window):
             result = save_text_file(text, file_path)
             if result == "ok":
                 print(f"Saved text to {file_path}")
+                self.unsaved_changes = False
             else:
                 eprint(f"Error saving text to {file_path}: {result}")
         else:
@@ -420,6 +421,7 @@ class Typobuster(Gtk.Window):
                 print(f"Saved text to {filename}")
                 file_path = filename
                 self.set_window_title(filename)
+                self.unsaved_changes = False
             else:
                 eprint(f"Error saving text to {filename}: {result}")
         dialog.destroy()
