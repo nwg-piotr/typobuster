@@ -342,9 +342,9 @@ def ordered_list(text):
 def sort_lines(text, order="asc"):
     lines = text.splitlines()
     if order == "asc":
-        lines = sorted(lines)
+        lines = sorted(lines, key=str.lower)
     else:
-        lines = sorted(lines, reverse=True)
+        lines = sorted(lines, reverse=True, key=str.lower)
     return "\n".join(lines)
 
 
