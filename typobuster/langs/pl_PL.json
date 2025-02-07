@@ -15,6 +15,7 @@
   "edit": "Edycja",
   "editor-font": "Czcionka edytora",
   "file": "Plik",
+  "file-not-found": "Nie znaleziono pliku",
   "gtk-theme": "Motyw GTK",
   "help": "Pomoc",
   "kebabcase": "kebab-case",

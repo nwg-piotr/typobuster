@@ -345,7 +345,24 @@ class Typobuster(Gtk.Window):
 
         global file_path
         file_path = os.path.abspath(path)
-        print(f"Opening {file_path}")
+        if os.path.isfile(file_path):
+            print(f"Opening {file_path}")
+        else:
+            eprint(f"'{file_path}' does not exist")
+
+            dialog = Gtk.MessageDialog(
+                parent=self,
+                transient_for=self,
+                flags=0,
+                message_type=Gtk.MessageType.ERROR,
+                buttons=Gtk.ButtonsType.OK,
+                text=voc["file-not-found"],
+            )
+            dialog.run()
+            dialog.destroy()
+
+            self.update_recent(file_path, remove=True)
+            return
 
         text = ""
         if os.path.isfile(path):
@@ -435,7 +452,7 @@ class Typobuster(Gtk.Window):
         self.buffer.insert_at_cursor(text)
         self.buffer.end_user_action()  # End the undoable action
 
-    def update_recent(self, path):
+    def update_recent(self, path, remove=False):
         recent_file = os.path.join(config_dir(), "recent")
         recent_paths = load_text_file(recent_file).splitlines() if os.path.isfile(recent_file) else []
         if path in recent_paths:
@@ -443,7 +460,8 @@ class Typobuster(Gtk.Window):
         if len(recent_paths) >= 10:
             last = recent_paths.pop()
             print(f"Removing from recent: '{last}'")
-        recent_paths.insert(0, path)
+        if not remove:
+            recent_paths.insert(0, path)
         save_text_file("\n".join(recent_paths), recent_file)
 
     def quit(self, widget):
