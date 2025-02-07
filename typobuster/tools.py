@@ -286,18 +286,31 @@ def load_shell_data():
 
 
 def to_snake_case(text):
-    text = text.lower().replace(" ", "_")
-    return text
+    lines = text.splitlines()
+    result = []
+    for line in lines:
+        line = line.lower().replace(" ", "_")
+        result.append(line)
+    return "\n".join(result)
 
 
 def to_kebab_case(text):
-    text = text.lower().replace(" ", "-")
-    return text
+    lines = text.splitlines()
+    result = []
+    for line in lines:
+        line = line.lower().replace(" ", "-")
+        result.append(line)
+    return "\n".join(result)
 
 
 def to_camel_case(text):
-    text = ''.join(x for x in text.title() if not x.isspace())
-    return text[0].lower() + text[1:]
+    lines = text.splitlines()
+    result = []
+    for line in lines:
+        line = ''.join(x for x in line.title() if not x.isspace())
+        line = line[0].lower() + line[1:]
+        result.append(line)
+    return "\n".join(result)
 
 
 def to_upper(text):
@@ -309,8 +322,13 @@ def to_lower_case(text):
 
 
 def as_in_sentence(text):
-    text = text.lower()
-    return text[0].upper() + text[1:]
+    lines = text.splitlines()
+    result = []
+    for line in lines:
+        line = line.lower()
+        line = line[0].upper() + line[1:]
+        result.append(line)
+    return "\n".join(result)
 
 
 def unordered_list(text):
