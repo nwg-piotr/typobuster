@@ -152,6 +152,10 @@ class MenuBar(Gtk.MenuBar):
         transform_menu_item.get_submenu().append(first_to_end_item)
         first_to_end_item.connect("activate", parent_window.transform_text, "first-to-end")
 
+        last_to_beginning_item = Gtk.MenuItem(label=parent_window.voc["last-to-beginning"])
+        transform_menu_item.get_submenu().append(last_to_beginning_item)
+        last_to_beginning_item.connect("activate", parent_window.transform_text, "last-to-beginning")
+
         separator = Gtk.SeparatorMenuItem()
         edit_menu.append(separator)
 
