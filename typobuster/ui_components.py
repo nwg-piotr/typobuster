@@ -408,9 +408,9 @@ class PreferencesDialog(Gtk.Dialog):
         self.grid.attach(self.font_chooser_btn, 1, 1, 1, 1)
 
         # OK Button
-        self.ok_button = Gtk.Button(label="OK")
-        self.ok_button.connect("clicked", lambda x: self.close())
-        self.grid.attach(self.ok_button, 0, 2, 2, 1)
+        # self.ok_button = Gtk.Button(label="OK")
+        # self.ok_button.connect("clicked", lambda x: self.close())
+        # self.grid.attach(self.ok_button, 0, 2, 2, 1)
 
         self.show_all()
 
