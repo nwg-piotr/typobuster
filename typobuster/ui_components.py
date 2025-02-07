@@ -176,6 +176,12 @@ class MenuBar(Gtk.MenuBar):
         self.line_numbers_menu_item.set_active(self.settings["view-line-numbers"])
         self.line_numbers_menu_item.connect("toggled", parent_window.toggle_line_numbers)
 
+        # Wrap menu item
+        self.wrap_menu_item = Gtk.CheckMenuItem(parent_window.voc["wrap-lines"])
+        view_menu.append(self.wrap_menu_item)
+        self.wrap_menu_item.set_active(self.settings["wrap-lines"])
+        self.wrap_menu_item.connect("toggled", parent_window.toggle_line_wrap)
+
         # Syntax menu item
         syntax_menu_item = Gtk.MenuItem(label=parent_window.voc["syntax-highlight"])
         view_menu.append(syntax_menu_item)

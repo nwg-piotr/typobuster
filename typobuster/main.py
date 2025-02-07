@@ -85,7 +85,10 @@ class Typobuster(Gtk.Window):
         if self.settings["view-line-numbers"]:
             self.source_view.set_show_line_numbers(True)  # Enable line numbers
         # self.source_view.set_highlight_current_line(True)  # Highlight the current line
-        self.source_view.set_wrap_mode(Gtk.WrapMode.WORD)
+        if self.settings["wrap-lines"]:
+            self.source_view.set_wrap_mode(Gtk.WrapMode.WORD)
+        else:
+            self.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
 
         # Enable drag-and-drop for URI (file paths)
         self.source_view.drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY)
@@ -205,6 +208,14 @@ class Typobuster(Gtk.Window):
     def toggle_line_numbers(self, widget):
         self.settings["view-line-numbers"] = widget.get_active()
         self.source_view.set_show_line_numbers(self.settings["view-line-numbers"])
+        save_settings(self.settings)
+
+    def toggle_line_wrap(self, widget):
+        self.settings["wrap-lines"] = widget.get_active()
+        if self.settings["wrap-lines"]:
+            self.source_view.set_wrap_mode(Gtk.WrapMode.WORD)
+        else:
+            self.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
         save_settings(self.settings)
 
     def show_about(self, widget):

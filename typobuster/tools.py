@@ -99,6 +99,7 @@ def load_settings():
         "sanitize-eol": True,
         "syntax": "none",
         "view-line-numbers": True,
+        "wrap-lines": True
     }
     settings = load_json(config_path)
 
