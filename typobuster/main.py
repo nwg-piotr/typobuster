@@ -324,19 +324,20 @@ class Typobuster(Gtk.Window):
 
     def new_file(self, widget):
         title = file_path.split("/")[-1] if file_path else self.voc["untitled"]
-        if self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True):
-            dialog = Gtk.MessageDialog(
-                transient_for=self,
-                flags=0,
-                message_type=Gtk.MessageType.QUESTION,
-                buttons=Gtk.ButtonsType.YES_NO,
-                text=f"{self.voc['want-save-changes']} {title}?",
-            )
-            dialog.format_secondary_text(self.voc["chages-will-be-lost"])
-            response = dialog.run()
-            dialog.destroy()
-            if response == Gtk.ResponseType.YES:
-                self.save_file(self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True))
+        if self.unsaved_changes:
+            if self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True):
+                dialog = Gtk.MessageDialog(
+                    transient_for=self,
+                    flags=0,
+                    message_type=Gtk.MessageType.QUESTION,
+                    buttons=Gtk.ButtonsType.YES_NO,
+                    text=f"{self.voc['want-save-changes']} {title}?",
+                )
+                dialog.format_secondary_text(self.voc["chages-will-be-lost"])
+                response = dialog.run()
+                dialog.destroy()
+                if response == Gtk.ResponseType.YES:
+                    self.save_file(self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True))
 
         self.update_text("")
         self.unsaved_changes = False
