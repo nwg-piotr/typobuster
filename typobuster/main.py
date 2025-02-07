@@ -331,7 +331,8 @@ class Typobuster(Gtk.Window):
                 self.save_file(self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True))
 
         self.update_text("")
-        self.set_window_title(f"{voc['view']} - Typobuster")
+        self.unsaved_changes = False
+        self.set_window_title(f"{voc['untitled']} - Typobuster")
 
     def load_file(self, widget, path):
         if self.unsaved_changes:
