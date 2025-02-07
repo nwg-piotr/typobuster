@@ -32,6 +32,7 @@
   "quit": "Quit",
   "recent-files": "Recent files",
   "remove-empty-rows": "Remove empty rows",
+  "remove-non-ascii": "Remove non-ASCII chars",
   "redo": "Redo",
   "replace-all-with": "Replace all with",
   "sanitization": "Sanitization",

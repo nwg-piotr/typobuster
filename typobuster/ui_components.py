@@ -211,6 +211,10 @@ class MenuBar(Gtk.MenuBar):
         tools_menu.append(remove_empty_rows_item)
         remove_empty_rows_item.connect("activate", parent_window.transform_text, "remove-empty-rows")
 
+        remove_non_ascii_item = Gtk.MenuItem(label=parent_window.voc["remove-non-ascii"])
+        tools_menu.append(remove_non_ascii_item)
+        remove_non_ascii_item.connect("activate", parent_window.transform_text, "remove-non-ascii")
+
         # Create the Help menu
         help_menu = Gtk.Menu()
         help_menu_item = Gtk.MenuItem(label=parent_window.voc["help"])

@@ -2,6 +2,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 
 
 def config_dir():
@@ -378,6 +379,13 @@ def move_first_word_to_end(text):
         line = f"{words[1]} {words[0]}" if len(words) > 1 else text
         result.append(line)
     return "\n".join(result)
+
+
+def remove_non_ascii(text):
+    return ''.join(
+        c for c in unicodedata.normalize('NFKD', text)
+        if c.encode('ascii', 'ignore')
+    )
 
 
 def move_last_word_to_beginning(text):

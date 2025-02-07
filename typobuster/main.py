@@ -287,6 +287,8 @@ class Typobuster(Gtk.Window):
                 transformed_text = sort_lines(text, order="desc")
             elif transformation == "remove-empty-rows":
                 transformed_text = remove_empty_lines(text)
+            elif transformation == "remove-non-ascii":
+                transformed_text = remove_non_ascii(text)
             elif transformation == "first-to-end":
                 transformed_text = move_first_word_to_end(text)
             elif transformation == "last-to-beginning":

@@ -32,6 +32,7 @@
   "quit": "Zakończ",
   "recent-files": "Ostatnie pliki",
   "remove-empty-rows": "Usuń puste wiersze",
+  "remove-non-ascii": "Usuń znaki spoza ASCII",
   "redo": "Powtórz",
   "replace-all-with": "Zamień wszystkie na",
   "sanitization": "Oczyszczanie",
