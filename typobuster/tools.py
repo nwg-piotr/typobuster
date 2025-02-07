@@ -351,3 +351,13 @@ def sort_lines(text, order="asc"):
 def remove_empty_lines(text):
     return "\n".join(line for line in text.splitlines() if line.strip())
 
+
+def move_first_word_to_end(text):
+    result = []
+    lines = text.splitlines()
+    for line in lines:
+        words = line.split(maxsplit=1)  # Split into first word and the rest
+        line = f"{words[1]} {words[0]}" if len(words) > 1 else text
+        result.append(line)
+    return "\n".join(result)
+
