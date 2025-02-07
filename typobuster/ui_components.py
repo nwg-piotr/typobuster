@@ -148,6 +148,14 @@ class MenuBar(Gtk.MenuBar):
         transform_menu_item.get_submenu().append(transform_ordered_list_menu_item)
         transform_ordered_list_menu_item.connect("activate", parent_window.transform_text, "ordered")
 
+        first_to_end_item = Gtk.MenuItem(label=parent_window.voc["move-to-end"])
+        transform_menu_item.get_submenu().append(first_to_end_item)
+        first_to_end_item.connect("activate", parent_window.transform_text, "first-to-end")
+
+        last_to_beginning_item = Gtk.MenuItem(label=parent_window.voc["last-to-beginning"])
+        transform_menu_item.get_submenu().append(last_to_beginning_item)
+        last_to_beginning_item.connect("activate", parent_window.transform_text, "last-to-beginning")
+
         separator = Gtk.SeparatorMenuItem()
         edit_menu.append(separator)
 
@@ -198,6 +206,14 @@ class MenuBar(Gtk.MenuBar):
         sort_menu.append(sort_desc_menu_item)
         sort_desc_menu_item.connect("activate", parent_window.transform_text, "sort-desc")
         sort_menu_item.set_submenu(sort_menu)
+
+        remove_empty_rows_item = Gtk.MenuItem(label=parent_window.voc["remove-empty-rows"])
+        tools_menu.append(remove_empty_rows_item)
+        remove_empty_rows_item.connect("activate", parent_window.transform_text, "remove-empty-rows")
+
+        remove_non_ascii_item = Gtk.MenuItem(label=parent_window.voc["remove-non-ascii"])
+        tools_menu.append(remove_non_ascii_item)
+        remove_non_ascii_item.connect("activate", parent_window.transform_text, "remove-non-ascii")
 
         # Create the Help menu
         help_menu = Gtk.Menu()
@@ -396,9 +412,9 @@ class PreferencesDialog(Gtk.Dialog):
         self.grid.attach(self.font_chooser_btn, 1, 1, 1, 1)
 
         # OK Button
-        self.ok_button = Gtk.Button(label="OK")
-        self.ok_button.connect("clicked", lambda x: self.close())
-        self.grid.attach(self.ok_button, 0, 2, 2, 1)
+        # self.ok_button = Gtk.Button(label="OK")
+        # self.ok_button.connect("clicked", lambda x: self.close())
+        # self.grid.attach(self.ok_button, 0, 2, 2, 1)
 
         self.show_all()
 

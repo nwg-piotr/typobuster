@@ -285,6 +285,14 @@ class Typobuster(Gtk.Window):
                 transformed_text = sort_lines(text)
             elif transformation == "sort-desc":
                 transformed_text = sort_lines(text, order="desc")
+            elif transformation == "remove-empty-rows":
+                transformed_text = remove_empty_lines(text)
+            elif transformation == "remove-non-ascii":
+                transformed_text = remove_non_ascii(text)
+            elif transformation == "first-to-end":
+                transformed_text = move_first_word_to_end(text)
+            elif transformation == "last-to-beginning":
+                transformed_text = move_last_word_to_beginning(text)
             else:
                 transformed_text = text
 
@@ -340,7 +348,24 @@ class Typobuster(Gtk.Window):
 
         global file_path
         file_path = os.path.abspath(path)
-        print(f"Opening {file_path}")
+        if os.path.isfile(file_path):
+            print(f"Opening {file_path}")
+        else:
+            eprint(f"'{file_path}' does not exist")
+
+            dialog = Gtk.MessageDialog(
+                parent=self,
+                transient_for=self,
+                flags=0,
+                message_type=Gtk.MessageType.ERROR,
+                buttons=Gtk.ButtonsType.OK,
+                text=voc["file-not-found"],
+            )
+            dialog.run()
+            dialog.destroy()
+
+            self.update_recent(file_path, remove=True)
+            return
 
         text = ""
         if os.path.isfile(path):
@@ -388,6 +413,8 @@ class Typobuster(Gtk.Window):
             result = save_text_file(text, file_path)
             if result == "ok":
                 print(f"Saved text to {file_path}")
+                self.unsaved_changes = False
+                self.update_recent(file_path)
             else:
                 eprint(f"Error saving text to {file_path}: {result}")
         else:
@@ -415,6 +442,8 @@ class Typobuster(Gtk.Window):
                 print(f"Saved text to {filename}")
                 file_path = filename
                 self.set_window_title(filename)
+                self.unsaved_changes = False
+                self.update_recent(file_path)
             else:
                 eprint(f"Error saving text to {filename}: {result}")
         dialog.destroy()
@@ -426,7 +455,7 @@ class Typobuster(Gtk.Window):
         self.buffer.insert_at_cursor(text)
         self.buffer.end_user_action()  # End the undoable action
 
-    def update_recent(self, path):
+    def update_recent(self, path, remove=False):
         recent_file = os.path.join(config_dir(), "recent")
         recent_paths = load_text_file(recent_file).splitlines() if os.path.isfile(recent_file) else []
         if path in recent_paths:
@@ -434,7 +463,8 @@ class Typobuster(Gtk.Window):
         if len(recent_paths) >= 10:
             last = recent_paths.pop()
             print(f"Removing from recent: '{last}'")
-        recent_paths.insert(0, path)
+        if not remove:
+            recent_paths.insert(0, path)
         save_text_file("\n".join(recent_paths), recent_file)
 
     def quit(self, widget):

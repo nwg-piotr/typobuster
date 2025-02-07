@@ -2,6 +2,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 
 
 def config_dir():
@@ -243,6 +244,8 @@ def sanitize_punctuation_marks(text, start_idx, end_idx):
 def sanitize_spaces(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
     selection = re.sub(r" {2,}", " ", selection)  # Replace two or more spaces with a single space
+    selection = re.sub(r'\t+', ' ', selection).strip()  # Replace tabs with a single space
+    selection = selection.replace(" \n", "\n")  # Remove spaces before end-of-line characters
     selection = selection.replace("\n ", "\n")  # Remove spaces right after end-of-line characters
     return text[:start_idx] + selection + text[end_idx:]
 
@@ -251,7 +254,6 @@ def sanitize_eol(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
     selection = re.sub(r"\n{2,}", "\n", selection)  # Replace two or more end-of-line characters with a single one
     selection = selection.replace("\n", "\n\n")  # Double all end-of-line characters
-    selection = selection.replace(" \n", "\n")  # Remove spaces before end-of-line characters
     return text[:start_idx] + selection + text[end_idx:]
 
 
@@ -285,18 +287,31 @@ def load_shell_data():
 
 
 def to_snake_case(text):
-    text = text.lower().replace(" ", "_")
-    return text
+    lines = text.splitlines()
+    result = []
+    for line in lines:
+        line = line.lower().replace(" ", "_")
+        result.append(line)
+    return "\n".join(result)
 
 
 def to_kebab_case(text):
-    text = text.lower().replace(" ", "-")
-    return text
+    lines = text.splitlines()
+    result = []
+    for line in lines:
+        line = line.lower().replace(" ", "-")
+        result.append(line)
+    return "\n".join(result)
 
 
 def to_camel_case(text):
-    text = ''.join(x for x in text.title() if not x.isspace())
-    return text[0].lower() + text[1:]
+    lines = text.splitlines()
+    result = []
+    for line in lines:
+        line = ''.join(x for x in line.title() if not x.isspace())
+        line = line[0].lower() + line[1:]
+        result.append(line)
+    return "\n".join(result)
 
 
 def to_upper(text):
@@ -308,8 +323,13 @@ def to_lower_case(text):
 
 
 def as_in_sentence(text):
-    text = text.lower()
-    return text[0].upper() + text[1:]
+    lines = text.splitlines()
+    result = []
+    for line in lines:
+        line = line.lower()
+        line = line[0].upper() + line[1:]
+        result.append(line)
+    return "\n".join(result)
 
 
 def unordered_list(text):
@@ -341,11 +361,42 @@ def ordered_list(text):
 def sort_lines(text, order="asc"):
     lines = text.splitlines()
     if order == "asc":
-        lines = sorted(lines)
+        lines = sorted(lines, key=str.lower)
     else:
-        lines = sorted(lines, reverse=True)
+        lines = sorted(lines, reverse=True, key=str.lower)
     return "\n".join(lines)
 
 
 def remove_empty_lines(text):
     return "\n".join(line for line in text.splitlines() if line.strip())
+
+
+def move_first_word_to_end(text):
+    result = []
+    lines = text.splitlines()
+    for line in lines:
+        words = line.split(maxsplit=1)  # Split into first word and the rest
+        line = f"{words[1]} {words[0]}" if len(words) > 1 else text
+        result.append(line)
+    return "\n".join(result)
+
+
+def remove_non_ascii(text):
+    # Normalize text to decompose accents
+    normalized = unicodedata.normalize('NFKD', text)
+
+    # Manually replace ł with l and Ł with L
+    fixed = normalized.replace('ł', 'l').replace('Ł', 'L')
+
+    # Remove remaining non-ASCII characters
+    return ''.join(c for c in fixed if c.encode('ascii', 'ignore'))
+
+
+def move_last_word_to_beginning(text):
+    result = []
+    lines = text.splitlines()
+    for line in lines:
+        words = line.rsplit(maxsplit=1)  # Split into first word and the rest
+        line = f"{words[1]} {words[0]}" if len(words) > 1 else text
+        result.append(line)
+    return "\n".join(result)
