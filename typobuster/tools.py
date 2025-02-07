@@ -382,10 +382,14 @@ def move_first_word_to_end(text):
 
 
 def remove_non_ascii(text):
-    return ''.join(
-        c for c in unicodedata.normalize('NFKD', text)
-        if c.encode('ascii', 'ignore')
-    )
+    # Normalize text to decompose accents
+    normalized = unicodedata.normalize('NFKD', text)
+
+    # Manually replace ł with l and Ł with L
+    fixed = normalized.replace('ł', 'l').replace('Ł', 'L')
+
+    # Remove remaining non-ASCII characters
+    return ''.join(c for c in fixed if c.encode('ascii', 'ignore'))
 
 
 def move_last_word_to_beginning(text):
