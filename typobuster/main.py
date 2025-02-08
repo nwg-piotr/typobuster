@@ -98,6 +98,8 @@ class Typobuster(Gtk.Window):
 
         self.set_tab_mode()
 
+        self.set_auto_indent()
+
         # Enable drag-and-drop for URI (file paths)
         self.source_view.drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY)
         self.source_view.drag_dest_add_uri_targets()
@@ -261,6 +263,12 @@ class Typobuster(Gtk.Window):
         self.set_tab_mode()
         save_settings(self.settings)
 
+    def on_auto_indent_changed(self, check_button):
+        self.settings["auto-indent"] = check_button.get_active()
+        self.set_auto_indent()
+        save_settings(self.settings)
+
+
     def set_view_style(self):
         if self.settings["gtk-font-name"]:
             # Create a CssProvider and parse "gtk-font-name" into CSS
@@ -281,6 +289,9 @@ class Typobuster(Gtk.Window):
 
     def set_tab_mode(self):
         self.source_view.set_insert_spaces_instead_of_tabs(self.settings["tab-mode"] == "insert-spaces")
+
+    def set_auto_indent(self):
+        self.source_view.set_indent_on_tab(self.settings["auto-indent"])
 
     def on_theme_changed(self, combo):
         self.settings["gtk-theme-name"] = combo.get_active_id()

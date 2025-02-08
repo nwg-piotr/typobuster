@@ -447,6 +447,11 @@ class PreferencesDialog(Gtk.Dialog):
         self.tab_mode_combo.connect("changed", parent.on_tab_mode_changed)
         self.grid.attach(self.tab_mode_combo, 1, 3, 1, 1)
 
+        self.auto_indent_cb = Gtk.CheckButton(label=parent.voc["auto-indent"])
+        self.auto_indent_cb.set_active(parent.settings["auto-indent"])
+        self.auto_indent_cb.connect("toggled", parent.on_auto_indent_changed)
+        self.grid.attach(self.auto_indent_cb, 0, 4, 1, 1)
+
         # OK Button
         # self.ok_button = Gtk.Button(label="OK")
         # self.ok_button.connect("clicked", lambda x: self.close())
