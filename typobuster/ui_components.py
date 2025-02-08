@@ -437,6 +437,16 @@ class PreferencesDialog(Gtk.Dialog):
         tab_width_sb.connect("value-changed", parent.on_tab_with_selected)
         self.grid.attach(tab_width_sb, 1, 2, 1, 1)
 
+        self.tab_mode_label = Gtk.Label(label=parent.voc["tab-mode"], halign=Gtk.Align.START)
+        self.grid.attach(self.tab_mode_label, 0, 3, 1, 1)
+
+        self.tab_mode_combo = Gtk.ComboBoxText()
+        self.tab_mode_combo.append("insert-tabs", parent.voc["insert-tabs"])
+        self.tab_mode_combo.append("insert-spaces", parent.voc["insert-spaces"])
+        self.tab_mode_combo.set_active_id(parent.settings["tab-mode"])
+        self.tab_mode_combo.connect("changed", parent.on_tab_mode_changed)
+        self.grid.attach(self.tab_mode_combo, 1, 3, 1, 1)
+
         # OK Button
         # self.ok_button = Gtk.Button(label="OK")
         # self.ok_button.connect("clicked", lambda x: self.close())

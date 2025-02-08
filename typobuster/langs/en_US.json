@@ -66,5 +66,6 @@
   "tab-width": "Tab width",
   "tab-mode": "Tab mode",
   "insert-spaces": "Insert spaces",
-  "insert-tabs": "Insert tabs"
+  "insert-tabs": "Insert tabs",
+  "auto-indent": "Auto-indent"
 }

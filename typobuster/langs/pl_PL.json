@@ -66,5 +66,6 @@
   "tab-width": "Szerokość tabulacji",
   "tab-mode": "Tryb tabulacji",
   "insert-spaces": "Wstawiaj spacje",
-  "insert-tabs": "Wstawiaj znaki tabulatora"
+  "insert-tabs": "Wstawiaj znaki tabulatora",
+  "auto-indent": "Automatyczne wcięcia"
 }

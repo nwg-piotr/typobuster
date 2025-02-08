@@ -103,7 +103,8 @@ def load_settings():
         "highlight-matching-brackets": False,
         "wrap-lines": True,
         "tab-width": 4,
-        "tab-mode": "insert-spaces"
+        "tab-mode": "insert-spaces",
+        "auto-indent": True
     }
     settings = load_json(config_path)
 

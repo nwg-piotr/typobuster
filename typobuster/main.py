@@ -81,7 +81,6 @@ class Typobuster(Gtk.Window):
 
         # Create a GtkSourceView and configure it
         self.source_view = GtkSource.View()
-        self.source_settings = self.source_view.get_settings()
 
         self.source_view.get_style_context().add_class("sourceview")
         if self.settings["view-line-numbers"]:
@@ -94,6 +93,10 @@ class Typobuster(Gtk.Window):
             self.source_view.set_wrap_mode(Gtk.WrapMode.WORD)
         else:
             self.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
+
+        self.set_tab_width()
+
+        self.set_tab_mode()
 
         # Enable drag-and-drop for URI (file paths)
         self.source_view.drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY)
@@ -228,14 +231,6 @@ class Typobuster(Gtk.Window):
         self.source_view.get_buffer().set_highlight_matching_brackets(self.settings["highlight-matching-brackets"])
         save_settings(self.settings)
 
-    def toggle_whitespaces(self, widget):
-        self.settings["whitespaces"] = widget.get_active()
-        if self.settings["whitespaces"]:
-            self.source_settings.set_property("draw-spaces-types", "all")
-        else:
-            self.source_settings.set_property("draw-spaces-types", "none")
-        save_settings(self.settings)
-
     def toggle_line_wrap(self, widget):
         self.settings["wrap-lines"] = widget.get_active()
         if self.settings["wrap-lines"]:
@@ -261,6 +256,11 @@ class Typobuster(Gtk.Window):
         self.set_tab_width()
         save_settings(self.settings)
 
+    def on_tab_mode_changed(self, combo):
+        self.settings["tab-mode"] = combo.get_active_id()
+        self.set_tab_mode()
+        save_settings(self.settings)
+
     def set_view_style(self):
         if self.settings["gtk-font-name"]:
             # Create a CssProvider and parse "gtk-font-name" into CSS
@@ -278,6 +278,9 @@ class Typobuster(Gtk.Window):
 
     def set_tab_width(self):
         self.source_view.set_tab_width(self.settings["tab-width"])
+
+    def set_tab_mode(self):
+        self.source_view.set_insert_spaces_instead_of_tabs(self.settings["tab-mode"] == "insert-spaces")
 
     def on_theme_changed(self, combo):
         self.settings["gtk-theme-name"] = combo.get_active_id()
