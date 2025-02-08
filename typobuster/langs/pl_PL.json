@@ -60,5 +60,7 @@
   "quotes": "Cudzysłowy",
   "punctuation-marks": "Znaki przestankowe",
   "spaces": "Spacje",
-  "eol-chars": "Znaki końca wiersza"
+  "eol-chars": "Znaki końca wiersza",
+  "highlight-current-row": "Wyróżnienie bieżącego wiersza",
+  "highlight-matching-brackets": "Wyróżnienie pasujących nawiasów"
 }

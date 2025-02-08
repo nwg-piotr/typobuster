@@ -176,6 +176,18 @@ class MenuBar(Gtk.MenuBar):
         self.line_numbers_menu_item.set_active(self.settings["view-line-numbers"])
         self.line_numbers_menu_item.connect("toggled", parent_window.toggle_line_numbers)
 
+        # Highlight current row item
+        self.highlight_current_row_menu_item = Gtk.CheckMenuItem(parent_window.voc["highlight-current-row"])
+        view_menu.append(self.highlight_current_row_menu_item)
+        self.highlight_current_row_menu_item.set_active(self.settings["highlight-current-row"])
+        self.highlight_current_row_menu_item.connect("toggled", parent_window.toggle_highlight_current_row)
+
+        # Highlight matching brackets
+        self.highlight_matching_brackets_menu_item = Gtk.CheckMenuItem(parent_window.voc["highlight-matching-brackets"])
+        view_menu.append(self.highlight_matching_brackets_menu_item)
+        self.highlight_matching_brackets_menu_item.set_active(self.settings["highlight-matching-brackets"])
+        self.highlight_matching_brackets_menu_item.connect("toggled", parent_window.toggle_highlight_matching_brackets)
+
         # Wrap menu item
         self.wrap_menu_item = Gtk.CheckMenuItem(parent_window.voc["wrap-lines"])
         view_menu.append(self.wrap_menu_item)

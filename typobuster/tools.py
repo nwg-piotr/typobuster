@@ -99,6 +99,8 @@ def load_settings():
         "sanitize-eol": True,
         "syntax": "none",
         "view-line-numbers": True,
+        "highlight-current-row": False,
+        "highlight-matching-brackets": False,
         "wrap-lines": True
     }
     settings = load_json(config_path)

@@ -81,10 +81,15 @@ class Typobuster(Gtk.Window):
 
         # Create a GtkSourceView and configure it
         self.source_view = GtkSource.View()
+        self.source_settings = self.source_view.get_settings()
+
         self.source_view.get_style_context().add_class("sourceview")
         if self.settings["view-line-numbers"]:
             self.source_view.set_show_line_numbers(True)  # Enable line numbers
-        # self.source_view.set_highlight_current_line(True)  # Highlight the current line
+
+        self.source_view.set_highlight_current_line(
+            self.settings["highlight-current-row"])  # Highlight the current line
+
         if self.settings["wrap-lines"]:
             self.source_view.set_wrap_mode(Gtk.WrapMode.WORD)
         else:
@@ -98,6 +103,9 @@ class Typobuster(Gtk.Window):
         # Set a language for syntax highlighting
         self.lang_manager = GtkSource.LanguageManager()
         self.buffer = GtkSource.Buffer()
+
+        self.buffer.set_highlight_matching_brackets(
+            self.settings["highlight-matching-brackets"])  # Highlight matching brackets
 
         self.source_view.set_buffer(self.buffer)
         self.buffer.connect("changed", self.on_text_changed)
@@ -208,6 +216,24 @@ class Typobuster(Gtk.Window):
     def toggle_line_numbers(self, widget):
         self.settings["view-line-numbers"] = widget.get_active()
         self.source_view.set_show_line_numbers(self.settings["view-line-numbers"])
+        save_settings(self.settings)
+
+    def toggle_highlight_current_row(self, widget):
+        self.settings["highlight-current-row"] = widget.get_active()
+        self.source_view.set_highlight_current_line(self.settings["highlight-current-row"])
+        save_settings(self.settings)
+
+    def toggle_highlight_matching_brackets(self, widget):
+        self.settings["highlight-matching-brackets"] = widget.get_active()
+        self.source_view.get_buffer().set_highlight_matching_brackets(self.settings["highlight-matching-brackets"])
+        save_settings(self.settings)
+
+    def toggle_whitespaces(self, widget):
+        self.settings["whitespaces"] = widget.get_active()
+        if self.settings["whitespaces"]:
+            self.source_settings.set_property("draw-spaces-types", "all")
+        else:
+            self.source_settings.set_property("draw-spaces-types", "none")
         save_settings(self.settings)
 
     def toggle_line_wrap(self, widget):

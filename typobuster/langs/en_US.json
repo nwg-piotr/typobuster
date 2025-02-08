@@ -60,5 +60,7 @@
   "quotes": "Quotes",
   "punctuation-marks": "Punctuation marks",
   "spaces": "Spaces",
-  "eol-chars": "End-of-line characters"
+  "eol-chars": "End-of-line characters",
+  "highlight-current-row": "Highlight current row",
+  "highlight-matching-brackets": "Highlighting matching brackets"
 }
