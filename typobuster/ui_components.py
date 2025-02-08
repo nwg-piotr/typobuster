@@ -429,6 +429,14 @@ class PreferencesDialog(Gtk.Dialog):
         self.font_chooser_btn.connect("font-set", parent.on_font_selected)
         self.grid.attach(self.font_chooser_btn, 1, 1, 1, 1)
 
+        self.tab_width_label = Gtk.Label(label=parent.voc["tab-width"], halign=Gtk.Align.START)
+        self.grid.attach(self.tab_width_label, 0, 2, 1, 1)
+
+        tab_width_sb = Gtk.SpinButton.new_with_range(1, 32.0, 1)
+        tab_width_sb.set_value(parent.settings["tab-width"])
+        tab_width_sb.connect("value-changed", parent.on_tab_with_selected)
+        self.grid.attach(tab_width_sb, 1, 2, 1, 1)
+
         # OK Button
         # self.ok_button = Gtk.Button(label="OK")
         # self.ok_button.connect("clicked", lambda x: self.close())

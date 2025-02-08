@@ -62,5 +62,9 @@
   "spaces": "Spacje",
   "eol-chars": "Znaki końca wiersza",
   "highlight-current-row": "Wyróżnienie bieżącego wiersza",
-  "highlight-matching-brackets": "Wyróżnienie pasujących nawiasów"
+  "highlight-matching-brackets": "Wyróżnienie pasujących nawiasów",
+  "tab-width": "Szerokość tabulacji",
+  "tab-mode": "Tryb tabulacji",
+  "insert-spaces": "Wstawiaj spacje",
+  "insert-tabs": "Wstawiaj znaki tabulatora"
 }

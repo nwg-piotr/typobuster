@@ -62,5 +62,9 @@
   "spaces": "Spaces",
   "eol-chars": "End-of-line characters",
   "highlight-current-row": "Highlight current row",
-  "highlight-matching-brackets": "Highlighting matching brackets"
+  "highlight-matching-brackets": "Highlighting matching brackets",
+  "tab-width": "Tab width",
+  "tab-mode": "Tab mode",
+  "insert-spaces": "Insert spaces",
+  "insert-tabs": "Insert tabs"
 }

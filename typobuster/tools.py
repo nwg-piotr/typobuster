@@ -101,7 +101,9 @@ def load_settings():
         "view-line-numbers": True,
         "highlight-current-row": False,
         "highlight-matching-brackets": False,
-        "wrap-lines": True
+        "wrap-lines": True,
+        "tab-width": 4,
+        "tab-mode": "insert-spaces"
     }
     settings = load_json(config_path)
 

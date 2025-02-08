@@ -256,6 +256,11 @@ class Typobuster(Gtk.Window):
         self.set_view_style()
         save_settings(self.settings)
 
+    def on_tab_with_selected(self, sb):
+        self.settings["tab-width"] = int(sb.get_value())
+        self.set_tab_width()
+        save_settings(self.settings)
+
     def set_view_style(self):
         if self.settings["gtk-font-name"]:
             # Create a CssProvider and parse "gtk-font-name" into CSS
@@ -270,6 +275,9 @@ class Typobuster(Gtk.Window):
             # Get the style context of self.source_view and add the CSS provider
             style_context = self.source_view.get_style_context()
             style_context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
+
+    def set_tab_width(self):
+        self.source_view.set_tab_width(self.settings["tab-width"])
 
     def on_theme_changed(self, combo):
         self.settings["gtk-theme-name"] = combo.get_active_id()
