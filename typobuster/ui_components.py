@@ -124,17 +124,17 @@ class MenuBar(Gtk.MenuBar):
         transform_lowercase_menu_item.connect("activate", parent_window.transform_text, "lowercase")
 
         # Create the Transform to CamelCase menu item
-        transform_camelcase_menu_item = Gtk.MenuItem(label=parent_window.voc["camelcase"])
+        transform_camelcase_menu_item = Gtk.MenuItem(label=parent_window.voc["camel-case"])
         transform_menu_item.get_submenu().append(transform_camelcase_menu_item)
         transform_camelcase_menu_item.connect("activate", parent_window.transform_text, "camelcase")
 
         # Create the Transform to Snake Case menu item
-        transform_snakecase_menu_item = Gtk.MenuItem(label=parent_window.voc["snakecase"])
+        transform_snakecase_menu_item = Gtk.MenuItem(label=parent_window.voc["snake-case"])
         transform_menu_item.get_submenu().append(transform_snakecase_menu_item)
         transform_snakecase_menu_item.connect("activate", parent_window.transform_text, "snakecase")
 
         # Create the Transform to Kebab Case menu item
-        transform_kebabcase_menu_item = Gtk.MenuItem(label=parent_window.voc["kebabcase"])
+        transform_kebabcase_menu_item = Gtk.MenuItem(label=parent_window.voc["kebab-case"])
         transform_menu_item.get_submenu().append(transform_kebabcase_menu_item)
         transform_kebabcase_menu_item.connect("activate", parent_window.transform_text, "kebabcase")
 
