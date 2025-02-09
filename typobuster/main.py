@@ -556,7 +556,7 @@ class Typobuster(Gtk.Window):
         cr = context.get_cairo_context()
         cr.set_source_rgb(0, 0, 0)
         cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
-        cr.set_font_size(12)
+        cr.set_font_size(10)
 
         lines = self.pages[page_nr]
         line_height = 14
