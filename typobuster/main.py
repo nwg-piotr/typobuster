@@ -268,7 +268,6 @@ class Typobuster(Gtk.Window):
         self.set_auto_indent()
         save_settings(self.settings)
 
-
     def set_view_style(self):
         if self.settings["gtk-font-name"]:
             # Create a CssProvider and parse "gtk-font-name" into CSS
@@ -302,7 +301,6 @@ class Typobuster(Gtk.Window):
         if self.settings["gtk-theme-name"]:
             self.gtk_settings.set_property("gtk-theme-name", self.settings["gtk-theme-name"])
         else:
-            # TODO we need to get from gsettings and apply here
             theme = subprocess.check_output("gsettings get org.gnome.desktop.interface gtk-theme", shell=True).decode(
                 "utf-8")
             self.gtk_settings.set_property("gtk-theme-name", theme[1:-2])
