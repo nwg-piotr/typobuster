@@ -7,6 +7,7 @@ License: GPL3
 """
 
 import argparse
+import cairo
 import os.path
 import subprocess
 
@@ -524,6 +525,95 @@ class Typobuster(Gtk.Window):
         if not remove:
             recent_paths.insert(0, path)
         save_text_file("\n".join(recent_paths), recent_file)
+
+    def on_print_btn(self, widget):
+        print_settings = Gtk.PrintSettings()
+        page_setup = Gtk.PageSetup()
+
+        print_operation = Gtk.PrintOperation()
+        print_operation.set_print_settings(print_settings)
+        print_operation.set_default_page_setup(page_setup)
+        print_operation.connect("begin-print", self.begin_print)
+        print_operation.connect("draw-page", self.draw_page)
+
+        result = print_operation.run(Gtk.PrintOperationAction.PRINT_DIALOG, self)
+        if result == Gtk.PrintOperationResult.APPLY:
+            print("Printing in progress...")
+        elif result == Gtk.PrintOperationResult.CANCEL:
+            print("Print canceled")
+        elif result == Gtk.PrintOperationResult.ERROR:
+            print("Print error occurred")
+        else:
+            print(f"Unknown result: {result}")
+
+    def begin_print(self, print_operation, context):
+        print("Begin print")
+        self.pages = self.paginate_text(context)
+        print_operation.set_n_pages(len(self.pages))
+
+    def draw_page(self, print_operation, context, page_nr):
+        print("Drawing page")
+        cr = context.get_cairo_context()
+        cr.set_source_rgb(0, 0, 0)
+        cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+        cr.set_font_size(12)
+
+        lines = self.pages[page_nr]
+        line_height = 14
+        y = 10
+
+        for line in lines:
+            cr.move_to(10, y)
+            cr.show_text(line)
+            y += line_height
+
+    def wrap_text(self, cr, text, max_width):
+        lines = []
+        paragraphs = text.split('\n')
+
+        for paragraph in paragraphs:
+            if paragraph.strip() == "":
+                lines.append("")  # Preserve empty line
+                continue
+
+            words = paragraph.split()
+            current_line = []
+
+            for word in words:
+                current_line.append(word)
+                line_width = cr.text_extents(" ".join(current_line)).width
+                if line_width > max_width:
+                    current_line.pop()
+                    lines.append(" ".join(current_line))
+                    current_line = [word]
+
+            if current_line:
+                lines.append(" ".join(current_line))
+
+        return lines
+
+    def paginate_text(self, context):
+        cr = context.get_cairo_context()
+        text = self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True)
+        lines = self.wrap_text(cr, text, 450)  # Adjust according to the actual page width in points
+        line_height = 14
+        page_height = 800  # Adjust according to the actual page height
+        max_lines_per_page = int(page_height / line_height)
+
+        pages = []
+        current_page = []
+
+        for line in lines:
+            if len(current_page) >= max_lines_per_page:
+                pages.append(current_page)
+                current_page = []
+
+            current_page.append(line)
+
+        if current_page:
+            pages.append(current_page)
+
+        return pages
 
     def quit(self, widget):
         self.close()

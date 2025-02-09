@@ -47,6 +47,18 @@ class MenuBar(Gtk.MenuBar):
         file_menu.append(save_as_menu_item)
         save_as_menu_item.connect("activate", parent_window.save_file_as)
 
+        sep = Gtk.SeparatorMenuItem()
+        file_menu.append(sep)
+
+        # Print menu item
+
+        print_menu_item = Gtk.MenuItem(label=parent_window.voc["print"])
+        file_menu.append(print_menu_item)
+        print_menu_item.connect("activate", parent_window.on_print_btn)
+
+        sep = Gtk.SeparatorMenuItem()
+        file_menu.append(sep)
+
         # Create the Quit menu item
         quit_menu_item = Gtk.MenuItem(label=parent_window.voc["quit"])
         file_menu.append(quit_menu_item)
