@@ -378,7 +378,7 @@ class Typobuster(Gtk.Window):
 
     def set_window_title(self, path):
         filename = os.path.basename(path)
-        self.set_title(f"{filename} - Typobuster")
+        self.set_title(filename)
 
     def new_file(self, widget):
         title = file_path.split("/")[-1] if file_path else self.voc["untitled"]
