@@ -465,9 +465,11 @@ class PreferencesDialog(Gtk.Dialog):
         self.grid.attach(self.auto_indent_cb, 0, 4, 1, 1)
 
         # OK Button
-        # self.ok_button = Gtk.Button(label="OK")
-        # self.ok_button.connect("clicked", lambda x: self.close())
-        # self.grid.attach(self.ok_button, 0, 2, 2, 1)
+        hbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
+        self.grid.attach(hbox, 0, 5, 2, 1)
+        self.ok_button = Gtk.Button(label=parent.voc["close"])
+        self.ok_button.connect("clicked", lambda x: self.close())
+        hbox.pack_end(self.ok_button, False, False, 0)
 
         self.show_all()
 
