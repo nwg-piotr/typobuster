@@ -291,7 +291,7 @@ class Typobuster(Gtk.Window):
         self.source_view.set_insert_spaces_instead_of_tabs(self.settings["tab-mode"] == "insert-spaces")
 
     def set_auto_indent(self):
-        self.source_view.set_indent_on_tab(self.settings["auto-indent"])
+        self.source_view.set_auto_indent(self.settings["auto-indent"])
 
     def on_theme_changed(self, combo):
         self.settings["gtk-theme-name"] = combo.get_active_id()
