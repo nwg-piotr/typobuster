@@ -29,6 +29,7 @@
   "paste": "Paste",
   "plain-text": "Plain text",
   "preferences": "Preferences",
+  "print": "Print",
   "quit": "Quit",
   "recent-files": "Recent files",
   "remove-empty-rows": "Remove empty rows",
@@ -40,7 +41,7 @@
   "save": "Save",
   "save-as": "Save As",
   "select-all": "Select All",
-  "snakecase": "snake_case",
+  "snake-case": "snake_case",
   "sort-rows": "Sort rows",
   "syntax-highlight": "Syntax highlight",
   "system-default": "System default",
@@ -60,5 +61,13 @@
   "quotes": "Quotes",
   "punctuation-marks": "Punctuation marks",
   "spaces": "Spaces",
-  "eol-chars": "End-of-line characters"
+  "eol-chars": "End-of-line characters",
+  "highlight-current-row": "Highlight current row",
+  "highlight-matching-brackets": "Highlighting matching brackets",
+  "tab-width": "Tab width",
+  "tab-mode": "Tab mode",
+  "insert-spaces": "Insert spaces",
+  "insert-tabs": "Insert tabs",
+  "auto-indent": "Auto-indent",
+  "add-spaces-after-punctuation": "Add spaces after punctuation marks"
 }

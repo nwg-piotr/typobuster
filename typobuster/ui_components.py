@@ -47,6 +47,18 @@ class MenuBar(Gtk.MenuBar):
         file_menu.append(save_as_menu_item)
         save_as_menu_item.connect("activate", parent_window.save_file_as)
 
+        sep = Gtk.SeparatorMenuItem()
+        file_menu.append(sep)
+
+        # Print menu item
+
+        print_menu_item = Gtk.MenuItem(label=parent_window.voc["print"])
+        file_menu.append(print_menu_item)
+        print_menu_item.connect("activate", parent_window.on_print_btn)
+
+        sep = Gtk.SeparatorMenuItem()
+        file_menu.append(sep)
+
         # Create the Quit menu item
         quit_menu_item = Gtk.MenuItem(label=parent_window.voc["quit"])
         file_menu.append(quit_menu_item)
@@ -124,17 +136,17 @@ class MenuBar(Gtk.MenuBar):
         transform_lowercase_menu_item.connect("activate", parent_window.transform_text, "lowercase")
 
         # Create the Transform to CamelCase menu item
-        transform_camelcase_menu_item = Gtk.MenuItem(label=parent_window.voc["camelcase"])
+        transform_camelcase_menu_item = Gtk.MenuItem(label=parent_window.voc["camel-case"])
         transform_menu_item.get_submenu().append(transform_camelcase_menu_item)
         transform_camelcase_menu_item.connect("activate", parent_window.transform_text, "camelcase")
 
         # Create the Transform to Snake Case menu item
-        transform_snakecase_menu_item = Gtk.MenuItem(label=parent_window.voc["snakecase"])
+        transform_snakecase_menu_item = Gtk.MenuItem(label=parent_window.voc["snake-case"])
         transform_menu_item.get_submenu().append(transform_snakecase_menu_item)
         transform_snakecase_menu_item.connect("activate", parent_window.transform_text, "snakecase")
 
         # Create the Transform to Kebab Case menu item
-        transform_kebabcase_menu_item = Gtk.MenuItem(label=parent_window.voc["kebabcase"])
+        transform_kebabcase_menu_item = Gtk.MenuItem(label=parent_window.voc["kebab-case"])
         transform_menu_item.get_submenu().append(transform_kebabcase_menu_item)
         transform_kebabcase_menu_item.connect("activate", parent_window.transform_text, "kebabcase")
 
@@ -175,6 +187,18 @@ class MenuBar(Gtk.MenuBar):
         view_menu.append(self.line_numbers_menu_item)
         self.line_numbers_menu_item.set_active(self.settings["view-line-numbers"])
         self.line_numbers_menu_item.connect("toggled", parent_window.toggle_line_numbers)
+
+        # Highlight current row item
+        self.highlight_current_row_menu_item = Gtk.CheckMenuItem(parent_window.voc["highlight-current-row"])
+        view_menu.append(self.highlight_current_row_menu_item)
+        self.highlight_current_row_menu_item.set_active(self.settings["highlight-current-row"])
+        self.highlight_current_row_menu_item.connect("toggled", parent_window.toggle_highlight_current_row)
+
+        # Highlight matching brackets
+        self.highlight_matching_brackets_menu_item = Gtk.CheckMenuItem(parent_window.voc["highlight-matching-brackets"])
+        view_menu.append(self.highlight_matching_brackets_menu_item)
+        self.highlight_matching_brackets_menu_item.set_active(self.settings["highlight-matching-brackets"])
+        self.highlight_matching_brackets_menu_item.connect("toggled", parent_window.toggle_highlight_matching_brackets)
 
         # Wrap menu item
         self.wrap_menu_item = Gtk.CheckMenuItem(parent_window.voc["wrap-lines"])
@@ -306,6 +330,12 @@ class SanitizationDialog(Gtk.Window):
         self.sanitize_spaces.connect("toggled", self.switch_settings_key, "sanitize-spaces")
         vbox.pack_start(self.sanitize_spaces, False, False, 0)
 
+        self.add_spaces_after = Gtk.CheckButton(label=parent_window.voc["add-spaces-after-punctuation"])
+        self.add_spaces_after.set_active(self.settings["sanitize-add-spaces-after-punctuation"])
+        self.add_spaces_after.connect("toggled", self.switch_settings_key,
+                                      "sanitize-add-spaces-after-punctuation")
+        vbox.pack_start(self.add_spaces_after, False, False, 0)
+
         self.sanitize_eol = Gtk.CheckButton(label=parent_window.voc["eol-chars"])
         self.sanitize_eol.set_active(self.settings["sanitize-eol"])
         self.sanitize_eol.connect("toggled", self.switch_settings_key, "sanitize-eol")
@@ -348,8 +378,12 @@ class SanitizationDialog(Gtk.Window):
         if self.settings["sanitize-punctuation-marks"]:
             text = sanitize_punctuation_marks(text, start_idx, end_idx)
 
+        if self.settings["sanitize-add-spaces-after-punctuation"]:
+            text = add_spaces_after_punctuation_marks(text, start_idx, end_idx)
+
         if self.settings["sanitize-spaces"]:
-            text = sanitize_spaces(text, start_idx, end_idx)
+            text = sanitize_spaces(text, start_idx, end_idx, self.settings["tab-mode"] == "insert-spaces",
+                                   self.settings["tab-width"])
 
         if self.settings["sanitize-eol"]:
             text = sanitize_eol(text, start_idx, end_idx)
@@ -387,7 +421,8 @@ class PreferencesDialog(Gtk.Dialog):
     def __init__(self, parent):
         super().__init__(title="Preferences", transient_for=parent, modal=True)
 
-        self.grid = Gtk.Grid(margin_top=10, margin_bottom=10, margin_start=10, margin_end=10, column_spacing=10, row_spacing=10)
+        self.grid = Gtk.Grid(margin_top=10, margin_bottom=10, margin_start=10, margin_end=10, column_spacing=10,
+                             row_spacing=10)
         self.get_content_area().pack_start(self.grid, False, False, 0)
 
         # Theme Selector
@@ -417,10 +452,35 @@ class PreferencesDialog(Gtk.Dialog):
         self.font_chooser_btn.connect("font-set", parent.on_font_selected)
         self.grid.attach(self.font_chooser_btn, 1, 1, 1, 1)
 
+        self.tab_width_label = Gtk.Label(label=parent.voc["tab-width"], halign=Gtk.Align.START)
+        self.grid.attach(self.tab_width_label, 0, 2, 1, 1)
+
+        tab_width_sb = Gtk.SpinButton.new_with_range(1, 32.0, 1)
+        tab_width_sb.set_value(parent.settings["tab-width"])
+        tab_width_sb.connect("value-changed", parent.on_tab_with_selected)
+        self.grid.attach(tab_width_sb, 1, 2, 1, 1)
+
+        self.tab_mode_label = Gtk.Label(label=parent.voc["tab-mode"], halign=Gtk.Align.START)
+        self.grid.attach(self.tab_mode_label, 0, 3, 1, 1)
+
+        self.tab_mode_combo = Gtk.ComboBoxText()
+        self.tab_mode_combo.append("insert-tabs", parent.voc["insert-tabs"])
+        self.tab_mode_combo.append("insert-spaces", parent.voc["insert-spaces"])
+        self.tab_mode_combo.set_active_id(parent.settings["tab-mode"])
+        self.tab_mode_combo.connect("changed", parent.on_tab_mode_changed)
+        self.grid.attach(self.tab_mode_combo, 1, 3, 1, 1)
+
+        self.auto_indent_cb = Gtk.CheckButton(label=parent.voc["auto-indent"])
+        self.auto_indent_cb.set_active(parent.settings["auto-indent"])
+        self.auto_indent_cb.connect("toggled", parent.on_auto_indent_changed)
+        self.grid.attach(self.auto_indent_cb, 0, 4, 1, 1)
+
         # OK Button
-        # self.ok_button = Gtk.Button(label="OK")
-        # self.ok_button.connect("clicked", lambda x: self.close())
-        # self.grid.attach(self.ok_button, 0, 2, 2, 1)
+        hbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
+        self.grid.attach(hbox, 0, 5, 2, 1)
+        self.ok_button = Gtk.Button(label=parent.voc["close"])
+        self.ok_button.connect("clicked", lambda x: self.close())
+        hbox.pack_end(self.ok_button, False, False, 0)
 
         self.show_all()
 

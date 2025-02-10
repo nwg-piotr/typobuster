@@ -7,6 +7,7 @@ License: GPL3
 """
 
 import argparse
+import cairo
 import os.path
 import subprocess
 
@@ -81,14 +82,24 @@ class Typobuster(Gtk.Window):
 
         # Create a GtkSourceView and configure it
         self.source_view = GtkSource.View()
+
         self.source_view.get_style_context().add_class("sourceview")
         if self.settings["view-line-numbers"]:
             self.source_view.set_show_line_numbers(True)  # Enable line numbers
-        # self.source_view.set_highlight_current_line(True)  # Highlight the current line
+
+        self.source_view.set_highlight_current_line(
+            self.settings["highlight-current-row"])  # Highlight the current line
+
         if self.settings["wrap-lines"]:
             self.source_view.set_wrap_mode(Gtk.WrapMode.WORD)
         else:
             self.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
+
+        self.set_tab_width()
+
+        self.set_tab_mode()
+
+        self.set_auto_indent()
 
         # Enable drag-and-drop for URI (file paths)
         self.source_view.drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY)
@@ -98,6 +109,9 @@ class Typobuster(Gtk.Window):
         # Set a language for syntax highlighting
         self.lang_manager = GtkSource.LanguageManager()
         self.buffer = GtkSource.Buffer()
+
+        self.buffer.set_highlight_matching_brackets(
+            self.settings["highlight-matching-brackets"])  # Highlight matching brackets
 
         self.source_view.set_buffer(self.buffer)
         self.buffer.connect("changed", self.on_text_changed)
@@ -210,6 +224,16 @@ class Typobuster(Gtk.Window):
         self.source_view.set_show_line_numbers(self.settings["view-line-numbers"])
         save_settings(self.settings)
 
+    def toggle_highlight_current_row(self, widget):
+        self.settings["highlight-current-row"] = widget.get_active()
+        self.source_view.set_highlight_current_line(self.settings["highlight-current-row"])
+        save_settings(self.settings)
+
+    def toggle_highlight_matching_brackets(self, widget):
+        self.settings["highlight-matching-brackets"] = widget.get_active()
+        self.source_view.get_buffer().set_highlight_matching_brackets(self.settings["highlight-matching-brackets"])
+        save_settings(self.settings)
+
     def toggle_line_wrap(self, widget):
         self.settings["wrap-lines"] = widget.get_active()
         if self.settings["wrap-lines"]:
@@ -230,6 +254,21 @@ class Typobuster(Gtk.Window):
         self.set_view_style()
         save_settings(self.settings)
 
+    def on_tab_with_selected(self, sb):
+        self.settings["tab-width"] = int(sb.get_value())
+        self.set_tab_width()
+        save_settings(self.settings)
+
+    def on_tab_mode_changed(self, combo):
+        self.settings["tab-mode"] = combo.get_active_id()
+        self.set_tab_mode()
+        save_settings(self.settings)
+
+    def on_auto_indent_changed(self, check_button):
+        self.settings["auto-indent"] = check_button.get_active()
+        self.set_auto_indent()
+        save_settings(self.settings)
+
     def set_view_style(self):
         if self.settings["gtk-font-name"]:
             # Create a CssProvider and parse "gtk-font-name" into CSS
@@ -245,6 +284,15 @@ class Typobuster(Gtk.Window):
             style_context = self.source_view.get_style_context()
             style_context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
 
+    def set_tab_width(self):
+        self.source_view.set_tab_width(self.settings["tab-width"])
+
+    def set_tab_mode(self):
+        self.source_view.set_insert_spaces_instead_of_tabs(self.settings["tab-mode"] == "insert-spaces")
+
+    def set_auto_indent(self):
+        self.source_view.set_auto_indent(self.settings["auto-indent"])
+
     def on_theme_changed(self, combo):
         self.settings["gtk-theme-name"] = combo.get_active_id()
         save_settings(self.settings)
@@ -254,7 +302,6 @@ class Typobuster(Gtk.Window):
         if self.settings["gtk-theme-name"]:
             self.gtk_settings.set_property("gtk-theme-name", self.settings["gtk-theme-name"])
         else:
-            # TODO we need to get from gsettings and apply here
             theme = subprocess.check_output("gsettings get org.gnome.desktop.interface gtk-theme", shell=True).decode(
                 "utf-8")
             self.gtk_settings.set_property("gtk-theme-name", theme[1:-2])
@@ -331,7 +378,7 @@ class Typobuster(Gtk.Window):
 
     def set_window_title(self, path):
         filename = os.path.basename(path)
-        self.set_title(f"{filename} - Typobuster")
+        self.set_title(filename)
 
     def new_file(self, widget):
         title = file_path.split("/")[-1] if file_path else self.voc["untitled"]
@@ -478,6 +525,95 @@ class Typobuster(Gtk.Window):
         if not remove:
             recent_paths.insert(0, path)
         save_text_file("\n".join(recent_paths), recent_file)
+
+    def on_print_btn(self, widget):
+        print_settings = Gtk.PrintSettings()
+        page_setup = Gtk.PageSetup()
+
+        print_operation = Gtk.PrintOperation()
+        print_operation.set_print_settings(print_settings)
+        print_operation.set_default_page_setup(page_setup)
+        print_operation.connect("begin-print", self.begin_print)
+        print_operation.connect("draw-page", self.draw_page)
+
+        result = print_operation.run(Gtk.PrintOperationAction.PRINT_DIALOG, self)
+        if result == Gtk.PrintOperationResult.APPLY:
+            print("Printing in progress...")
+        elif result == Gtk.PrintOperationResult.CANCEL:
+            print("Print canceled")
+        elif result == Gtk.PrintOperationResult.ERROR:
+            print("Print error occurred")
+        else:
+            print(f"Unknown result: {result}")
+
+    def begin_print(self, print_operation, context):
+        print("Begin print")
+        self.pages = self.paginate_text(context)
+        print_operation.set_n_pages(len(self.pages))
+
+    def draw_page(self, print_operation, context, page_nr):
+        print("Drawing page")
+        cr = context.get_cairo_context()
+        cr.set_source_rgb(0, 0, 0)
+        cr.select_font_face("Sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+        cr.set_font_size(10)
+
+        lines = self.pages[page_nr]
+        line_height = 14
+        y = 10
+
+        for line in lines:
+            cr.move_to(10, y)
+            cr.show_text(line)
+            y += line_height
+
+    def wrap_text(self, cr, text, max_width):
+        lines = []
+        paragraphs = text.split('\n')
+
+        for paragraph in paragraphs:
+            if paragraph.strip() == "":
+                lines.append("")  # Preserve empty line
+                continue
+
+            words = paragraph.split()
+            current_line = []
+
+            for word in words:
+                current_line.append(word)
+                line_width = cr.text_extents(" ".join(current_line)).width
+                if line_width > max_width:
+                    current_line.pop()
+                    lines.append(" ".join(current_line))
+                    current_line = [word]
+
+            if current_line:
+                lines.append(" ".join(current_line))
+
+        return lines
+
+    def paginate_text(self, context):
+        cr = context.get_cairo_context()
+        text = self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True)
+        lines = self.wrap_text(cr, text, 450)  # Adjust according to the actual page width in points
+        line_height = 14
+        page_height = 800  # Adjust according to the actual page height
+        max_lines_per_page = int(page_height / line_height)
+
+        pages = []
+        current_page = []
+
+        for line in lines:
+            if len(current_page) >= max_lines_per_page:
+                pages.append(current_page)
+                current_page = []
+
+            current_page.append(line)
+
+        if current_page:
+            pages.append(current_page)
+
+        return pages
 
     def quit(self, widget):
         self.close()
