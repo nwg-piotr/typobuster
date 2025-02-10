@@ -68,5 +68,6 @@
   "tab-mode": "Tab mode",
   "insert-spaces": "Insert spaces",
   "insert-tabs": "Insert tabs",
-  "auto-indent": "Auto-indent"
+  "auto-indent": "Auto-indent",
+  "add-spaces-after-punctuation": "Add spaces after punctuation marks"
 }

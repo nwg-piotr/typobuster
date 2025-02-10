@@ -330,6 +330,12 @@ class SanitizationDialog(Gtk.Window):
         self.sanitize_spaces.connect("toggled", self.switch_settings_key, "sanitize-spaces")
         vbox.pack_start(self.sanitize_spaces, False, False, 0)
 
+        self.add_spaces_after = Gtk.CheckButton(label=parent_window.voc["add-spaces-after-punctuation"])
+        self.add_spaces_after.set_active(self.settings["sanitize-add-spaces-after-punctuation"])
+        self.add_spaces_after.connect("toggled", self.switch_settings_key,
+                                      "sanitize-add-spaces-after-punctuation")
+        vbox.pack_start(self.add_spaces_after, False, False, 0)
+
         self.sanitize_eol = Gtk.CheckButton(label=parent_window.voc["eol-chars"])
         self.sanitize_eol.set_active(self.settings["sanitize-eol"])
         self.sanitize_eol.connect("toggled", self.switch_settings_key, "sanitize-eol")
@@ -372,8 +378,12 @@ class SanitizationDialog(Gtk.Window):
         if self.settings["sanitize-punctuation-marks"]:
             text = sanitize_punctuation_marks(text, start_idx, end_idx)
 
+        if self.settings["sanitize-add-spaces-after-punctuation"]:
+            text = add_spaces_after_punctuation_marks(text, start_idx, end_idx)
+
         if self.settings["sanitize-spaces"]:
-            text = sanitize_spaces(text, start_idx, end_idx)
+            text = sanitize_spaces(text, start_idx, end_idx, self.settings["tab-mode"] == "insert-spaces",
+                                   self.settings["tab-width"])
 
         if self.settings["sanitize-eol"]:
             text = sanitize_eol(text, start_idx, end_idx)
@@ -411,7 +421,8 @@ class PreferencesDialog(Gtk.Dialog):
     def __init__(self, parent):
         super().__init__(title="Preferences", transient_for=parent, modal=True)
 
-        self.grid = Gtk.Grid(margin_top=10, margin_bottom=10, margin_start=10, margin_end=10, column_spacing=10, row_spacing=10)
+        self.grid = Gtk.Grid(margin_top=10, margin_bottom=10, margin_start=10, margin_end=10, column_spacing=10,
+                             row_spacing=10)
         self.get_content_area().pack_start(self.grid, False, False, 0)
 
         # Theme Selector

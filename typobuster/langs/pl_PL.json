@@ -68,5 +68,6 @@
   "tab-mode": "Tryb tabulacji",
   "insert-spaces": "Wstawiaj spacje",
   "insert-tabs": "Wstawiaj znaki tabulatora",
-  "auto-indent": "Automatyczne wcięcia"
+  "auto-indent": "Automatyczne wcięcia",
+  "add-spaces-after-punctuation": "Dodaj spacje po znakach przestankowych"
 }

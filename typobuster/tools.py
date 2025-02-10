@@ -93,7 +93,7 @@ def load_settings():
         "gtk-font-name": "",
         "gtk-theme-name": "",
         "sanitize-spaces": True,
-        "sanitize-punctuation-marks": True,
+        "sanitize-add-spaces-after-punctuation": True,
         "sanitize-hyphens": True,
         "sanitize-quotes": True,
         "sanitize-eol": True,
@@ -241,16 +241,21 @@ def sanitize_quotes(text, start_idx, end_idx):
 def sanitize_punctuation_marks(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
     selection = re.sub(r'\s+([.,!?;:])', r'\1', selection)  # Remove spaces before punctuation marks
-    selection = re.sub(r'([.,!?;:])([A-Za-z0-9])', r'\1 \2', selection)
     selection = selection.replace('. ,', '.,')
-    selection = selection.replace('. . .', '...')
     return text[:start_idx] + selection + text[end_idx:]
 
 
-def sanitize_spaces(text, start_idx, end_idx):
+def add_spaces_after_punctuation_marks(text, start_idx, end_idx):
+    selection = text[start_idx:end_idx]
+    selection = re.sub(r'([.,!?;:])([A-Za-z0-9])', r'\1 \2', selection)  # Add a space after punctuation marks
+    return text[:start_idx] + selection + text[end_idx:]
+
+
+def sanitize_spaces(text, start_idx, end_idx, convert_tabs, tab_width):
     selection = text[start_idx:end_idx]
     selection = re.sub(r" {2,}", " ", selection)  # Replace two or more spaces with a single space
-    selection = re.sub(r'\t+', ' ', selection).strip()  # Replace tabs with a single space
+    if convert_tabs:
+        selection = re.sub(r'\t+', ' ' * tab_width, selection).strip()  # Replace tabs with a single space
     selection = selection.replace(" \n", "\n")  # Remove spaces before end-of-line characters
     selection = selection.replace("\n ", "\n")  # Remove spaces right after end-of-line characters
     return text[:start_idx] + selection + text[end_idx:]
