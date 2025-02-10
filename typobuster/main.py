@@ -62,7 +62,6 @@ def on_destroy_event(widget):
 class Typobuster(Gtk.Window):
     def __init__(self):
         super().__init__()
-        self.set_default_size(800, 600)
         self.settings = load_settings()
         self.syntax_dict = load_syntax()
 
@@ -75,6 +74,7 @@ class Typobuster(Gtk.Window):
         self.gtk_settings = Gtk.Settings.get_default()
 
         self.unsaved_changes = False
+        self.file_stat = None
         self.connect("delete-event", self.on_close)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -126,6 +126,8 @@ class Typobuster(Gtk.Window):
         scrolled_window.set_hexpand(True)
         scrolled_window.set_vexpand(True)
         scrolled_window.add(self.source_view)
+
+        self.connect("enter-notify-event", self.check_file_change)
 
         # Add the scrollable window to the main window
         vbox.add(scrolled_window)
@@ -430,6 +432,7 @@ class Typobuster(Gtk.Window):
         if os.path.isfile(path):
             self.last_dir_path = os.path.dirname(path)  # remember last opened dir for file chooser
             text = load_text_file(path)
+            self.file_stat = os.stat(file_path)
             self.update_recent(path)
             self.menu_bar.recent_menu_item.set_sensitive(True)
         self.update_text(text)
@@ -506,6 +509,28 @@ class Typobuster(Gtk.Window):
             else:
                 eprint(f"Error saving text to {filename}: {result}")
         dialog.destroy()
+
+    def check_file_change(self, widget, event):
+        if self.file_stat:
+            current_stat = os.stat(file_path)
+            if current_stat.st_size != self.file_stat.st_size or current_stat.st_mtime != self.file_stat.st_mtime:
+                dialog = Gtk.MessageDialog(
+                    parent=self,
+                    message_type=Gtk.MessageType.QUESTION,
+                    buttons=Gtk.ButtonsType.YES_NO,
+                    text=self.voc["file-changed-externally"],
+                )
+                dialog.format_secondary_text(self.voc["reload-file"])
+
+                response = dialog.run()
+                dialog.destroy()
+
+                if response == Gtk.ResponseType.YES:
+                    self.load_file(None, file_path)
+                    self.file_stat = os.stat(file_path)
+
+                self.unsaved_changes = False
+                self.file_stat = os.stat(file_path)
 
     def update_text(self, text):
         start, end = self.buffer.get_bounds()
