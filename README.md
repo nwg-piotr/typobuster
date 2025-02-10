@@ -18,7 +18,7 @@ only the basic tools that I actually need in my work (mostly various text transf
 
 ## Web cleanup
 
-![image](https://github.com/user-attachments/assets/5ce7f29e-cb8d-49b3-99d2-c50fff840374)
+![image](https://github.com/user-attachments/assets/1f71960c-552f-4f37-a2c2-3c9ad5f0d842)
 
 ## Preferences
 
