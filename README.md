@@ -37,6 +37,7 @@ I skipped, available ids are:
 
 - glib2
 - gtk3
+- gtksourceview4
 - python
 - python-cairo
 - python-gobject
