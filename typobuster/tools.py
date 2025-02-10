@@ -93,6 +93,7 @@ def load_settings():
         "gtk-font-name": "",
         "gtk-theme-name": "",
         "sanitize-spaces": True,
+        "sanitize-punctuation-marks": True,
         "sanitize-add-spaces-after-punctuation": True,
         "sanitize-hyphens": True,
         "sanitize-quotes": True,
