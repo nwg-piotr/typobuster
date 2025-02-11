@@ -28,6 +28,9 @@ class MenuBar(Gtk.MenuBar):
         # Create the New menu item
         self.new_menu_item = Gtk.MenuItem(label=parent_window.voc["new"])
         file_menu.append(self.new_menu_item)
+        key, mod = Gtk.accelerator_parse("<Control>N")
+        self.new_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.new_file)
         self.new_menu_item.connect("activate", parent_window.new_file)
 
         # Create the Open menu item
