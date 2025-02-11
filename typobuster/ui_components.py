@@ -15,6 +15,10 @@ class MenuBar(Gtk.MenuBar):
 
         self.parent_window = parent_window
 
+        # Create key accelerator
+        accel_group = Gtk.AccelGroup()
+        parent_window.add_accel_group(accel_group)
+
         # Create the File menu
         file_menu = Gtk.Menu()
         file_menu.connect("show", self.update_menu_items_sensitivity)
@@ -39,11 +43,17 @@ class MenuBar(Gtk.MenuBar):
 
         # Create the Save menu item
         save_menu_item = Gtk.MenuItem(label=parent_window.voc["save"])
+        key, mod = Gtk.accelerator_parse("<Control>S")
+        save_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.save_file)
         file_menu.append(save_menu_item)
         save_menu_item.connect("activate", parent_window.save_file)
 
         # Create the Save As menu item
         save_as_menu_item = Gtk.MenuItem(label=parent_window.voc["save-as"])
+        key, mod = Gtk.accelerator_parse("<Shift><Control>S")
+        save_as_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.save_file_as)
         file_menu.append(save_as_menu_item)
         save_as_menu_item.connect("activate", parent_window.save_file_as)
 
@@ -69,10 +79,6 @@ class MenuBar(Gtk.MenuBar):
         edit_menu.connect("show", self.update_menu_items_sensitivity)
         edit_menu_item = Gtk.MenuItem(label=parent_window.voc["edit"])
         edit_menu_item.set_submenu(edit_menu)
-
-        # Create key accelerator
-        accel_group = Gtk.AccelGroup()
-        parent_window.add_accel_group(accel_group)
 
         # Create the Undo menu item
         self.undo_menu_item = Gtk.MenuItem(label=parent_window.voc["undo"])
