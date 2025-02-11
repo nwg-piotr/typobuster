@@ -15,7 +15,8 @@ import gi
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
-from gi.repository import Gtk, Gdk, GLib, GtkSource, Pango
+from gi.repository import Gtk, Gdk, GLib, GtkSource
+
 
 from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow, SearchBar, PreferencesDialog
 from typobuster.tools import *
@@ -142,6 +143,19 @@ class Typobuster(Gtk.Window):
         self.buffer.begin_not_undoable_action()
         self.buffer.set_text("")
         self.buffer.end_not_undoable_action()
+
+        try:
+            gi.require_version("Gspell", "1")
+            from gi.repository import Gspell
+            self.gspell = True
+        except (ImportError, ValueError):
+            print("gspell is NOT installed.")
+
+        if self.gspell:
+            # Initialize gspell and enable spell checking
+            gspell_text_view = Gspell.TextView.get_from_gtk_text_view(self.source_view)
+            gspell_text_view.basic_setup()
+            gspell_text_view.set_inline_spell_checking(True)
 
         self.set_view_style()
         self.set_gtk_theme()
