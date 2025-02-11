@@ -41,6 +41,8 @@ I skipped, available ids are:
 - python
 - python-cairo
 - python-gobject
+- gspell (optional) - spell checking plugin
+- hunspel-_xx_ (optional) - hunspell dictionaries for languages you use
 
 ## Installation
 
