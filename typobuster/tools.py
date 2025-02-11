@@ -106,7 +106,7 @@ def load_settings():
         "tab-width": 4,
         "tab-mode": "insert-spaces",
         "auto-indent": True,
-        "gspell": False
+        "gspell-enable": False
     }
     settings = load_json(config_path)
 

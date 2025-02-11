@@ -475,6 +475,12 @@ class PreferencesDialog(Gtk.Dialog):
         self.auto_indent_cb.connect("toggled", parent.on_auto_indent_changed)
         self.grid.attach(self.auto_indent_cb, 0, 4, 1, 1)
 
+        self.spell_check_cb = Gtk.CheckButton(label=parent.voc["spell-check"])
+        self.spell_check_cb.set_sensitive(parent.gspell_available)
+        self.spell_check_cb.set_active(parent.settings["gspell-enable"])
+        self.spell_check_cb.connect("toggled", parent.on_spell_check_switched)
+        self.grid.attach(self.spell_check_cb, 0, 5, 1, 1)
+
         # OK Button
         hbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
         self.grid.attach(hbox, 0, 5, 2, 1)

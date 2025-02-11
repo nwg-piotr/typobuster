@@ -76,6 +76,10 @@ class Typobuster(Gtk.Window):
 
         self.unsaved_changes = False
         self.file_stat = None
+
+        self.gspell_available = False
+        self.gspell_text_view = None
+
         self.connect("delete-event", self.on_close)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -144,18 +148,21 @@ class Typobuster(Gtk.Window):
         self.buffer.set_text("")
         self.buffer.end_not_undoable_action()
 
-        try:
-            gi.require_version("Gspell", "1")
-            from gi.repository import Gspell
-            self.gspell = True
-        except (ImportError, ValueError):
-            print("gspell is NOT installed.")
+        if "gi.repository.Gspell" not in sys.modules:
+            try:
+                gi.require_version("Gspell", "1")
+                from gi.repository import Gspell
 
-        if self.gspell:
-            # Initialize gspell and enable spell checking
-            gspell_text_view = Gspell.TextView.get_from_gtk_text_view(self.source_view)
-            gspell_text_view.basic_setup()
-            gspell_text_view.set_inline_spell_checking(True)
+                # Initialize gspell
+                self.gspell_text_view = Gspell.TextView.get_from_gtk_text_view(self.source_view)
+                self.gspell_text_view.basic_setup()
+                self.gspell_available = True
+                print("Loaded Gspell module")
+            except (ImportError, ValueError):
+                print("gspell is NOT installed.")
+
+        #  Enable spell checking
+        self.gspell_text_view.set_inline_spell_checking(self.settings["gspell-enable"] and self.gspell_text_view)
 
         self.set_view_style()
         self.set_gtk_theme()
@@ -283,6 +290,12 @@ class Typobuster(Gtk.Window):
     def on_auto_indent_changed(self, check_button):
         self.settings["auto-indent"] = check_button.get_active()
         self.set_auto_indent()
+        save_settings(self.settings)
+
+    def on_spell_check_switched(self, check_button):
+        self.settings["gspell-enable"] = check_button.get_active()
+        if self.gspell_text_view:
+            self.gspell_text_view.set_inline_spell_checking(self.settings["gspell-enable"])
         save_settings(self.settings)
 
     def set_view_style(self):
