@@ -33,6 +33,9 @@ class MenuBar(Gtk.MenuBar):
         # Create the Open menu item
         open_menu_item = Gtk.MenuItem(label=parent_window.voc["open"])
         file_menu.append(open_menu_item)
+        key, mod = Gtk.accelerator_parse("<Control>O")
+        open_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.open_file)
         open_menu_item.connect("activate", parent_window.open_file)
 
         # Create the Open recent files menu item
@@ -63,6 +66,9 @@ class MenuBar(Gtk.MenuBar):
         # Print menu item
 
         print_menu_item = Gtk.MenuItem(label=parent_window.voc["print"])
+        key, mod = Gtk.accelerator_parse("<Control>P")
+        print_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.on_print_btn)
         file_menu.append(print_menu_item)
         print_menu_item.connect("activate", parent_window.on_print_btn)
 
