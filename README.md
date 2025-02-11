@@ -13,7 +13,7 @@ only the tools that I actually need in my work (mostly various text transformati
 
 ## Tools
 
-![image](https://github.com/user-attachments/assets/bb7a23c4-9da5-4beb-b55e-c0bcd7b1c595)
+![image](https://github.com/user-attachments/assets/76dadd29-7446-45e5-a761-ea2a95bfc6bc)
 
 
 ## Web cleanup
@@ -22,7 +22,7 @@ only the tools that I actually need in my work (mostly various text transformati
 
 ## Preferences
 
-![image](https://github.com/user-attachments/assets/530174a9-91ad-430f-af7f-a42648525c38)
+![image](https://github.com/user-attachments/assets/173ae703-a50a-4f6e-8729-3113654e6c7a)
 
 ## Syntax highlight
 
