@@ -501,7 +501,7 @@ class PreferencesDialog(Gtk.Dialog):
 
         # OK Button
         hbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
-        self.grid.attach(hbox, 0, 5, 2, 1)
+        self.grid.attach(hbox, 0, 6, 2, 1)
         self.ok_button = Gtk.Button(label=parent.voc["close"])
         self.ok_button.connect("clicked", lambda x: self.close())
         hbox.pack_end(self.ok_button, False, False, 0)
