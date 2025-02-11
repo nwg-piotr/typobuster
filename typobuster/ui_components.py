@@ -80,6 +80,9 @@ class MenuBar(Gtk.MenuBar):
 
         # Create the Quit menu item
         quit_menu_item = Gtk.MenuItem(label=parent_window.voc["quit"])
+        key, mod = Gtk.accelerator_parse("<Control>Q")
+        quit_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.quit)
         file_menu.append(quit_menu_item)
         quit_menu_item.connect("activate", parent_window.quit)
 
