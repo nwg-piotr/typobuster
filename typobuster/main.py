@@ -120,6 +120,7 @@ class Typobuster(Gtk.Window):
 
         self.source_view.set_buffer(self.buffer)
         self.buffer.connect("changed", self.on_text_changed)
+        self.buffer.connect("mark-set", self.on_cursor_moved)
 
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
@@ -172,6 +173,20 @@ class Typobuster(Gtk.Window):
 
     def on_text_changed(self, buffer):
         self.unsaved_changes = True
+        self.update_cursor_position()
+
+    def update_cursor_position(self):
+        """ Get and print the cursor position. """
+        insert_mark = self.buffer.get_insert()
+        iter_ = self.buffer.get_iter_at_mark(insert_mark)
+        line = iter_.get_line()
+        column = iter_.get_line_offset()
+        self.search_bar.pos_lbl.set_text(f'{self.voc["row"]}: {line + 1} {self.voc["column"]}: {column}')
+
+    def on_cursor_moved(self, buffer, iter_, mark):
+        """ Fires when the cursor moves. """
+        if mark == buffer.get_insert():  # Ignore selection mark
+            self.update_cursor_position()
 
     def on_close(self, widget, event):
         if self.unsaved_changes:
@@ -264,6 +279,8 @@ class Typobuster(Gtk.Window):
         else:
             self.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
         save_settings(self.settings)
+
+
 
     def show_about(self, widget):
         about = AboutWindow(self)

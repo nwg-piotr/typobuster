@@ -552,6 +552,9 @@ class SearchBar(Gtk.Box):
         self.pack_start(btn, False, False, 0)
         btn.connect("clicked", self.replace)
 
+        self.pos_lbl = Gtk.Label.new(f'{parent_window.voc["row"]}: 1 {parent_window.voc["column"]}: 0')
+        self.pack_end(self.pos_lbl, False, False, 6)
+
         if parent_window.settings["syntax"] == "none":
             s_lbl = parent_window.voc["plain-text"]
         else:
