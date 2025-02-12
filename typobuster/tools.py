@@ -99,7 +99,7 @@ def load_settings():
         "sanitize-quotes": True,
         "sanitize-eol": True,
         "syntax": "none",
-        "view-line-numbers": True,
+        "view-line-numbers": False,
         "highlight-current-row": False,
         "highlight-matching-brackets": False,
         "wrap-lines": True,
