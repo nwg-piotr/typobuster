@@ -5,11 +5,11 @@ This application is a part of the [nwg-shell](https://nwg-piotr.github.io/nwg-sh
 
 __Typobuster__ is a simplified text editor with a wide selection of transformations and automatic correction of common typos.
 
-In my daily work I constantly receive texts in various formats (MS Word, LibreOffice, email), which are supposed to be published
-on the web and contain still the same typos: misplaced spaces, multiple spaces and line breaks, German-style quotation marks, etc. 
-Up until now, I have used Mousepad to proofread, either manually or via search and replace, but that was kind of 
-waste of time. To make life easier, I developed a simple editor that will do it automatically. It is supposed to contain 
-only the tools that I actually need in my work (mostly various text transformations), and case-insensitive sorting.
+In my daily work I constantly receive texts in various formats (MS Word, LibreOffice, email), which are supposed to be 
+published on the web and contain still the same typos: misplaced spaces, multiple spaces and line breaks, German-style 
+quotation marks, etc. Up until now, I have used Mousepad to proofread, either manually or via search and replace, but 
+that was kind of waste of time. To make life easier, I developed a simple editor that will do it automatically. It is 
+supposed to focus on plain text and contain the tools that an average user needs.
 
 ## Transformations
 
