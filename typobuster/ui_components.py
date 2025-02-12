@@ -206,6 +206,12 @@ class MenuBar(Gtk.MenuBar):
         self.line_numbers_menu_item.set_active(self.settings["view-line-numbers"])
         self.line_numbers_menu_item.connect("toggled", parent_window.toggle_line_numbers)
 
+        # Whitespaces menu item
+        whitespaces_menu_item = Gtk.CheckMenuItem(parent_window.voc["whitespaces"])
+        view_menu.append(whitespaces_menu_item)
+        whitespaces_menu_item.set_active(self.settings["whitespaces"])
+        whitespaces_menu_item.connect("toggled", parent_window.toggle_whitespaces)
+
         # Highlight current row item
         self.highlight_current_row_menu_item = Gtk.CheckMenuItem(parent_window.voc["highlight-current-row"])
         view_menu.append(self.highlight_current_row_menu_item)

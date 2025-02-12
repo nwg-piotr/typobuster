@@ -92,6 +92,9 @@ class Typobuster(Gtk.Window):
         if self.settings["view-line-numbers"]:
             self.source_view.set_show_line_numbers(True)  # Enable line numbers
 
+        space_drawer = self.source_view.get_space_drawer()
+        space_drawer.set_enable_matrix(self.settings["whitespaces"])  # Whether to enable whitespaces view
+
         self.source_view.set_highlight_current_line(
             self.settings["highlight-current-row"])  # Highlight the current line
 
@@ -260,6 +263,12 @@ class Typobuster(Gtk.Window):
     def toggle_line_numbers(self, widget):
         self.settings["view-line-numbers"] = widget.get_active()
         self.source_view.set_show_line_numbers(self.settings["view-line-numbers"])
+        save_settings(self.settings)
+
+    def toggle_whitespaces(self, widget):
+        self.settings["whitespaces"] = widget.get_active()
+        space_drawer = self.source_view.get_space_drawer()
+        space_drawer.set_enable_matrix(self.settings["whitespaces"])
         save_settings(self.settings)
 
     def toggle_highlight_current_row(self, widget):
