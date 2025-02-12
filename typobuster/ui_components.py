@@ -482,8 +482,8 @@ class PreferencesDialog(Gtk.Dialog):
         self.grid.attach(self.tab_mode_label, 0, 3, 1, 1)
 
         self.tab_mode_combo = Gtk.ComboBoxText()
-        self.tab_mode_combo.append("insert-tabs", parent.voc["insert-tabs"])
-        self.tab_mode_combo.append("insert-spaces", parent.voc["insert-spaces"])
+        self.tab_mode_combo.append("tabs", parent.voc["insert-tabs"])
+        self.tab_mode_combo.append("spaces", parent.voc["insert-spaces"])
         self.tab_mode_combo.set_active_id(parent.settings["tab-mode"])
         self.tab_mode_combo.connect("changed", parent.on_tab_mode_changed)
         self.grid.attach(self.tab_mode_combo, 1, 3, 1, 1)

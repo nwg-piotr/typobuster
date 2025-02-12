@@ -317,7 +317,7 @@ class Typobuster(Gtk.Window):
         self.source_view.set_tab_width(self.settings["tab-width"])
 
     def set_tab_mode(self):
-        self.source_view.set_insert_spaces_instead_of_tabs(self.settings["tab-mode"] == "insert-spaces")
+        self.source_view.set_insert_spaces_instead_of_tabs(self.settings["tab-mode"] == "spaces")
 
     def set_auto_indent(self):
         self.source_view.set_auto_indent(self.settings["auto-indent"])

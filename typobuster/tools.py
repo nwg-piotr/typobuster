@@ -104,7 +104,7 @@ def load_settings():
         "highlight-matching-brackets": False,
         "wrap-lines": True,
         "tab-width": 4,
-        "tab-mode": "insert-spaces",
+        "tab-mode": "spaces",
         "auto-indent": True,
         "gspell-enable": False
     }
