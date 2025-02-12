@@ -415,18 +415,17 @@ class AboutWindow(Gtk.AboutDialog):
         super().__init__()
         self.set_transient_for(parent_window)
         self.set_program_name("Typobuster")
+        self.set_copyright(parent_window.voc["copyright"])
         self.set_comments(parent_window.voc["description"])
         self.set_website("https://github.com/nwg-piotr/typobuster")
         self.set_website_label("GitHub repository")
         self.set_authors(["Piotr Miller"])
         self.set_license_type(Gtk.License.GPL_3_0)
-        self.set_version(f"Version: {__version__}")
+        self.set_version(f'{parent_window.voc["version"]}: {__version__}')
 
         # Load icon by name from the system theme
         icon_theme = Gtk.IconTheme.get_default()
-        icon_name = "typobuster"  # Change to your preferred icon name
-
-        # Load and scale the icon
+        icon_name = "typobuster"
         pixbuf = icon_theme.load_icon(icon_name, 128, 0)  # 128x128 size
         self.set_logo(pixbuf)
 
