@@ -1,5 +1,9 @@
-# Typobuster
-Simplified text editor with a wide selection of transformations and automatic correction of common typos.
+<img src="https://github.com/nwg-piotr/typobuster/raw/refs/heads/main/typobuster.svg" width="90" style="margin-right:10px" align=left alt="nwg-shell logo">
+<H1>typobuster</H1><br>
+
+This application is a part of the [nwg-shell](https://nwg-piotr.github.io/nwg-shell) project.
+
+__Typobuster__ is a simplified text editor with a wide selection of transformations and automatic correction of common typos.
 
 In my daily work I constantly receive texts in various formats (MS Word, LibreOffice, email), which are supposed to be published
 on the web and contain still the same typos: misplaced spaces, multiple spaces and line breaks, German-style quotation marks, etc. 
