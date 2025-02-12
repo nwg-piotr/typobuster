@@ -15,17 +15,17 @@ class MenuBar(Gtk.MenuBar):
 
         self.parent_window = parent_window
 
-        # Create key accelerator
+        # Key accelerator group
         accel_group = Gtk.AccelGroup()
         parent_window.add_accel_group(accel_group)
 
-        # Create the File menu
+        # File menu
         file_menu = Gtk.Menu()
         file_menu.connect("show", self.update_menu_items_sensitivity)
         file_menu_item = Gtk.MenuItem(label=parent_window.voc["file"])
         file_menu_item.set_submenu(file_menu)
 
-        # Create the New menu item
+        # New menu item
         self.new_menu_item = Gtk.MenuItem(label=parent_window.voc["new"])
         file_menu.append(self.new_menu_item)
         key, mod = Gtk.accelerator_parse("<Control>N")
@@ -33,7 +33,7 @@ class MenuBar(Gtk.MenuBar):
         accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.new_file)
         self.new_menu_item.connect("activate", parent_window.new_file)
 
-        # Create the Open menu item
+        # Open menu item
         open_menu_item = Gtk.MenuItem(label=parent_window.voc["open"])
         file_menu.append(open_menu_item)
         key, mod = Gtk.accelerator_parse("<Control>O")
@@ -41,13 +41,13 @@ class MenuBar(Gtk.MenuBar):
         accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.open_file)
         open_menu_item.connect("activate", parent_window.open_file)
 
-        # Create the Open recent files menu item
+        # Open recent files menu item
         self.recent_menu_item = Gtk.MenuItem(label=parent_window.voc["recent-files"])
         file_menu.append(self.recent_menu_item)
         self.recent_menu_item.set_sensitive(os.path.isfile(os.path.join(config_dir(), "recent")))
         file_menu.connect("show", add_recent_menu, self.recent_menu_item, self.parent_window)
 
-        # Create the Save menu item
+        # Save menu item
         save_menu_item = Gtk.MenuItem(label=parent_window.voc["save"])
         key, mod = Gtk.accelerator_parse("<Control>S")
         save_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
@@ -55,7 +55,7 @@ class MenuBar(Gtk.MenuBar):
         file_menu.append(save_menu_item)
         save_menu_item.connect("activate", parent_window.save_file)
 
-        # Create the Save As menu item
+        # Save As menu item
         save_as_menu_item = Gtk.MenuItem(label=parent_window.voc["save-as"])
         key, mod = Gtk.accelerator_parse("<Shift><Control>S")
         save_as_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
@@ -67,7 +67,6 @@ class MenuBar(Gtk.MenuBar):
         file_menu.append(sep)
 
         # Print menu item
-
         print_menu_item = Gtk.MenuItem(label=parent_window.voc["print"])
         key, mod = Gtk.accelerator_parse("<Control>P")
         print_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
@@ -78,7 +77,7 @@ class MenuBar(Gtk.MenuBar):
         sep = Gtk.SeparatorMenuItem()
         file_menu.append(sep)
 
-        # Create the Quit menu item
+        # Quit menu item
         quit_menu_item = Gtk.MenuItem(label=parent_window.voc["quit"])
         key, mod = Gtk.accelerator_parse("<Control>Q")
         quit_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
@@ -86,102 +85,104 @@ class MenuBar(Gtk.MenuBar):
         file_menu.append(quit_menu_item)
         quit_menu_item.connect("activate", parent_window.quit)
 
-        # Create the Edit menu
+        # Edit menu
         edit_menu = Gtk.Menu()
         edit_menu.connect("show", self.update_menu_items_sensitivity)
         edit_menu_item = Gtk.MenuItem(label=parent_window.voc["edit"])
         edit_menu_item.set_submenu(edit_menu)
 
-        # Create the Undo menu item
+        # Undo menu item
         self.undo_menu_item = Gtk.MenuItem(label=parent_window.voc["undo"])
         key, mod = Gtk.accelerator_parse("<Control>Z")
         self.undo_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(self.undo_menu_item)
         self.undo_menu_item.connect("activate", parent_window.undo)
 
-        # Create the Redo menu item
+        # Redo menu item
         self.redo_menu_item = Gtk.MenuItem(label=parent_window.voc["redo"])
         key, mod = Gtk.accelerator_parse("<Control>Y")
         self.redo_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(self.redo_menu_item)
         self.redo_menu_item.connect("activate", parent_window.redo)
 
-        # Create the Cut menu item
+        # Cut menu item
         cut_menu_item = Gtk.MenuItem(label=parent_window.voc["cut"])
         key, mod = Gtk.accelerator_parse("<Control>X")
         cut_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(cut_menu_item)
         cut_menu_item.connect("activate", parent_window.cut_text)
 
-        # Create the Copy menu item
+        # Copy menu item
         copy_menu_item = Gtk.MenuItem(label=parent_window.voc["copy"])
         key, mod = Gtk.accelerator_parse("<Control>C")
         copy_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(copy_menu_item)
         copy_menu_item.connect("activate", parent_window.copy_text)
 
-        # Create the Paste menu item
+        # Paste menu item
         paste_menu_item = Gtk.MenuItem(label=parent_window.voc["paste"])
         key, mod = Gtk.accelerator_parse("<Control>V")
         paste_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
         edit_menu.append(paste_menu_item)
         paste_menu_item.connect("activate", parent_window.paste_text)
 
-        # Create the Delete menu item
+        # Delete menu item
         delete_menu_item = Gtk.MenuItem(label=parent_window.voc["delete"])
         edit_menu.append(delete_menu_item)
         delete_menu_item.connect("activate", parent_window.delete_text)
 
-        # Create the Transform menu item
+        # Transform menu item
         transform_menu_item = Gtk.MenuItem(label=parent_window.voc["transform"])
         edit_menu.append(transform_menu_item)
 
-        # Create the As in sentence menu item
+        # As in sentence menu item
         transform_as_in_sentence_menu_item = Gtk.MenuItem(label=parent_window.voc["as-in-sentence"])
         transform_menu_item.set_submenu(Gtk.Menu())
 
         transform_menu_item.get_submenu().append(transform_as_in_sentence_menu_item)
         transform_as_in_sentence_menu_item.connect("activate", parent_window.transform_text, "sentence")
 
-        # Create the Transform to Uppercase menu item
+        # Transform to Uppercase menu item
         transform_uppercase_menu_item = Gtk.MenuItem(label=parent_window.voc["uppercase"])
         transform_menu_item.get_submenu().append(transform_uppercase_menu_item)
         transform_uppercase_menu_item.connect("activate", parent_window.transform_text, "uppercase")
 
-        # Create the Transform to Lowercase menu item
+        # Transform to Lowercase menu item
         transform_lowercase_menu_item = Gtk.MenuItem(label=parent_window.voc["lowercase"])
         transform_menu_item.get_submenu().append(transform_lowercase_menu_item)
         transform_lowercase_menu_item.connect("activate", parent_window.transform_text, "lowercase")
 
-        # Create the Transform to CamelCase menu item
+        # Transform to CamelCase menu item
         transform_camelcase_menu_item = Gtk.MenuItem(label=parent_window.voc["camel-case"])
         transform_menu_item.get_submenu().append(transform_camelcase_menu_item)
         transform_camelcase_menu_item.connect("activate", parent_window.transform_text, "camelcase")
 
-        # Create the Transform to Snake Case menu item
+        # Transform to Snake Case menu item
         transform_snakecase_menu_item = Gtk.MenuItem(label=parent_window.voc["snake-case"])
         transform_menu_item.get_submenu().append(transform_snakecase_menu_item)
         transform_snakecase_menu_item.connect("activate", parent_window.transform_text, "snakecase")
 
-        # Create the Transform to Kebab Case menu item
+        # Transform to Kebab Case menu item
         transform_kebabcase_menu_item = Gtk.MenuItem(label=parent_window.voc["kebab-case"])
         transform_menu_item.get_submenu().append(transform_kebabcase_menu_item)
         transform_kebabcase_menu_item.connect("activate", parent_window.transform_text, "kebabcase")
 
-        # Create the Transform to unordered list menu item
+        # Transform to unordered list menu item
         transform_unordered_list_menu_item = Gtk.MenuItem(label=parent_window.voc["unordered-list"])
         transform_menu_item.get_submenu().append(transform_unordered_list_menu_item)
         transform_unordered_list_menu_item.connect("activate", parent_window.transform_text, "unordered")
 
-        # Create the Transform to ordered list menu item
+        # Transform to ordered list menu item
         transform_ordered_list_menu_item = Gtk.MenuItem(label=parent_window.voc["ordered-list"])
         transform_menu_item.get_submenu().append(transform_ordered_list_menu_item)
         transform_ordered_list_menu_item.connect("activate", parent_window.transform_text, "ordered")
 
+        # First word to the end menu item
         first_to_end_item = Gtk.MenuItem(label=parent_window.voc["move-to-end"])
         transform_menu_item.get_submenu().append(first_to_end_item)
         first_to_end_item.connect("activate", parent_window.transform_text, "first-to-end")
 
+        # Last word to the beginning menu item
         last_to_beginning_item = Gtk.MenuItem(label=parent_window.voc["last-to-beginning"])
         transform_menu_item.get_submenu().append(last_to_beginning_item)
         last_to_beginning_item.connect("activate", parent_window.transform_text, "last-to-beginning")
@@ -189,18 +190,18 @@ class MenuBar(Gtk.MenuBar):
         separator = Gtk.SeparatorMenuItem()
         edit_menu.append(separator)
 
-        # Create the Preferences menu item
+        # Preferences menu item
         preferences_menu_item = Gtk.MenuItem(label=parent_window.voc["preferences"])
         edit_menu.append(preferences_menu_item)
         preferences_menu_item.connect("activate", parent_window.show_preferences)
 
-        # Create the View menu
+        # View menu
         view_menu = Gtk.Menu()
         # view_menu.set_reserve_toggle_size(False)
         view_menu_item = Gtk.MenuItem(label=parent_window.voc["view"])
         view_menu_item.set_submenu(view_menu)
 
-        # Create the Line numbers menu item
+        # Line numbers menu item
         self.line_numbers_menu_item = Gtk.CheckMenuItem(parent_window.voc["line-numbers"])
         view_menu.append(self.line_numbers_menu_item)
         self.line_numbers_menu_item.set_active(self.settings["view-line-numbers"])
@@ -235,13 +236,13 @@ class MenuBar(Gtk.MenuBar):
         view_menu.append(syntax_menu_item)
         view_menu.connect("show", add_syntax_menu, syntax_menu_item, self.parent_window)
 
-        # Create the Tools menu
+        # Tools menu
         tools_menu = Gtk.Menu()
         tools_menu.connect("show", self.update_menu_items_sensitivity)
         tools_menu_item = Gtk.MenuItem(label=parent_window.voc["tools"])
         tools_menu_item.set_submenu(tools_menu)
 
-        # Create the Sanitize menu item
+        # Sanitize menu item
         self.sanitize_menu_item = Gtk.MenuItem(label=parent_window.voc["web-cleanup"])
         tools_menu.append(self.sanitize_menu_item)
         self.sanitize_menu_item.connect("show", self.update_menu_items_sensitivity)
@@ -269,17 +270,17 @@ class MenuBar(Gtk.MenuBar):
         tools_menu.append(remove_non_ascii_item)
         remove_non_ascii_item.connect("activate", parent_window.transform_text, "remove-non-ascii")
 
-        # Create the Help menu
+        # Help menu
         help_menu = Gtk.Menu()
         help_menu_item = Gtk.MenuItem(label=parent_window.voc["help"])
         help_menu_item.set_submenu(help_menu)
 
-        # Create the About menu item
+        # About menu item
         about_menu_item = Gtk.MenuItem(label=parent_window.voc["about"])
         help_menu.append(about_menu_item)
         about_menu_item.connect("activate", parent_window.show_about)
 
-        # Append the menu items to the menu bar
+        # Append menu items to the menu bar
         self.append(file_menu_item)
         self.append(edit_menu_item)
         self.append(view_menu_item)
