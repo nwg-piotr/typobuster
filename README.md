@@ -13,7 +13,7 @@ supposed to focus on plain text and contain the tools that an average user needs
 
 ## Transformations
 
-![image](https://github.com/user-attachments/assets/8f7ac350-2156-49ea-b2be-a4a55cdd1185)
+![image](https://github.com/user-attachments/assets/6aaa3f9f-3be4-4f0a-9467-01ddbfc540c2)
 
 ## Tools
 
