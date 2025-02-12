@@ -9,8 +9,8 @@ def read(f_name):
 
 setup(
     name='typobuster',
-    version='0.0.1',
-    description='simple text editor that helps you correct common typos',
+    version='0.1.0',
+    description='lightweight editor with text transformations and auto-correction',
     packages=find_packages(),
     include_package_data=True,
     package_data={
