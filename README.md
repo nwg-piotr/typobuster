@@ -15,6 +15,11 @@ supposed to focus on plain text and contain the tools that an average user needs
 
 ![image](https://github.com/user-attachments/assets/6aaa3f9f-3be4-4f0a-9467-01ddbfc540c2)
 
+## View
+
+![image](https://github.com/user-attachments/assets/dfb4cb1a-3968-4095-a5c1-6ca7c4d4a3b5)
+
+
 ## Tools
 
 ![image](https://github.com/user-attachments/assets/76dadd29-7446-45e5-a761-ea2a95bfc6bc)
