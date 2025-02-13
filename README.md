@@ -44,15 +44,16 @@ I skipped, available ids are:
 
 ## Dependencies
 
-- glib2
-- gtk3
-- gtksourceview4
-- python
-- python-cairo
-- python-gobject
-- gspell (optional) - spell checking plugin
-- hunspel-en_US (optional) - American English dictionary
-- hunspel-_xx_XX_ (optional) - hunspell dictionaries for languages you use
+- `glib2`
+- `gtk3`
+- `gtksourceview4`
+- `python`
+- `python-cairo`
+- `python-gobject`
+- `gspell` (optional) - spell checking plugin
+- `hunspel-en_US` (optional) - American English dictionary
+- `hunspel-_xx_XX_` (optional) - hunspell dictionaries for languages you use
+- for spell check you may also need to install `libvoikko`, if missing
 
 ## Installation
 
