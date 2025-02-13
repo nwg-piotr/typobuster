@@ -541,6 +541,7 @@ class SearchBar(Gtk.Box):
         self.search_entry = Gtk.SearchEntry()
         self.pack_start(self.search_entry, False, False, 1)
         self.search_entry.set_property("name", "searchentry")
+        self.search_entry.set_tooltip_text(parent_window.voc["search"])
         self.search_entry.connect("search-changed", self.on_search_changed, parent_window.buffer)
 
         btn = Gtk.Button.new_from_icon_name("go-up-symbolic", Gtk.IconSize.MENU)
@@ -551,10 +552,9 @@ class SearchBar(Gtk.Box):
         self.pack_start(btn, False, False, 0)
         btn.connect("clicked", self.highlight_match, "down")
 
-        lbl = Gtk.Label.new(parent_window.voc["replace-with"])
-        self.pack_start(lbl, False, False, 6)
-
         self.replace_entry = Gtk.Entry()
+        self.replace_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "edit-find-replace-symbolic")
+        self.replace_entry.set_tooltip_text(parent_window.voc["replace-with"])
         self.pack_start(self.replace_entry, False, False, 0)
 
         btn = Gtk.Button.new_from_icon_name("emblem-ok-symbolic", Gtk.IconSize.MENU)
