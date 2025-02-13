@@ -51,7 +51,7 @@ I skipped, available ids are:
 - python-cairo
 - python-gobject
 - gspell (optional) - spell checking plugin
-- hunspel-en_US (optional) - American English dictionaries
+- hunspel-en_US (optional) - American English dictionary
 - hunspel-_xx_XX_ (optional) - hunspell dictionaries for languages you use
 
 ## Installation
