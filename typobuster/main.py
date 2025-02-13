@@ -166,7 +166,8 @@ class Typobuster(Gtk.Window):
                 print("gspell is NOT installed.")
 
         #  Enable spell checking
-        self.gspell_text_view.set_inline_spell_checking(self.settings["gspell-enable"] and self.gspell_text_view)
+        if self.gspell_available:
+            self.gspell_text_view.set_inline_spell_checking(self.settings["gspell-enable"] and self.gspell_text_view)
 
         self.set_view_style()
         self.set_gtk_theme()
@@ -320,7 +321,7 @@ class Typobuster(Gtk.Window):
 
     def on_spell_check_switched(self, check_button):
         self.settings["gspell-enable"] = check_button.get_active()
-        if self.gspell_text_view:
+        if self.gspell_available and self.gspell_text_view:
             self.gspell_text_view.set_inline_spell_checking(self.settings["gspell-enable"])
         save_settings(self.settings)
 
