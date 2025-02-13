@@ -53,7 +53,7 @@ I skipped, available ids are:
 - `gspell` (optional) - spell checking plugin
 - `hunspel-en_US` (optional) - American English dictionary
 - `hunspel-_xx_XX_` (optional) - hunspell dictionaries for languages you use
-- for spell check you may also need to install `hspell`, `nuspell`, `aspell`, `libvoikko`, if missing. I can't wrap my head around these dependencies.
+- for spell check not to bug you with missing shared libraries warnings, you may also need to install `hspell`, `nuspell`, `aspell`, `libvoikko`, if not yet installed.
 - `python-build` (make)
 - `python-installer` (make)
 - `python-wheel` (make)
