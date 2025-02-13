@@ -551,7 +551,7 @@ class SearchBar(Gtk.Box):
         self.pack_start(btn, False, False, 0)
         btn.connect("clicked", self.highlight_match, "down")
 
-        lbl = Gtk.Label.new(parent_window.voc["replace-all-with"])
+        lbl = Gtk.Label.new(parent_window.voc["replace-with"])
         self.pack_start(lbl, False, False, 6)
 
         self.replace_entry = Gtk.Entry()

@@ -49,7 +49,7 @@
   "reload-file": "Czy chcesz powtórnie załadować plik?",
   "remove-empty-rows": "Usuń puste wiersze",
   "remove-non-ascii": "Usuń znaki spoza ASCII",
-  "replace-all-with": "Zamień wszystkie na",
+  "replace-with": "Zamień na",
   "row": "Wiersz",
   "sanitization": "Oczyszczanie",
   "sanitize": "Wyczyść",

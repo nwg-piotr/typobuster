@@ -50,7 +50,7 @@
   "reload-file": "Do you want to reload the file?",
   "remove-empty-rows": "Remove empty rows",
   "remove-non-ascii": "Remove non-ASCII characters",
-  "replace-all-with": "Replace all with",
+  "replace-with": "Replace with",
   "row": "Row",
   "sanitization": "Sanitization",
   "sanitize": "Sanitize",
