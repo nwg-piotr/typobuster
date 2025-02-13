@@ -145,7 +145,13 @@ class Typobuster(Gtk.Window):
         vbox.pack_end(self.search_bar, False, False, 0)
 
         if "syntax" in self.settings:
-            self.set_syntax(None, self.settings["syntax"])
+            language = self.lang_manager.get_language(self.settings["syntax"])
+            self.buffer.set_language(language)
+            if self.settings["syntax"] == "none":
+                s_lbl = self.voc["plain-text"]
+            else:
+                s_lbl = self.syntax_dict[self.settings["syntax"]]
+            self.search_bar.syntax_lbl.set_text(s_lbl)
 
         # Add sample text to the buffer
         self.buffer.begin_not_undoable_action()
