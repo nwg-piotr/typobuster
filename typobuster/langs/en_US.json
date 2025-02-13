@@ -22,6 +22,7 @@
   "file": "File",
   "file-changed-externally": "File changed externally",
   "file-not-found": "File not found",
+  "gspell-missing": "gspell package missing",
   "gtk-theme": "GTK theme",
   "help": "Help",
   "highlight-current-row": "Highlight current row",

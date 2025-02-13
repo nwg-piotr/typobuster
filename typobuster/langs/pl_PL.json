@@ -21,6 +21,7 @@
   "file": "Plik",
   "file-changed-externally": "Plik został zewnętrznie zmieniony",
   "file-not-found": "Nie znaleziono pliku",
+  "gspell-missing": "brak pakietu gspell",
   "gtk-theme": "Motyw GTK",
   "help": "Pomoc",
   "highlight-current-row": "Wyróżnienie bieżącego wiersza",

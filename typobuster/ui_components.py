@@ -501,6 +501,8 @@ class PreferencesDialog(Gtk.Dialog):
 
         self.spell_check_cb = Gtk.CheckButton(label=parent.voc["spell-check"])
         self.spell_check_cb.set_sensitive(parent.gspell_available)
+        if not parent.gspell_available:
+            self.spell_check_cb.set_tooltip_text(parent.voc["gspell-missing"])
         self.spell_check_cb.set_active(parent.settings["gspell-enable"])
         self.spell_check_cb.connect("toggled", parent.on_spell_check_switched)
         self.grid.attach(self.spell_check_cb, 0, 5, 1, 1)
