@@ -153,7 +153,7 @@ class Typobuster(Gtk.Window):
                 s_lbl = self.syntax_dict[self.settings["syntax"]]
             self.search_bar.syntax_lbl.set_text(s_lbl)
 
-        # Add sample text to the buffer
+        # Add initial (empty) text to the buffer
         self.buffer.begin_not_undoable_action()
         self.buffer.set_text("")
         self.buffer.end_not_undoable_action()
@@ -169,7 +169,7 @@ class Typobuster(Gtk.Window):
                 self.gspell_available = True
                 print("Loaded Gspell module")
             except (ImportError, ValueError):
-                print("gspell is NOT installed.")
+                print("Gspell is NOT installed, spell check unavailable")
 
         #  Enable spell checking
         if self.gspell_available:
