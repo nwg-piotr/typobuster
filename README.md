@@ -31,7 +31,7 @@ supposed to focus on plain text and contain the tools that an average user needs
 
 ## Preferences
 
-![image](https://github.com/user-attachments/assets/173ae703-a50a-4f6e-8729-3113654e6c7a)
+![image](https://github.com/user-attachments/assets/4df35852-5596-4264-b7c0-517a6115f6b7)
 
 ## Syntax highlight
 
