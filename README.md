@@ -54,6 +54,10 @@ I skipped, available ids are:
 - `hunspel-en_US` (optional) - American English dictionary
 - `hunspel-_xx_XX_` (optional) - hunspell dictionaries for languages you use
 - for spell check you may also need to install `hspell`, `nuspell`, `aspell`, `libvoikko`, if missing. I can't wrap my head around these dependencies.
+- `python-build` (make)
+- `python-installer` (make)
+- `python-wheel` (make)
+- `python-setuptools` (make)
 
 ## Installation
 
