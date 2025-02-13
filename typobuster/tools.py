@@ -150,7 +150,6 @@ def load_syntax():
 
     defaults = {
         'c': 'C',
-        'c-sharp': 'C#',
         'cpp': 'C++',
         'css': 'CSS',
         'csv': 'CSV',
