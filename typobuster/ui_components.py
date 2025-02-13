@@ -569,7 +569,7 @@ class SearchBar(Gtk.Box):
         else:
             s_lbl = parent_window.syntax_dict[parent_window.settings["syntax"]]
         self.syntax_lbl = Gtk.Label.new(s_lbl)
-        self.pack_end(self.syntax_lbl, False, False, 6)
+        self.pack_end(self.syntax_lbl, False, False, 0)
 
         self.show_all()
 
