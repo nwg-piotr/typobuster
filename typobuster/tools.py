@@ -249,7 +249,7 @@ def sanitize_punctuation_marks(text, start_idx, end_idx):
 
 def add_spaces_after_punctuation_marks(text, start_idx, end_idx):
     selection = text[start_idx:end_idx]
-    selection = re.sub(r'([.,!?;:])([A-Za-z0-9])', r'\1 \2', selection)  # Add a space after punctuation marks
+    selection = re.sub(r'([.,!?;:])([A-Za-z])', r'\1 \2', selection)  # Add a space after punctuation marks
     return text[:start_idx] + selection + text[end_idx:]
 
 
