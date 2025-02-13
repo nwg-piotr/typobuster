@@ -67,8 +67,7 @@ I skipped, available ids are:
 - `gspell` (optional) - spell checking plugin
 - `hunspel-en_US` (optional) - American English dictionary
 - `hunspel-_xx_XX_` (optional) - hunspell dictionaries for languages you use
-- for Gspell not to bug you with missing shared libraries warnings, you may also need to install `hspell`, `nuspell`, 
-- `aspell` and `libvoikko`, if not yet installed.
+- for Gspell not to bug you with missing shared libraries warnings, you may also need to install `hspell`, `nuspell`, `aspell` and `libvoikko`, if not yet installed.
 - `python-build` (make)
 - `python-installer` (make)
 - `python-wheel` (make)
