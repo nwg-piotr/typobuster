@@ -40,7 +40,21 @@ you can choose a syntax from the View menu manually. I only selected most popula
 `"id": "description"` dictionary in the `~/.config/typobuster/syntax` JSON file. If you need to add something
 I skipped, available ids are:
 
-`'abnf', 'actionscript', 'ada', 'ansforth94', 'asciidoc', 'asp', 'automake', 'awk', 'bennugd', 'bibtex', 'bluespec', 'boo', 'c', 'c-sharp', 'cpp', 'changelog', 'cmake', 'cobol', 'commonlisp', 'css', 'csv', 'cuda', 'd', 'dart', 'def', 'desktop', 'diff', 'docbook', 'docker', 'dpatch', 'dtd', 'gdb-log', 'eiffel', 'erb', 'erb-html', 'erb-js', 'erlang', 'fsharp', 'fcl', 'fish', 'ftl', 'forth', 'fortran', 'gap', 'gdscript', 'genie', 'go', 'gradle', 'dot', 'groovy', 'gtk-doc', 'gtkrc', 'haddock', 'haskell', 'haxe', 'html', 'idl', 'idl-exelis', 'imagej', 'ini', 'llvm', 'j', 'jade', 'java', 'js', 'js-val', 'js-expr', 'js-fn', 'js-lit', 'js-mod', 'js-st', 'cg', 'glsl', 'jsdoc', 'json', 'jsx', 'julia', 'kotlin', 'latex', 'lean', 'less', 'lex', 'libtool', 'haskell-literate', 'logcat', 'logtalk', 'lua', 'm4', 'makefile', 'mallard', 'markdown', 'matlab', 'maxima', 'mediawiki', 'meson', 'modelica', 'mxml', 'cpphdr', 'chdr', 'nemerle', 'netrexx', 'nsis', 'objc', 'objj', 'ocaml', 'ocl', 'octave', 'ooc', 'opal', 'opencl', 'pascal', 'perl', 'php', 'pig', 'pkgconfig', 'rpmspec', 'dosbatch', 'powershell', 'prolog', 'proto', 'puppet', 'python3', 'python', 'r', 'rst', 'ruby', 'rust', 'scala', 'scheme', 'scilab', 'scss', 'sh', 'solidity', 'sparql', 'spice', 'sql', 'sml', 'star', 'sweave', 'swift', 'systemverilog', 'dtl', 'tera', 'tcl', 'terraform', 'texinfo', 'thrift', 'gettext-translation', 'toml', 't2t', 'typescript', 'typescript-js-expr', 'typescript-js-fn', 'typescript-js-lit', 'typescript-js-mod', 'typescript-js-st', 'typescript-jsx', 'typescript-type-expr', 'typescript-type-gen', 'typescript-type-lit', 'vala', 'vbnet', 'verilog', 'vhdl', 'xml', 'xslt', 'yacc', 'yaml', 'yara'`
+`'abnf', 'actionscript', 'ada', 'ansforth94', 'asciidoc', 'asp', 'automake', 'awk', 'bennugd', 'bibtex', 'bluespec', 
+'boo', 'c', 'c-sharp', 'cpp', 'changelog', 'cmake', 'cobol', 'commonlisp', 'css', 'csv', 'cuda', 'd', 'dart', 'def', 
+'desktop', 'diff', 'docbook', 'docker', 'dpatch', 'dtd', 'gdb-log', 'eiffel', 'erb', 'erb-html', 'erb-js', 'erlang', 
+'fsharp', 'fcl', 'fish', 'ftl', 'forth', 'fortran', 'gap', 'gdscript', 'genie', 'go', 'gradle', 'dot', 'groovy', 
+'gtk-doc', 'gtkrc', 'haddock', 'haskell', 'haxe', 'html', 'idl', 'idl-exelis', 'imagej', 'ini', 'llvm', 'j', 'jade', 
+'java', 'js', 'js-val', 'js-expr', 'js-fn', 'js-lit', 'js-mod', 'js-st', 'cg', 'glsl', 'jsdoc', 'json', 'jsx', 'julia', 
+'kotlin', 'latex', 'lean', 'less', 'lex', 'libtool', 'haskell-literate', 'logcat', 'logtalk', 'lua', 'm4', 'makefile', 
+'mallard', 'markdown', 'matlab', 'maxima', 'mediawiki', 'meson', 'modelica', 'mxml', 'cpphdr', 'chdr', 'nemerle', 
+'netrexx', 'nsis', 'objc', 'objj', 'ocaml', 'ocl', 'octave', 'ooc', 'opal', 'opencl', 'pascal', 'perl', 'php', 'pig', 
+'pkgconfig', 'rpmspec', 'dosbatch', 'powershell', 'prolog', 'proto', 'puppet', 'python3', 'python', 'r', 'rst', 'ruby', 
+'rust', 'scala', 'scheme', 'scilab', 'scss', 'sh', 'solidity', 'sparql', 'spice', 'sql', 'sml', 'star', 'sweave', 
+'swift', 'systemverilog', 'dtl', 'tera', 'tcl', 'terraform', 'texinfo', 'thrift', 'gettext-translation', 'toml', 't2t', 
+'typescript', 'typescript-js-expr', 'typescript-js-fn', 'typescript-js-lit', 'typescript-js-mod', 'typescript-js-st', 
+'typescript-jsx', 'typescript-type-expr', 'typescript-type-gen', 'typescript-type-lit', 'vala', 'vbnet', 'verilog', 
+'vhdl', 'xml', 'xslt', 'yacc', 'yaml', 'yara'`
 
 ## Dependencies
 
@@ -53,7 +67,8 @@ I skipped, available ids are:
 - `gspell` (optional) - spell checking plugin
 - `hunspel-en_US` (optional) - American English dictionary
 - `hunspel-_xx_XX_` (optional) - hunspell dictionaries for languages you use
-- for spell check not to bug you with missing shared libraries warnings, you may also need to install `hspell`, `nuspell`, `aspell`, `libvoikko`, if not yet installed.
+- for Gspell not to bug you with missing shared libraries warnings, you may also need to install `hspell`, `nuspell`, 
+- `aspell` and `libvoikko`, if not yet installed.
 - `python-build` (make)
 - `python-installer` (make)
 - `python-wheel` (make)
