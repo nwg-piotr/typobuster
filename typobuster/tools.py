@@ -102,6 +102,8 @@ def load_settings():
         "view-line-numbers": False,
         "highlight-current-row": False,
         "highlight-matching-brackets": False,
+        "right-margin-position": 80,
+        "right-margin-show": False,
         "wrap-lines": True,
         "tab-width": 4,
         "tab-mode": "spaces",

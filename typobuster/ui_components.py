@@ -476,28 +476,41 @@ class PreferencesDialog(Gtk.Dialog):
         self.font_chooser_btn.connect("font-set", parent.on_font_selected)
         self.grid.attach(self.font_chooser_btn, 1, 1, 1, 1)
 
+        self.right_margin_label = Gtk.Label(label=parent.voc["right-margin-position"], halign=Gtk.Align.START)
+        self.grid.attach(self.right_margin_label, 0, 2, 1, 1)
+
+        right_margin_sb = Gtk.SpinButton.new_with_range(1, 1024.0, 1)
+        right_margin_sb.set_value(parent.settings["right-margin-position"])
+        self.grid.attach(right_margin_sb, 1, 2, 1, 1)
+        right_margin_sb.connect("value-changed", parent.on_margin_position_selected)
+
+        right_margin_cb = Gtk.CheckButton.new_with_label(parent.voc["show"])
+        right_margin_cb.set_active(parent.settings["right-margin-show"])
+        self.grid.attach(right_margin_cb, 2, 2, 1, 1)
+        right_margin_cb.connect("toggled", parent.on_right_margin_toggled)
+
         self.tab_width_label = Gtk.Label(label=parent.voc["tab-width"], halign=Gtk.Align.START)
-        self.grid.attach(self.tab_width_label, 0, 2, 1, 1)
+        self.grid.attach(self.tab_width_label, 0, 3, 1, 1)
 
         tab_width_sb = Gtk.SpinButton.new_with_range(1, 32.0, 1)
         tab_width_sb.set_value(parent.settings["tab-width"])
         tab_width_sb.connect("value-changed", parent.on_tab_with_selected)
-        self.grid.attach(tab_width_sb, 1, 2, 1, 1)
+        self.grid.attach(tab_width_sb, 1, 3, 1, 1)
 
         self.tab_mode_label = Gtk.Label(label=parent.voc["tab-mode"], halign=Gtk.Align.START)
-        self.grid.attach(self.tab_mode_label, 0, 3, 1, 1)
+        self.grid.attach(self.tab_mode_label, 0, 4, 1, 1)
 
         self.tab_mode_combo = Gtk.ComboBoxText()
         self.tab_mode_combo.append("tabs", parent.voc["insert-tabs"])
         self.tab_mode_combo.append("spaces", parent.voc["insert-spaces"])
         self.tab_mode_combo.set_active_id(parent.settings["tab-mode"])
         self.tab_mode_combo.connect("changed", parent.on_tab_mode_changed)
-        self.grid.attach(self.tab_mode_combo, 1, 3, 1, 1)
+        self.grid.attach(self.tab_mode_combo, 1, 4, 1, 1)
 
         self.auto_indent_cb = Gtk.CheckButton(label=parent.voc["auto-indent"])
         self.auto_indent_cb.set_active(parent.settings["auto-indent"])
         self.auto_indent_cb.connect("toggled", parent.on_auto_indent_changed)
-        self.grid.attach(self.auto_indent_cb, 0, 4, 1, 1)
+        self.grid.attach(self.auto_indent_cb, 0, 5, 1, 1)
 
         self.spell_check_cb = Gtk.CheckButton(label=parent.voc["spell-check"])
         self.spell_check_cb.set_sensitive(parent.gspell_available)
@@ -505,11 +518,11 @@ class PreferencesDialog(Gtk.Dialog):
             self.spell_check_cb.set_tooltip_text(parent.voc["gspell-missing"])
         self.spell_check_cb.set_active(parent.settings["gspell-enable"])
         self.spell_check_cb.connect("toggled", parent.on_spell_check_switched)
-        self.grid.attach(self.spell_check_cb, 0, 5, 1, 1)
+        self.grid.attach(self.spell_check_cb, 0, 6, 1, 1)
 
         # OK Button
         hbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
-        self.grid.attach(hbox, 0, 6, 2, 1)
+        self.grid.attach(hbox, 0, 7, 3, 1)
         self.ok_button = Gtk.Button(label=parent.voc["close"])
         self.ok_button.connect("clicked", lambda x: self.close())
         hbox.pack_end(self.ok_button, False, False, 0)

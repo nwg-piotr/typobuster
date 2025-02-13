@@ -92,6 +92,9 @@ class Typobuster(Gtk.Window):
         if self.settings["view-line-numbers"]:
             self.source_view.set_show_line_numbers(True)  # Enable line numbers
 
+        self.source_view.set_right_margin_position(self.settings["right-margin-position"])
+        self.source_view.set_show_right_margin(self.settings["right-margin-show"])
+
         space_drawer = self.source_view.get_space_drawer()
         space_drawer.set_enable_matrix(self.settings["whitespaces"])  # Whether to enable whitespaces view
 
@@ -313,6 +316,16 @@ class Typobuster(Gtk.Window):
     def on_tab_with_selected(self, sb):
         self.settings["tab-width"] = int(sb.get_value())
         self.set_tab_width()
+        save_settings(self.settings)
+
+    def on_margin_position_selected(self, sb):
+        self.settings["right-margin-position"] = int(sb.get_value())
+        self.source_view.set_right_margin_position(self.settings["right-margin-position"])
+        save_settings(self.settings)
+
+    def on_right_margin_toggled(self, cb):
+        self.settings["right-margin-show"] = cb.get_active()
+        self.source_view.set_show_right_margin(self.settings["right-margin-show"])
         save_settings(self.settings)
 
     def on_tab_mode_changed(self, combo):
