@@ -13,4 +13,4 @@ Comment[pl]=Lekki edytor z transformacjami tekstu i autokorektą
 Exec=typobuster
 Icon=typobuster
 Terminal=false
-Categories=Utility;TextTools;TextEditor;
+Categories=Office;TextTools;TextEditor;
