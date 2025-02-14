@@ -425,6 +425,8 @@ class Typobuster(Gtk.Window):
 
             if transformation == "sentence":
                 transformed_text = as_in_sentence(text)
+            elif transformation == "title":
+                transformed_text = as_in_title(text)
             elif transformation == "lowercase":
                 transformed_text = to_lower_case(text)
             elif transformation == "uppercase":

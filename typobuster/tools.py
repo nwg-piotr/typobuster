@@ -234,6 +234,7 @@ def selected_text(buffer):
 
     return buffer.get_text(start, end, True), start_iter.get_offset(), end_iter.get_offset()
 
+
 def replace_all(text, old, new):
     return re.sub(re.escape(old), new, text)
 
@@ -356,6 +357,10 @@ def as_in_sentence(text):
         line = line[0].upper() + line[1:]
         result.append(line)
     return "\n".join(result)
+
+
+def as_in_title(text):
+    return ' '.join(word.capitalize() for word in text.split())
 
 
 def unordered_list(text):

@@ -138,9 +138,13 @@ class MenuBar(Gtk.MenuBar):
         # As in sentence menu item
         transform_as_in_sentence_menu_item = Gtk.MenuItem(label=parent_window.voc["as-in-sentence"])
         transform_menu_item.set_submenu(Gtk.Menu())
-
         transform_menu_item.get_submenu().append(transform_as_in_sentence_menu_item)
         transform_as_in_sentence_menu_item.connect("activate", parent_window.transform_text, "sentence")
+
+        # As In Title menu item
+        transform_as_in_title_menu_item = Gtk.MenuItem(label=parent_window.voc["as-in-title"])
+        transform_menu_item.get_submenu().append(transform_as_in_title_menu_item)
+        transform_as_in_title_menu_item.connect("activate", parent_window.transform_text, "title")
 
         # Transform to Uppercase menu item
         transform_uppercase_menu_item = Gtk.MenuItem(label=parent_window.voc["uppercase"])
