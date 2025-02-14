@@ -7,10 +7,10 @@ Name[pl]=Typobuster
 GenericName=Simple text editor
 GenericName[pl]=Prosty edytor tekstu
 
-Comment=Simple text editor that helps you correct common typos
-Comment[pl]=Prosty edytor tekstu, który pomaga korygować typowe literówki
+Comment=Lightweight editor with text transformations and auto-correction
+Comment[pl]=Lekki edytor z transformacjami tekstu i autokorektą
 
 Exec=typobuster
 Icon=typobuster
 Terminal=false
-Categories=Settings;DesktopSettings;
+Categories=Utility;TextTools;TextEditor;
