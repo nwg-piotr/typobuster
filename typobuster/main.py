@@ -186,6 +186,7 @@ class Typobuster(Gtk.Window):
     def on_text_changed(self, buffer):
         self.unsaved_changes = True
         self.update_cursor_position()
+        self.update_stats()
 
     def update_cursor_position(self):
         """ Get and print the cursor position. """
