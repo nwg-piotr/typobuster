@@ -221,6 +221,18 @@ def save_text_file(text, path):
         return e
 
 
+def selected_text(buffer):
+    start = buffer.get_start_iter()
+    end = buffer.get_end_iter()
+
+    if buffer.get_has_selection():
+        start_iter, end_iter = buffer.get_selection_bounds()
+    else:
+        start_iter = start
+        end_iter = end
+
+    return buffer.get_text(start, end, True), start_iter.get_offset(), end_iter.get_offset()
+
 def replace_all(text, old, new):
     return re.sub(re.escape(old), new, text)
 

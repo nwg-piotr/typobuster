@@ -201,6 +201,10 @@ class Typobuster(Gtk.Window):
         if mark == buffer.get_insert():  # Ignore selection mark
             self.update_cursor_position()
 
+        else:
+            txt, s, e = selected_text(buffer)
+            self.search_bar.len_lbl.set_text(f'{len(txt[s:e])}')
+
     def on_close(self, widget, event):
         if self.unsaved_changes:
             dialog = Gtk.MessageDialog(

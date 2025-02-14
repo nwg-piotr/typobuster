@@ -530,19 +530,6 @@ class PreferencesDialog(Gtk.Dialog):
         self.show_all()
 
 
-def selected_text(buffer):
-    start = buffer.get_start_iter()
-    end = buffer.get_end_iter()
-
-    if buffer.get_has_selection():
-        start_iter, end_iter = buffer.get_selection_bounds()
-    else:
-        start_iter = start
-        end_iter = end
-
-    return buffer.get_text(start, end, True), start_iter.get_offset(), end_iter.get_offset()
-
-
 class SearchBar(Gtk.Box):
     def __init__(self, parent_window):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
@@ -577,12 +564,15 @@ class SearchBar(Gtk.Box):
         self.pos_lbl = Gtk.Label.new(f'{parent_window.voc["row"]}: 1 {parent_window.voc["column"]}: 0')
         self.pack_end(self.pos_lbl, False, False, 6)
 
+        self.len_lbl = Gtk.Label.new("0")
+        self.pack_end(self.len_lbl, False, False, 0)
+
         if parent_window.settings["syntax"] == "none":
             s_lbl = parent_window.voc["plain-text"]
         else:
             s_lbl = parent_window.syntax_dict[parent_window.settings["syntax"]]
         self.syntax_lbl = Gtk.Label.new(s_lbl)
-        self.pack_end(self.syntax_lbl, False, False, 0)
+        self.pack_end(self.syntax_lbl, False, False, 6)
 
         self.show_all()
 
