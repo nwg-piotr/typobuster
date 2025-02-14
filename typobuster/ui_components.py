@@ -535,6 +535,7 @@ class PreferencesDialog(Gtk.Dialog):
         self.show_all()
 
 
+
 class SearchBar(Gtk.Box):
     def __init__(self, parent_window):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
@@ -548,6 +549,7 @@ class SearchBar(Gtk.Box):
         self.search_entry.set_property("name", "searchentry")
         self.search_entry.set_tooltip_text(parent_window.voc["search"])
         self.search_entry.connect("search-changed", self.on_search_changed, parent_window.buffer)
+        self.search_entry.connect("key-release-event", self.handle_keyboard_release)
 
         btn = Gtk.Button.new_from_icon_name("go-up-symbolic", Gtk.IconSize.MENU)
         self.pack_start(btn, False, False, 0)
@@ -580,6 +582,10 @@ class SearchBar(Gtk.Box):
         self.pack_end(self.syntax_lbl, False, False, 6)
 
         self.show_all()
+
+    def handle_keyboard_release(self, widget, event):
+        if event.keyval == Gdk.KEY_Return:
+            self.highlight_match(widget, "down")
 
     def on_search_changed(self, widget, buffer):
         self.match_idx = -1

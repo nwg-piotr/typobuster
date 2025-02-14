@@ -217,7 +217,9 @@ class Typobuster(Gtk.Window):
             self.search_bar.stat_lbl.set_visible(self.settings["show-stats"])
 
     def handle_keyboard_release(self, widget, event):
-        if event.keyval == Gdk.KEY_f and event.state & Gdk.ModifierType.CONTROL_MASK:
+        if event.keyval == Gdk.KEY_Escape:
+            self.source_view.grab_focus()
+        elif event.keyval == Gdk.KEY_f and event.state & Gdk.ModifierType.CONTROL_MASK:
             self.search_bar.search_entry.grab_focus()
 
     def on_close(self, widget, event):
