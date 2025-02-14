@@ -80,6 +80,7 @@ class Typobuster(Gtk.Window):
         self.gspell_text_view = None
 
         self.connect("delete-event", self.on_close)
+        self.connect("key-release-event", self.handle_keyboard_release)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.add(vbox)
@@ -214,6 +215,10 @@ class Typobuster(Gtk.Window):
     def switch_stats_visibility(self):
         if self.search_bar:
             self.search_bar.stat_lbl.set_visible(self.settings["show-stats"])
+
+    def handle_keyboard_release(self, widget, event):
+        if event.keyval == Gdk.KEY_f and event.state & Gdk.ModifierType.CONTROL_MASK:
+            self.search_bar.search_entry.grab_focus()
 
     def on_close(self, widget, event):
         if self.unsaved_changes:
