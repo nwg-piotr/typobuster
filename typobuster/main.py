@@ -17,7 +17,6 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
 from gi.repository import Gtk, Gdk, GLib, GtkSource
 
-
 from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow, SearchBar, PreferencesDialog
 from typobuster.tools import *
 
@@ -208,12 +207,12 @@ class Typobuster(Gtk.Window):
         if self.settings["show-stats"]:
             txt, s, e = selected_text(self.buffer)
             selection = txt[s:e]
-            self.search_bar.stat_lbl.set_text(f'{self.voc["characters"]}: {len(selection)} {self.voc["words"]}: {len(selection.split())}')
+            self.search_bar.stat_lbl.set_text(
+                f'{self.voc["characters"]}: {len(selection)} {self.voc["words"]}: {len(selection.split())}')
 
     def switch_stats_visibility(self):
         if self.search_bar:
             self.search_bar.stat_lbl.set_visible(self.settings["show-stats"])
-
 
     def on_close(self, widget, event):
         if self.unsaved_changes:
@@ -312,8 +311,6 @@ class Typobuster(Gtk.Window):
         else:
             self.source_view.set_wrap_mode(Gtk.WrapMode.NONE)
         save_settings(self.settings)
-
-
 
     def show_about(self, widget):
         about = AboutWindow(self)
@@ -499,7 +496,9 @@ class Typobuster(Gtk.Window):
 
     def load_file(self, widget, path):
         if self.unsaved_changes:
-            self.on_close(None, None)
+            resp = self.on_close(None, None)
+            if resp:
+                return  # Prevent from closing
 
         global file_path
         file_path = os.path.abspath(path)
