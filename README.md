@@ -13,7 +13,7 @@ supposed to focus on plain text and contain the tools that an average user needs
 
 ## Transformations
 
-![image](https://github.com/user-attachments/assets/6aaa3f9f-3be4-4f0a-9467-01ddbfc540c2)
+![2025-02-14-130530_hypr_screenshot](https://github.com/user-attachments/assets/da2346a3-983b-41e4-b977-92508344799a)
 
 ## View
 
@@ -31,7 +31,7 @@ supposed to focus on plain text and contain the tools that an average user needs
 
 ## Preferences
 
-![image](https://github.com/user-attachments/assets/4df35852-5596-4264-b7c0-517a6115f6b7)
+![2025-02-14-130825_hypr_screenshot](https://github.com/user-attachments/assets/2f2ae1a6-68d7-4a52-89f7-a35a914334d6)
 
 ## Syntax highlight
 
