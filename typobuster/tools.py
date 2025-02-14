@@ -109,7 +109,8 @@ def load_settings():
         "tab-mode": "spaces",
         "auto-indent": True,
         "whitespaces": False,
-        "gspell-enable": False
+        "gspell-enable": False,
+        "show-stats": False
     }
     settings = load_json(config_path)
 

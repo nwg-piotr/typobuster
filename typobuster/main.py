@@ -200,10 +200,20 @@ class Typobuster(Gtk.Window):
         """ Fires when the cursor moves. """
         if mark == buffer.get_insert():  # Ignore selection mark
             self.update_cursor_position()
-
         else:
-            txt, s, e = selected_text(buffer)
-            self.search_bar.len_lbl.set_text(f'{len(txt[s:e])}')
+            if self.settings["show-stats"]:
+                self.update_stats()
+
+    def update_stats(self):
+        if self.settings["show-stats"]:
+            txt, s, e = selected_text(self.buffer)
+            selection = txt[s:e]
+            self.search_bar.stat_lbl.set_text(f'{self.voc["characters"]}: {len(selection)} {self.voc["words"]}: {len(selection.split())}')
+
+    def switch_stats_visibility(self):
+        if self.search_bar:
+            self.search_bar.stat_lbl.set_visible(self.settings["show-stats"])
+
 
     def on_close(self, widget, event):
         if self.unsaved_changes:
@@ -348,6 +358,12 @@ class Typobuster(Gtk.Window):
             self.gspell_text_view.set_inline_spell_checking(self.settings["gspell-enable"])
         save_settings(self.settings)
 
+    def on_stats_cb_toggled(self, check_button):
+        self.settings["show-stats"] = check_button.get_active()
+        self.switch_stats_visibility()
+        save_settings(self.settings)
+        self.update_stats()
+
     def set_view_style(self):
         if self.settings["gtk-font-name"]:
             # Create a CssProvider and parse "gtk-font-name" into CSS
@@ -477,6 +493,7 @@ class Typobuster(Gtk.Window):
                     self.save_file(self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True))
 
         self.update_text("")
+        self.update_stats()
         self.unsaved_changes = False
         self.set_window_title(f"{voc['untitled']} - Typobuster")
 
@@ -513,6 +530,7 @@ class Typobuster(Gtk.Window):
             self.update_recent(path)
             self.menu_bar.recent_menu_item.set_sensitive(True)
         self.update_text(text)
+        self.update_stats()
         self.set_window_title(path)
 
         self.search_bar.clear()
@@ -755,6 +773,7 @@ def main():
         window.load_file(None, args.file_path)
 
     window.show_all()
+    window.switch_stats_visibility()
     Gtk.main()
 
 

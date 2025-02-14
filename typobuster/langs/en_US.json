@@ -7,6 +7,7 @@
   "camel-case": "camelCase",
   "cancel": "Cancel",
   "chages-will-be-lost": "Your changes will be lost if you don't save them.",
+  "characters": "Ch",
   "close": "Close",
   "column": "C",
   "copy": "Copy",
@@ -60,6 +61,7 @@
   "search": "Search",
   "select-all": "Select All",
   "show": "Show",
+  "show-stats": "Show text statistics",
   "snake-case": "snake_case",
   "sort-rows": "Sort rows",
   "spaces": "Spaces",
@@ -81,5 +83,6 @@
   "want-save-changes": "Do you want to save the changes to",
   "web-cleanup": "Web cleanup",
   "whitespaces": "Whitespaces",
+  "words": "Wd",
   "wrap-lines": "Wrap lines"
 }

@@ -520,6 +520,11 @@ class PreferencesDialog(Gtk.Dialog):
         self.spell_check_cb.connect("toggled", parent.on_spell_check_switched)
         self.grid.attach(self.spell_check_cb, 0, 6, 1, 1)
 
+        self.stats_cb = Gtk.CheckButton(label=parent.voc["show-stats"])
+        self.stats_cb.set_active(parent.settings["show-stats"])
+        self.stats_cb.connect("toggled", parent.on_stats_cb_toggled)
+        self.grid.attach(self.stats_cb, 0, 7, 1, 1)
+
         # OK Button
         hbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
         self.grid.attach(hbox, 0, 7, 3, 1)
@@ -564,8 +569,8 @@ class SearchBar(Gtk.Box):
         self.pos_lbl = Gtk.Label.new(f'{parent_window.voc["row"]}: 1 {parent_window.voc["column"]}: 0')
         self.pack_end(self.pos_lbl, False, False, 6)
 
-        self.len_lbl = Gtk.Label.new("0")
-        self.pack_end(self.len_lbl, False, False, 0)
+        self.stat_lbl = Gtk.Label.new("0")
+        self.pack_end(self.stat_lbl, False, False, 0)
 
         if parent_window.settings["syntax"] == "none":
             s_lbl = parent_window.voc["plain-text"]

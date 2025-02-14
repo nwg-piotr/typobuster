@@ -7,6 +7,7 @@
   "camelcase": "camel-case",
   "cancel": "Anuluj",
   "chages-will-be-lost": "Zmiany będą utracone jeśli ich nie zapiszesz.",
+  "characters": "Zn",
   "close": "Zamknij",
   "column": "K",
   "copy": "Kopiuj",
@@ -59,6 +60,7 @@
   "search": "Wyszukaj",
   "select-all": "Wybierz wszystko",
   "show": "Pokazuj",
+  "show-stats": "Pokazuj statystykę tekstu",
   "snakecase": "snake_case",
   "sort-rows": "Sortuj wiersze",
   "spaces": "Spacje",
@@ -80,5 +82,6 @@
   "want-save-changes": "Czy chcesz zapisać zmiany w",
   "web-cleanup": "Korekta WWW",
   "whitespaces": "Białe znaki",
+  "words": "Sł",
   "wrap-lines": "Zawijanie wierszy"
 }
