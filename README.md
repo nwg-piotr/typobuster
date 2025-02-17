@@ -11,6 +11,8 @@ quotation marks, etc. Up until now, I have used Mousepad to proofread, either ma
 that was kind of waste of time. To make life easier, I developed a simple editor that will do it automatically. It is 
 supposed to focus on plain text and contain the tools that an average user needs.
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/typobuster.svg)](https://repology.org/project/typobuster/versions)
+
 ## Transformations
 
 ![2025-02-14-130530_hypr_screenshot](https://github.com/user-attachments/assets/da2346a3-983b-41e4-b977-92508344799a)
