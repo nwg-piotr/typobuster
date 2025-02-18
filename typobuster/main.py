@@ -265,11 +265,11 @@ class Typobuster(Gtk.Window):
             s_lbl = self.syntax_dict[self.settings["syntax"]]
         self.search_bar.syntax_lbl.set_text(s_lbl)
 
-    def undo(self, widget):
+    def undo(self, *args):
         if self.buffer.can_undo():
             self.buffer.undo()
 
-    def redo(self, widget):
+    def redo(self, *args):
         if self.buffer.can_redo():
             self.buffer.redo()
 
@@ -499,7 +499,9 @@ class Typobuster(Gtk.Window):
                 if response == Gtk.ResponseType.YES:
                     self.save_file(self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True))
 
+        self.buffer.begin_not_undoable_action()
         self.update_text("")
+        self.buffer.end_not_undoable_action()
         self.update_stats()
         self.unsaved_changes = False
         self.set_window_title(f"{voc['untitled']} - Typobuster")
@@ -538,7 +540,9 @@ class Typobuster(Gtk.Window):
             self.file_stat = os.stat(file_path)
             self.update_recent(path)
             self.menu_bar.recent_menu_item.set_sensitive(True)
+        self.buffer.begin_not_undoable_action()
         self.update_text(text)
+        self.buffer.end_not_undoable_action()
         self.update_stats()
         self.set_window_title(path)
 

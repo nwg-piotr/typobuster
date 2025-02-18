@@ -91,10 +91,13 @@ class MenuBar(Gtk.MenuBar):
         edit_menu_item = Gtk.MenuItem(label=parent_window.voc["edit"])
         edit_menu_item.set_submenu(edit_menu)
 
+        dummy_accel_group = Gtk.AccelGroup()
+
         # Undo menu item
         self.undo_menu_item = Gtk.MenuItem(label=parent_window.voc["undo"])
         key, mod = Gtk.accelerator_parse("<Control>Z")
         self.undo_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.undo)
         edit_menu.append(self.undo_menu_item)
         self.undo_menu_item.connect("activate", parent_window.undo)
 
@@ -102,32 +105,39 @@ class MenuBar(Gtk.MenuBar):
         self.redo_menu_item = Gtk.MenuItem(label=parent_window.voc["redo"])
         key, mod = Gtk.accelerator_parse("<Control>Y")
         self.redo_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.redo)
         edit_menu.append(self.redo_menu_item)
         self.redo_menu_item.connect("activate", parent_window.redo)
 
         # Cut menu item
         cut_menu_item = Gtk.MenuItem(label=parent_window.voc["cut"])
         key, mod = Gtk.accelerator_parse("<Control>X")
-        cut_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        cut_menu_item.add_accelerator("activate", dummy_accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, lambda *args: None)  # No action
         edit_menu.append(cut_menu_item)
         cut_menu_item.connect("activate", parent_window.cut_text)
 
         # Copy menu item
         copy_menu_item = Gtk.MenuItem(label=parent_window.voc["copy"])
         key, mod = Gtk.accelerator_parse("<Control>C")
-        copy_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        copy_menu_item.add_accelerator("activate", dummy_accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, lambda *args: None)  # No action
         edit_menu.append(copy_menu_item)
         copy_menu_item.connect("activate", parent_window.copy_text)
 
         # Paste menu item
         paste_menu_item = Gtk.MenuItem(label=parent_window.voc["paste"])
         key, mod = Gtk.accelerator_parse("<Control>V")
-        paste_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        paste_menu_item.add_accelerator("activate", dummy_accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, lambda *args: None)  # No action
         edit_menu.append(paste_menu_item)
         paste_menu_item.connect("activate", parent_window.paste_text)
 
         # Delete menu item
         delete_menu_item = Gtk.MenuItem(label=parent_window.voc["delete"])
+        key, mod = Gtk.accelerator_parse("Delete")
+        delete_menu_item.add_accelerator("activate", dummy_accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
+        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, lambda *args: None)  # No action
         edit_menu.append(delete_menu_item)
         delete_menu_item.connect("activate", parent_window.delete_text)
 
