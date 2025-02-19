@@ -220,6 +220,22 @@ class Typobuster(Gtk.Window):
     def handle_keyboard_release(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
             self.source_view.grab_focus()
+        elif event.keyval == Gdk.KEY_n and event.state & Gdk.ModifierType.CONTROL_MASK:
+            self.new_file()
+        elif event.keyval == Gdk.KEY_o and event.state & Gdk.ModifierType.CONTROL_MASK:
+            self.open_file()
+        elif event.keyval == Gdk.KEY_s and event.state & Gdk.ModifierType.CONTROL_MASK:
+            self.save_file()
+        elif event.keyval == Gdk.KEY_S and event.state & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK):
+            self.save_file_as()
+        elif event.keyval == Gdk.KEY_p and event.state & Gdk.ModifierType.CONTROL_MASK:
+            self.on_print_btn()
+        elif event.keyval == Gdk.KEY_q and event.state & Gdk.ModifierType.CONTROL_MASK:
+            self.quit()
+        elif event.keyval == Gdk.KEY_z and event.state & Gdk.ModifierType.CONTROL_MASK:
+            self.undo()
+        elif event.keyval == Gdk.KEY_y and event.state & Gdk.ModifierType.CONTROL_MASK:
+            self.redo()
         elif event.keyval == Gdk.KEY_f and event.state & Gdk.ModifierType.CONTROL_MASK:
             self.search_bar.search_entry.grab_focus()
 
@@ -274,7 +290,7 @@ class Typobuster(Gtk.Window):
         if self.buffer.can_redo():
             self.buffer.redo()
 
-    def cut_text(self, widget):
+    def cut_text(self, *args):
         self.buffer.begin_user_action()
         self.buffer.cut_clipboard(self.clipboard, True)  # True -> delete after copying
         self.buffer.end_user_action()
@@ -489,7 +505,7 @@ class Typobuster(Gtk.Window):
         filename = os.path.basename(path)
         self.set_title(filename)
 
-    def new_file(self, widget):
+    def new_file(self, *args):
         title = file_path.split("/")[-1] if file_path else self.voc["untitled"]
         if self.unsaved_changes:
             if self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True):
@@ -558,7 +574,7 @@ class Typobuster(Gtk.Window):
 
         self.unsaved_changes = False
 
-    def open_file(self, widget):
+    def open_file(self, *args):
         if self.unsaved_changes:
             self.on_close(None, None)
 
@@ -584,7 +600,7 @@ class Typobuster(Gtk.Window):
             self.load_file(None, filename)
         dialog.destroy()
 
-    def save_file(self, widget):
+    def save_file(self, *args):
         if file_path:
             text = self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True)
             result = save_text_file(text, file_path)
@@ -598,7 +614,7 @@ class Typobuster(Gtk.Window):
         else:
             self.save_file_as(None)
 
-    def save_file_as(self, widget):
+    def save_file_as(self, *args):
         global file_path
         dialog = Gtk.FileChooserDialog(
             title="Save File",
@@ -668,7 +684,7 @@ class Typobuster(Gtk.Window):
             recent_paths.insert(0, path)
         save_text_file("\n".join(recent_paths), recent_file)
 
-    def on_print_btn(self, widget):
+    def on_print_btn(self, *args):
         print_settings = Gtk.PrintSettings()
         page_setup = Gtk.PageSetup()
 
@@ -757,7 +773,7 @@ class Typobuster(Gtk.Window):
 
         return pages
 
-    def quit(self, widget):
+    def quit(self, *args):
         self.close()
 
 

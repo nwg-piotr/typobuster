@@ -15,62 +15,43 @@ class MenuBar(Gtk.MenuBar):
 
         self.parent_window = parent_window
 
-        # Key accelerator group
-        accel_group = Gtk.AccelGroup()
-        parent_window.add_accel_group(accel_group)
-
         # File menu
         file_menu = Gtk.Menu()
         file_menu.connect("show", self.update_menu_items_sensitivity)
         file_menu_item = Gtk.MenuItem(label=parent_window.voc["file"])
         file_menu_item.set_submenu(file_menu)
 
-        # New menu item
-        self.new_menu_item = Gtk.MenuItem(label=parent_window.voc["new"])
+        # File/New
+        self.new_menu_item = CustomMenuItem(parent_window.voc["new"], "Ctrl+N")
         file_menu.append(self.new_menu_item)
-        key, mod = Gtk.accelerator_parse("<Control>N")
-        self.new_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.new_file)
         self.new_menu_item.connect("activate", parent_window.new_file)
 
-        # Open menu item
-        open_menu_item = Gtk.MenuItem(label=parent_window.voc["open"])
+        # File/Open
+        open_menu_item = CustomMenuItem(parent_window.voc["open"], "Ctrl+O")
         file_menu.append(open_menu_item)
-        key, mod = Gtk.accelerator_parse("<Control>O")
-        open_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.open_file)
         open_menu_item.connect("activate", parent_window.open_file)
 
-        # Open recent files menu item
+        # File/Open recent
         self.recent_menu_item = Gtk.MenuItem(label=parent_window.voc["recent-files"])
         file_menu.append(self.recent_menu_item)
         self.recent_menu_item.set_sensitive(os.path.isfile(os.path.join(config_dir(), "recent")))
         file_menu.connect("show", add_recent_menu, self.recent_menu_item, self.parent_window)
 
-        # Save menu item
-        save_menu_item = Gtk.MenuItem(label=parent_window.voc["save"])
-        key, mod = Gtk.accelerator_parse("<Control>S")
-        save_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.save_file)
+        # File/Save
+        save_menu_item = CustomMenuItem(parent_window.voc["save"], "Ctrl+S")
         file_menu.append(save_menu_item)
         save_menu_item.connect("activate", parent_window.save_file)
 
-        # Save As menu item
-        save_as_menu_item = Gtk.MenuItem(label=parent_window.voc["save-as"])
-        key, mod = Gtk.accelerator_parse("<Shift><Control>S")
-        save_as_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.save_file_as)
+        # File/Save As
+        save_as_menu_item = CustomMenuItem(parent_window.voc["save-as"], "Ctrl+Shift+S")
         file_menu.append(save_as_menu_item)
         save_as_menu_item.connect("activate", parent_window.save_file_as)
 
         sep = Gtk.SeparatorMenuItem()
         file_menu.append(sep)
 
-        # Print menu item
-        print_menu_item = Gtk.MenuItem(label=parent_window.voc["print"])
-        key, mod = Gtk.accelerator_parse("<Control>P")
-        print_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.on_print_btn)
+        # File/Print
+        print_menu_item = CustomMenuItem(parent_window.voc["print"], "Ctrl+P")
         file_menu.append(print_menu_item)
         print_menu_item.connect("activate", parent_window.on_print_btn)
 
@@ -78,10 +59,7 @@ class MenuBar(Gtk.MenuBar):
         file_menu.append(sep)
 
         # Quit menu item
-        quit_menu_item = Gtk.MenuItem(label=parent_window.voc["quit"])
-        key, mod = Gtk.accelerator_parse("<Control>Q")
-        quit_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.quit)
+        quit_menu_item = CustomMenuItem(parent_window.voc["quit"], "Ctrl+Q")
         file_menu.append(quit_menu_item)
         quit_menu_item.connect("activate", parent_window.quit)
 
@@ -91,53 +69,33 @@ class MenuBar(Gtk.MenuBar):
         edit_menu_item = Gtk.MenuItem(label=parent_window.voc["edit"])
         edit_menu_item.set_submenu(edit_menu)
 
-        dummy_accel_group = Gtk.AccelGroup()
-
-        # Undo menu item
-        self.undo_menu_item = Gtk.MenuItem(label=parent_window.voc["undo"])
-        key, mod = Gtk.accelerator_parse("<Control>Z")
-        self.undo_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.undo)
+        # Edit/Undo
+        self.undo_menu_item = CustomMenuItem(parent_window.voc["undo"], "Ctrl+Z")
         edit_menu.append(self.undo_menu_item)
         self.undo_menu_item.connect("activate", parent_window.undo)
 
-        # Redo menu item
-        self.redo_menu_item = Gtk.MenuItem(label=parent_window.voc["redo"])
-        key, mod = Gtk.accelerator_parse("<Control>Y")
-        self.redo_menu_item.add_accelerator("activate", accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, parent_window.redo)
+        # Edit/Redo
+        self.redo_menu_item = CustomMenuItem(parent_window.voc["redo"], "Ctrl+Y")
         edit_menu.append(self.redo_menu_item)
         self.redo_menu_item.connect("activate", parent_window.redo)
 
-        # Cut menu item
-        cut_menu_item = Gtk.MenuItem(label=parent_window.voc["cut"])
-        key, mod = Gtk.accelerator_parse("<Control>X")
-        cut_menu_item.add_accelerator("activate", dummy_accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, lambda *args: None)  # No action
+        # Edit/Cut
+        cut_menu_item = CustomMenuItem(parent_window.voc["cut"], "Ctrl+X")
         edit_menu.append(cut_menu_item)
         cut_menu_item.connect("activate", parent_window.cut_text)
 
-        # Copy menu item
-        copy_menu_item = Gtk.MenuItem(label=parent_window.voc["copy"])
-        key, mod = Gtk.accelerator_parse("<Control>C")
-        copy_menu_item.add_accelerator("activate", dummy_accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, lambda *args: None)  # No action
+        # Edit/Copy
+        copy_menu_item = CustomMenuItem(parent_window.voc["copy"], "Ctrl+C")
         edit_menu.append(copy_menu_item)
         copy_menu_item.connect("activate", parent_window.copy_text)
 
-        # Paste menu item
-        paste_menu_item = Gtk.MenuItem(label=parent_window.voc["paste"])
-        key, mod = Gtk.accelerator_parse("<Control>V")
-        paste_menu_item.add_accelerator("activate", dummy_accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, lambda *args: None)  # No action
+        # Edit/Paste
+        paste_menu_item = CustomMenuItem(parent_window.voc["paste"], "Ctrl+V")
         edit_menu.append(paste_menu_item)
         paste_menu_item.connect("activate", parent_window.paste_text)
 
-        # Delete menu item
-        delete_menu_item = Gtk.MenuItem(label=parent_window.voc["delete"])
-        key, mod = Gtk.accelerator_parse("Delete")
-        delete_menu_item.add_accelerator("activate", dummy_accel_group, key, mod, Gtk.AccelFlags.VISIBLE)
-        dummy_accel_group.connect(key, mod, Gtk.AccelFlags.VISIBLE, lambda *args: None)  # No action
+        # Edit/Delete
+        delete_menu_item = CustomMenuItem(parent_window.voc["delete"], "Delete")
         edit_menu.append(delete_menu_item)
         delete_menu_item.connect("activate", parent_window.delete_text)
 
@@ -308,6 +266,22 @@ class MenuBar(Gtk.MenuBar):
         self.redo_menu_item.set_sensitive(self.parent_window.buffer.can_redo())
         self.new_menu_item.set_sensitive(self.parent_window.buffer.get_char_count() > 0)
         self.sanitize_menu_item.set_sensitive(self.parent_window.buffer.get_char_count() > 0)
+
+
+class CustomMenuItem(Gtk.MenuItem):
+    def __init__(self, label, desc=""):
+        super().__init__()
+        hbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, spacing=0)
+        self.add(hbox)
+        label = Gtk.Label.new(label)
+        label.set_property("xalign", 0)
+        label.set_property("yalign", 0.5)
+        hbox.pack_start(label, True, True, 0)
+        if desc:
+            desc = Gtk.Label(label=desc)
+            desc.set_property("xalign", 1)
+            desc.set_property("yalign", 0.5)
+            hbox.pack_start(desc, True, True, 0)
 
 
 def add_recent_menu(widget, parent_item, parent_window):
