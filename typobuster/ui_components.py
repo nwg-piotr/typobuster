@@ -103,58 +103,58 @@ class MenuBar(Gtk.MenuBar):
         transform_menu_item = Gtk.MenuItem(label=parent_window.voc["transform"])
         edit_menu.append(transform_menu_item)
 
-        # As in sentence menu item
+        # Transform/As in sentence
         transform_as_in_sentence_menu_item = Gtk.MenuItem(label=parent_window.voc["as-in-sentence"])
         transform_menu_item.set_submenu(Gtk.Menu())
         transform_menu_item.get_submenu().append(transform_as_in_sentence_menu_item)
         transform_as_in_sentence_menu_item.connect("activate", parent_window.transform_text, "sentence")
 
-        # As In Title menu item
+        # Transform/As In Title
         transform_as_in_title_menu_item = Gtk.MenuItem(label=parent_window.voc["as-in-title"])
         transform_menu_item.get_submenu().append(transform_as_in_title_menu_item)
         transform_as_in_title_menu_item.connect("activate", parent_window.transform_text, "title")
 
-        # Transform to Uppercase menu item
+        # Transform/To Uppercase
         transform_uppercase_menu_item = Gtk.MenuItem(label=parent_window.voc["uppercase"])
         transform_menu_item.get_submenu().append(transform_uppercase_menu_item)
         transform_uppercase_menu_item.connect("activate", parent_window.transform_text, "uppercase")
 
-        # Transform to Lowercase menu item
+        # Transform/to lowercase
         transform_lowercase_menu_item = Gtk.MenuItem(label=parent_window.voc["lowercase"])
         transform_menu_item.get_submenu().append(transform_lowercase_menu_item)
         transform_lowercase_menu_item.connect("activate", parent_window.transform_text, "lowercase")
 
-        # Transform to CamelCase menu item
+        # Transform/toCamelCase
         transform_camelcase_menu_item = Gtk.MenuItem(label=parent_window.voc["camel-case"])
         transform_menu_item.get_submenu().append(transform_camelcase_menu_item)
         transform_camelcase_menu_item.connect("activate", parent_window.transform_text, "camelcase")
 
-        # Transform to Snake Case menu item
+        # Transform/to_snake_case
         transform_snakecase_menu_item = Gtk.MenuItem(label=parent_window.voc["snake-case"])
         transform_menu_item.get_submenu().append(transform_snakecase_menu_item)
         transform_snakecase_menu_item.connect("activate", parent_window.transform_text, "snakecase")
 
-        # Transform to Kebab Case menu item
+        # Transform/to-kebab-case
         transform_kebabcase_menu_item = Gtk.MenuItem(label=parent_window.voc["kebab-case"])
         transform_menu_item.get_submenu().append(transform_kebabcase_menu_item)
         transform_kebabcase_menu_item.connect("activate", parent_window.transform_text, "kebabcase")
 
-        # Transform to unordered list menu item
+        # Transform/- unordered list
         transform_unordered_list_menu_item = Gtk.MenuItem(label=parent_window.voc["unordered-list"])
         transform_menu_item.get_submenu().append(transform_unordered_list_menu_item)
         transform_unordered_list_menu_item.connect("activate", parent_window.transform_text, "unordered")
 
-        # Transform to ordered list menu item
+        # Transform/1. ordered list
         transform_ordered_list_menu_item = Gtk.MenuItem(label=parent_window.voc["ordered-list"])
         transform_menu_item.get_submenu().append(transform_ordered_list_menu_item)
         transform_ordered_list_menu_item.connect("activate", parent_window.transform_text, "ordered")
 
-        # First word to the end menu item
+        # Transform/First word to the end menu item
         first_to_end_item = Gtk.MenuItem(label=parent_window.voc["move-to-end"])
         transform_menu_item.get_submenu().append(first_to_end_item)
         first_to_end_item.connect("activate", parent_window.transform_text, "first-to-end")
 
-        # Last word to the beginning menu item
+        # TransformLast word to the beginning menu item
         last_to_beginning_item = Gtk.MenuItem(label=parent_window.voc["last-to-beginning"])
         transform_menu_item.get_submenu().append(last_to_beginning_item)
         last_to_beginning_item.connect("activate", parent_window.transform_text, "last-to-beginning")
@@ -169,7 +169,6 @@ class MenuBar(Gtk.MenuBar):
 
         # View menu
         view_menu = Gtk.Menu()
-        # view_menu.set_reserve_toggle_size(False)
         view_menu_item = Gtk.MenuItem(label=parent_window.voc["view"])
         view_menu_item.set_submenu(view_menu)
 
