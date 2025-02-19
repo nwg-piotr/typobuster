@@ -420,7 +420,7 @@ class Typobuster(Gtk.Window):
             self.load_file(None, f_p)
             global file_path
             file_path = f_p
-            self.drag_in_progress = False
+        self.drag_in_progress = False
 
     def transform_text(self, widget, transformation):
         start = self.buffer.get_start_iter()
