@@ -576,7 +576,8 @@ class Typobuster(Gtk.Window):
 
     def open_file(self, *args):
         if self.unsaved_changes:
-            self.on_close(None, None)
+            if self.on_close(None, None):
+                return  # Prevent from closing
 
         dialog = Gtk.FileChooserDialog(
             title="Open File",
