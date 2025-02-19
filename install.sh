@@ -16,6 +16,8 @@ for path in $PATTERN; do
     fi
 done
 
+[ -d "./dist" ] && rm -rf ./dist
+
 # Remove launcher scripts
 filenames=("/usr/bin/typobuster")
 
