@@ -62,6 +62,7 @@ def on_destroy_event(widget):
 class Typobuster(Gtk.Window):
     def __init__(self):
         super().__init__()
+        self.drag_in_progress = False
         self.settings = load_settings()
         self.syntax_dict = load_syntax()
 
@@ -407,6 +408,11 @@ class Typobuster(Gtk.Window):
             self.gtk_settings.set_property("gtk-theme-name", theme[1:-2])
 
     def on_drag_data_received(self, widget, drag_context, x, y, data, info, time):
+        # workaround for drag-data-received being fired twice
+        if self.drag_in_progress:
+            return
+        self.drag_in_progress = True
+
         """Handle file drop event."""
         uris = data.get_uris()
         if uris:
@@ -414,6 +420,7 @@ class Typobuster(Gtk.Window):
             self.load_file(None, f_p)
             global file_path
             file_path = f_p
+            self.drag_in_progress = False
 
     def transform_text(self, widget, transformation):
         start = self.buffer.get_start_iter()
