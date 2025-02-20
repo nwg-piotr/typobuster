@@ -110,7 +110,8 @@ def load_settings():
         "auto-indent": True,
         "whitespaces": False,
         "gspell-enable": False,
-        "show-stats": False
+        "show-stats": False,
+        "show-change": False
     }
     settings = load_json(config_path)
 

@@ -236,6 +236,10 @@ class Typobuster(Gtk.Window):
         if self.search_bar:
             self.search_bar.stat_lbl.set_visible(self.settings["show-stats"])
 
+    def switch_change_visibility(self):
+        if self.search_bar:
+            self.search_bar.change_lbl.set_visible(self.settings["show-change"])
+
     def handle_keyboard_release(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
             self.source_view.grab_focus()
@@ -400,6 +404,12 @@ class Typobuster(Gtk.Window):
     def on_stats_cb_toggled(self, check_button):
         self.settings["show-stats"] = check_button.get_active()
         self.switch_stats_visibility()
+        save_settings(self.settings)
+        self.update_stats()
+
+    def on_change_cb_toggled(self, check_button):
+        self.settings["show-change"] = check_button.get_active()
+        self.switch_change_visibility()
         save_settings(self.settings)
         self.update_stats()
 
@@ -828,6 +838,7 @@ def main():
 
     window.show_all()
     window.switch_stats_visibility()
+    window.switch_change_visibility()
     Gtk.main()
 
 

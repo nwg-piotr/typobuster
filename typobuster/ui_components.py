@@ -506,12 +506,17 @@ class PreferencesDialog(Gtk.Dialog):
             self.spell_check_cb.set_tooltip_text(parent.voc["gspell-missing"])
         self.spell_check_cb.set_active(parent.settings["gspell-enable"])
         self.spell_check_cb.connect("toggled", parent.on_spell_check_switched)
-        self.grid.attach(self.spell_check_cb, 0, 6, 1, 1)
+        self.grid.attach(self.spell_check_cb, 1, 5, 1, 1)
 
         self.stats_cb = Gtk.CheckButton(label=parent.voc["show-stats"])
         self.stats_cb.set_active(parent.settings["show-stats"])
         self.stats_cb.connect("toggled", parent.on_stats_cb_toggled)
-        self.grid.attach(self.stats_cb, 0, 7, 1, 1)
+        self.grid.attach(self.stats_cb, 0, 6, 1, 1)
+
+        self.change_cb = Gtk.CheckButton(label=parent.voc["show-change-mark"])
+        self.change_cb.set_active(parent.settings["show-change"])
+        self.change_cb.connect("toggled", parent.on_change_cb_toggled)
+        self.grid.attach(self.change_cb, 1, 6, 1, 1)
 
         # OK Button
         hbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
