@@ -220,15 +220,17 @@ class Typobuster(Gtk.Window):
             self.search_bar.stat_lbl.set_text(
                 f'{self.voc["characters"]}: {len(selection)} {self.voc["words"]}: {len(selection.split())}')
 
-        self.mark_changes_in_window_title()
+        self.mark_changes_in_ui()
 
-    def mark_changes_in_window_title(self):
+    def mark_changes_in_ui(self):
         if self.text_changed():
             if not self.get_title().startswith("*"):
                 self.set_window_title(f"*{self.get_title()}")
+                self.search_bar.change_lbl.set_text("*")
         else:
             if self.get_title().startswith("*"):
                 self.set_window_title(self.get_title()[1:])
+                self.search_bar.change_lbl.set_text("")
 
     def switch_stats_visibility(self):
         if self.search_bar:

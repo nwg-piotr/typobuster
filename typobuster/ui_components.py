@@ -523,7 +523,6 @@ class PreferencesDialog(Gtk.Dialog):
         self.show_all()
 
 
-
 class SearchBar(Gtk.Box):
     def __init__(self, parent_window):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.HORIZONTAL, spacing=3)
@@ -557,17 +556,20 @@ class SearchBar(Gtk.Box):
         btn.connect("clicked", self.replace)
 
         self.pos_lbl = Gtk.Label.new(f'{parent_window.voc["row"]}: 1 {parent_window.voc["column"]}: 0')
-        self.pack_end(self.pos_lbl, False, False, 6)
+        self.pack_end(self.pos_lbl, False, False, 3)
 
         self.stat_lbl = Gtk.Label.new("0")
-        self.pack_end(self.stat_lbl, False, False, 0)
+        self.pack_end(self.stat_lbl, False, False, 3)
 
         if parent_window.settings["syntax"] == "none":
             s_lbl = parent_window.voc["plain-text"]
         else:
             s_lbl = parent_window.syntax_dict[parent_window.settings["syntax"]]
         self.syntax_lbl = Gtk.Label.new(s_lbl)
-        self.pack_end(self.syntax_lbl, False, False, 6)
+        self.pack_end(self.syntax_lbl, False, False, 0)
+
+        self.change_lbl = Gtk.Label.new("")
+        self.pack_end(self.change_lbl, False, False, 0)
 
         self.show_all()
 
