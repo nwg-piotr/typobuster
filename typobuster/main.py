@@ -74,7 +74,7 @@ class Typobuster(Gtk.Window):
 
         self.gtk_settings = Gtk.Settings.get_default()
 
-        self.unsaved_changes = False
+        self.initial_text = ""
         self.file_stat = None
 
         self.gspell_available = False
@@ -160,6 +160,8 @@ class Typobuster(Gtk.Window):
         # Add initial (empty) text to the buffer
         self.buffer.begin_not_undoable_action()
         self.buffer.set_text("")
+        self.reset_initial_text()
+        self.update_stats()
         self.buffer.end_not_undoable_action()
 
         if "gi.repository.Gspell" not in sys.modules:
@@ -169,7 +171,22 @@ class Typobuster(Gtk.Window):
 
                 # Initialize gspell
                 self.gspell_text_view = Gspell.TextView.get_from_gtk_text_view(self.source_view)
-                self.gspell_text_view.basic_setup()
+
+                language = None
+                # set language from the value in settings
+                if self.settings["gspell-lang"]:
+                    language = Gspell.Language.lookup(self.settings["gspell-lang"])
+                # if language unset or erroneous, use the system default
+                if not language:
+                    language = Gspell.Language.get_default()
+                self.checker = Gspell.Checker.new(language)
+                print(f"Spell check language: {language.get_code()}")
+                self.checker.set_language(language)
+
+                buffer = Gspell.TextBuffer.get_from_gtk_text_buffer(self.buffer)
+                buffer.set_spell_checker(self.checker)
+                self.gspell_text_view.set_enable_language_menu(True)
+
                 self.gspell_available = True
                 print("Loaded Gspell module")
             except (ImportError, ValueError):
@@ -185,8 +202,13 @@ class Typobuster(Gtk.Window):
         # Connect the delete event to quit the application
         self.connect("destroy", on_destroy_event)
 
+    def text_changed(self):
+        return self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True) != self.initial_text
+
+    def reset_initial_text(self):
+        self.initial_text = self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True)
+
     def on_text_changed(self, buffer):
-        self.unsaved_changes = True
         self.update_cursor_position()
         self.update_stats()
 
@@ -213,9 +235,25 @@ class Typobuster(Gtk.Window):
             self.search_bar.stat_lbl.set_text(
                 f'{self.voc["characters"]}: {len(selection)} {self.voc["words"]}: {len(selection.split())}')
 
+        self.mark_changes_in_ui()
+
+    def mark_changes_in_ui(self):
+        if self.text_changed():
+            if not self.get_title().startswith("*"):
+                self.set_window_title(f"*{self.get_title()}")
+                self.search_bar.change_lbl.set_text("*")
+        else:
+            if self.get_title().startswith("*"):
+                self.set_window_title(self.get_title()[1:])
+                self.search_bar.change_lbl.set_text("")
+
     def switch_stats_visibility(self):
         if self.search_bar:
             self.search_bar.stat_lbl.set_visible(self.settings["show-stats"])
+
+    def switch_change_visibility(self):
+        if self.search_bar:
+            self.search_bar.change_lbl.set_visible(self.settings["show-change"])
 
     def handle_keyboard_release(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
@@ -240,7 +278,13 @@ class Typobuster(Gtk.Window):
             self.search_bar.search_entry.grab_focus()
 
     def on_close(self, widget, event):
-        if self.unsaved_changes:
+        # remember last used spell check language
+        if self.settings["gspell-lang"] != self.checker.get_language().get_code():
+            print(f"Storing changed spell check language: {self.checker.get_language().get_code()}")
+            self.settings["gspell-lang"] = self.checker.get_language().get_code()
+            save_settings(self.settings)
+
+        if self.text_changed():
             dialog = Gtk.MessageDialog(
                 transient_for=self,
                 flags=0,
@@ -258,7 +302,6 @@ class Typobuster(Gtk.Window):
                 self.save_on_exit()
                 return False  # Allow closing
             elif response == Gtk.ResponseType.NO:
-                self.unsaved_changes = False
                 return False  # Allow closing
             else:
                 return True  # Prevent closing
@@ -269,7 +312,6 @@ class Typobuster(Gtk.Window):
             self.save_file_as(None)
         else:
             self.save_file(None)
-        self.unsaved_changes = False
 
     def set_syntax(self, widget, name):
         language = self.lang_manager.get_language(name)
@@ -383,6 +425,12 @@ class Typobuster(Gtk.Window):
     def on_stats_cb_toggled(self, check_button):
         self.settings["show-stats"] = check_button.get_active()
         self.switch_stats_visibility()
+        save_settings(self.settings)
+        self.update_stats()
+
+    def on_change_cb_toggled(self, check_button):
+        self.settings["show-change"] = check_button.get_active()
+        self.switch_change_visibility()
         save_settings(self.settings)
         self.update_stats()
 
@@ -507,7 +555,7 @@ class Typobuster(Gtk.Window):
 
     def new_file(self, *args):
         title = file_path.split("/")[-1] if file_path else self.voc["untitled"]
-        if self.unsaved_changes:
+        if self.text_changed():
             if self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True):
                 dialog = Gtk.MessageDialog(
                     transient_for=self,
@@ -524,13 +572,13 @@ class Typobuster(Gtk.Window):
 
         self.buffer.begin_not_undoable_action()
         self.update_text("")
+        self.reset_initial_text()
         self.buffer.end_not_undoable_action()
         self.update_stats()
-        self.unsaved_changes = False
         self.set_window_title(f"{voc['untitled']} - Typobuster")
 
     def load_file(self, widget, path):
-        if self.unsaved_changes:
+        if self.text_changed():
             resp = self.on_close(None, None)
             if resp:
                 return  # Prevent from closing
@@ -565,6 +613,7 @@ class Typobuster(Gtk.Window):
             self.menu_bar.recent_menu_item.set_sensitive(True)
         self.buffer.begin_not_undoable_action()
         self.update_text(text)
+        self.reset_initial_text()
         self.buffer.end_not_undoable_action()
         self.update_stats()
         self.set_window_title(path)
@@ -572,10 +621,8 @@ class Typobuster(Gtk.Window):
         self.search_bar.clear()
         self.source_view.grab_focus()
 
-        self.unsaved_changes = False
-
     def open_file(self, *args):
-        if self.unsaved_changes:
+        if self.text_changed():
             if self.on_close(None, None):
                 return  # Prevent from closing
 
@@ -607,9 +654,10 @@ class Typobuster(Gtk.Window):
             result = save_text_file(text, file_path)
             if result == "ok":
                 print(f"Saved text to {file_path}")
-                self.unsaved_changes = False
                 self.update_recent(file_path)
                 self.file_stat = os.stat(file_path)
+                self.reset_initial_text()
+                self.update_stats()
             else:
                 eprint(f"Error saving text to {file_path}: {result}")
         else:
@@ -637,9 +685,10 @@ class Typobuster(Gtk.Window):
                 print(f"Saved text to {filename}")
                 file_path = filename
                 self.set_window_title(filename)
-                self.unsaved_changes = False
                 self.file_stat = os.stat(file_path)
                 self.update_recent(file_path)
+                self.reset_initial_text()
+                self.update_stats()
             else:
                 eprint(f"Error saving text to {filename}: {result}")
         dialog.destroy()
@@ -663,7 +712,6 @@ class Typobuster(Gtk.Window):
                     self.load_file(None, file_path)
                     self.file_stat = os.stat(file_path)
 
-                self.unsaved_changes = False
                 self.file_stat = os.stat(file_path)
 
     def update_text(self, text):
@@ -811,6 +859,7 @@ def main():
 
     window.show_all()
     window.switch_stats_visibility()
+    window.switch_change_visibility()
     Gtk.main()
 
 

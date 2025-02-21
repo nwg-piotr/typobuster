@@ -90,6 +90,7 @@ def load_settings():
     config_path = os.path.join(config_dir(), "config")
 
     defaults = {
+        "gspell-lang": "",
         "gtk-font-name": "",
         "gtk-theme-name": "",
         "sanitize-spaces": True,
@@ -110,7 +111,8 @@ def load_settings():
         "auto-indent": True,
         "whitespaces": False,
         "gspell-enable": False,
-        "show-stats": False
+        "show-stats": False,
+        "show-change": False
     }
     settings = load_json(config_path)
 
