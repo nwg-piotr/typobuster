@@ -180,7 +180,7 @@ class Typobuster(Gtk.Window):
                 if not language:
                     language = Gspell.Language.get_default()
                 self.checker = Gspell.Checker.new(language)
-                print(f"Spell check: {language.get_code()}")
+                print(f"Spell check language: {language.get_code()}")
                 self.checker.set_language(language)
 
                 buffer = Gspell.TextBuffer.get_from_gtk_text_buffer(self.buffer)
@@ -278,8 +278,12 @@ class Typobuster(Gtk.Window):
             self.search_bar.search_entry.grab_focus()
 
     def on_close(self, widget, event):
-        self.settings["gspell-lang"] = self.checker.get_language().get_code()
-        save_settings(self.settings)
+        # remember last used spell check language
+        if self.settings["gspell-lang"] != self.checker.get_language().get_code():
+            print(f"Storing changed spell check language: {self.checker.get_language().get_code()}")
+            self.settings["gspell-lang"] = self.checker.get_language().get_code()
+            save_settings(self.settings)
+
         if self.text_changed():
             dialog = Gtk.MessageDialog(
                 transient_for=self,
