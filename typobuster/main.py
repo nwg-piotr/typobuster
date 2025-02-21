@@ -171,7 +171,22 @@ class Typobuster(Gtk.Window):
 
                 # Initialize gspell
                 self.gspell_text_view = Gspell.TextView.get_from_gtk_text_view(self.source_view)
-                self.gspell_text_view.basic_setup()
+
+                language = None
+                # set language from the value in settings
+                if self.settings["gspell-lang"]:
+                    language = Gspell.Language.lookup(self.settings["gspell-lang"])
+                # if language unset or erroneous, use the system default
+                if not language:
+                    language = Gspell.Language.get_default()
+                self.checker = Gspell.Checker.new(language)
+                print(f"Spell check: {language.get_code()}")
+                self.checker.set_language(language)
+
+                buffer = Gspell.TextBuffer.get_from_gtk_text_buffer(self.buffer)
+                buffer.set_spell_checker(self.checker)
+                self.gspell_text_view.set_enable_language_menu(True)
+
                 self.gspell_available = True
                 print("Loaded Gspell module")
             except (ImportError, ValueError):
@@ -263,6 +278,8 @@ class Typobuster(Gtk.Window):
             self.search_bar.search_entry.grab_focus()
 
     def on_close(self, widget, event):
+        self.settings["gspell-lang"] = self.checker.get_language().get_code()
+        save_settings(self.settings)
         if self.text_changed():
             dialog = Gtk.MessageDialog(
                 transient_for=self,

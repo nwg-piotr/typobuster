@@ -90,6 +90,7 @@ def load_settings():
     config_path = os.path.join(config_dir(), "config")
 
     defaults = {
+        "gspell-lang": "",
         "gtk-font-name": "",
         "gtk-theme-name": "",
         "sanitize-spaces": True,
