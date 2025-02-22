@@ -182,8 +182,9 @@ class Typobuster(Gtk.Window):
                 language = Gspell.Language.lookup(self.settings["gspell-lang"])
             # if language unset or erroneous, use the system default
             if not language:
-                # this may not work with hunspell missing
                 language = Gspell.Language.get_default()
+
+            # the above might have not worked if hunspell missing
             if language:
                 self.checker = Gspell.Checker.new(language)
                 print(f"Spell check language: {language.get_code()}")
@@ -198,8 +199,8 @@ class Typobuster(Gtk.Window):
                 print("Loaded Gspell module")
             else:
                 self.gspell_available = False
-                print("Couldn't initialize spell check. Are hunspell, hunspell-en_us, hspell, nuspell, aspell and libvoikko installed?")
-
+                print("Couldn't initialize spell check. Are hunspell, hunspell-en_us, hspell, nuspell, aspell and "
+                      "libvoikko installed?")
 
         self.set_view_style()
         self.set_gtk_theme()
