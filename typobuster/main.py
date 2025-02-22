@@ -164,21 +164,27 @@ class Typobuster(Gtk.Window):
         self.update_stats()
         self.buffer.end_not_undoable_action()
 
-        if "gi.repository.Gspell" not in sys.modules:
-            try:
-                gi.require_version("Gspell", "1")
-                from gi.repository import Gspell
+        try:
+            gi.require_version("Gspell", "1")
+            from gi.repository import Gspell
+            self.gspell_available = True
+        except:
+            self.gspell_available = False
+            print(f"Gspell is NOT installed, spell check unavailable")
 
-                # Initialize gspell
-                self.gspell_text_view = Gspell.TextView.get_from_gtk_text_view(self.source_view)
+        if self.gspell_available:
+            # Initialize gspell
+            self.gspell_text_view = Gspell.TextView.get_from_gtk_text_view(self.source_view)
 
-                language = None
-                # set language from the value in settings
-                if self.settings["gspell-lang"]:
-                    language = Gspell.Language.lookup(self.settings["gspell-lang"])
-                # if language unset or erroneous, use the system default
-                if not language:
-                    language = Gspell.Language.get_default()
+            language = None
+            # set language from the value in settings
+            if self.settings["gspell-lang"]:
+                language = Gspell.Language.lookup(self.settings["gspell-lang"])
+            # if language unset or erroneous, use the system default
+            if not language:
+                # this may not work with hunspell missing
+                language = Gspell.Language.get_default()
+            if language:
                 self.checker = Gspell.Checker.new(language)
                 print(f"Spell check language: {language.get_code()}")
                 self.checker.set_language(language)
@@ -186,15 +192,14 @@ class Typobuster(Gtk.Window):
                 buffer = Gspell.TextBuffer.get_from_gtk_text_buffer(self.buffer)
                 buffer.set_spell_checker(self.checker)
                 self.gspell_text_view.set_enable_language_menu(True)
-
                 self.gspell_available = True
+                self.gspell_text_view.set_inline_spell_checking(
+                    self.settings["gspell-enable"] and self.gspell_text_view)
                 print("Loaded Gspell module")
-            except (ImportError, ValueError):
-                print("Gspell is NOT installed, spell check unavailable")
+            else:
+                self.gspell_available = False
+                print("Couldn't initialize spell check. Are hunspell, hunspell-en_us, hspell, nuspell, aspell and libvoikko installed?")
 
-        #  Enable spell checking
-        if self.gspell_available:
-            self.gspell_text_view.set_inline_spell_checking(self.settings["gspell-enable"] and self.gspell_text_view)
 
         self.set_view_style()
         self.set_gtk_theme()
@@ -279,7 +284,7 @@ class Typobuster(Gtk.Window):
 
     def on_close(self, widget, event):
         # remember last used spell check language
-        if self.settings["gspell-lang"] != self.checker.get_language().get_code():
+        if self.gspell_available and self.settings["gspell-lang"] != self.checker.get_language().get_code():
             print(f"Storing changed spell check language: {self.checker.get_language().get_code()}")
             self.settings["gspell-lang"] = self.checker.get_language().get_code()
             save_settings(self.settings)
