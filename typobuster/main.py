@@ -66,6 +66,11 @@ class Typobuster(Gtk.Window):
         self.settings = load_settings()
         self.syntax_dict = load_syntax()
 
+        if self.settings["window-width"] and self.settings["window-height"]:
+            self.set_default_size(self.settings["window-width"], self.settings["window-height"])
+        else:
+            self.set_default_size(800, 600)
+
         self.voc = voc
         self.set_title(f"{voc['untitled']} - Typobuster")
 
@@ -284,11 +289,17 @@ class Typobuster(Gtk.Window):
             self.search_bar.search_entry.grab_focus()
 
     def on_close(self, widget, event):
+        # remember last window dimensions
+        size = self.get_size()
+        self.settings["window-width"] = size.width
+        self.settings["window-height"] = size.height
+
         # remember last used spell check language
         if self.gspell_available and self.settings["gspell-lang"] != self.checker.get_language().get_code():
             print(f"Storing changed spell check language: {self.checker.get_language().get_code()}")
             self.settings["gspell-lang"] = self.checker.get_language().get_code()
-            save_settings(self.settings)
+
+        save_settings(self.settings)
 
         if self.text_changed():
             dialog = Gtk.MessageDialog(

@@ -112,7 +112,9 @@ def load_settings():
         "whitespaces": False,
         "gspell-enable": False,
         "show-stats": False,
-        "show-change": False
+        "show-change": False,
+        "window-width": 800,
+        "window-height": 600
     }
     settings = load_json(config_path)
 
