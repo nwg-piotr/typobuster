@@ -552,8 +552,9 @@ class SearchBar(Gtk.Box):
         btn.connect("clicked", self.highlight_match, "down")
 
         self.replace_entry = Gtk.Entry()
-        self.replace_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "edit-find-replace-symbolic")
+        self.replace_entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, "edit-find-replace-symbolic")
         self.replace_entry.set_tooltip_text(parent_window.voc["replace-with"])
+        self.replace_entry.connect("icon-press", lambda x, y, z: self.replace_entry.set_text(""))
         self.pack_start(self.replace_entry, False, False, 0)
 
         btn = Gtk.Button.new_from_icon_name("emblem-ok-symbolic", Gtk.IconSize.MENU)
