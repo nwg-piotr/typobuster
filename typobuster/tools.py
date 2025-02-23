@@ -90,31 +90,31 @@ def load_settings():
     config_path = os.path.join(config_dir(), "config")
 
     defaults = {
+        "auto-indent": True,
+        "gspell-enable": False,
         "gspell-lang": "",
         "gtk-font-name": "",
         "gtk-theme-name": "",
-        "sanitize-spaces": True,
-        "sanitize-punctuation-marks": True,
-        "sanitize-add-spaces-after-punctuation": True,
-        "sanitize-hyphens": True,
-        "sanitize-quotes": True,
-        "sanitize-eol": True,
-        "syntax": "none",
-        "view-line-numbers": False,
         "highlight-current-row": False,
         "highlight-matching-brackets": False,
         "right-margin-position": 80,
         "right-margin-show": False,
-        "wrap-lines": True,
-        "tab-width": 4,
-        "tab-mode": "spaces",
-        "auto-indent": True,
-        "whitespaces": False,
-        "gspell-enable": False,
-        "show-stats": False,
+        "sanitize-add-spaces-after-punctuation": True,
+        "sanitize-eol": True,
+        "sanitize-hyphens": True,
+        "sanitize-punctuation-marks": True,
+        "sanitize-quotes": True,
+        "sanitize-spaces": True,
         "show-change": False,
+        "show-stats": False,
+        "syntax": "none",
+        "tab-mode": "spaces",
+        "tab-width": 4,
+        "view-line-numbers": False,
+        "whitespaces": False,
+        "window-height": 600,
         "window-width": 800,
-        "window-height": 600
+        "wrap-lines": True
     }
     settings = load_json(config_path)
 
