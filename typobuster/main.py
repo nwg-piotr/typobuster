@@ -275,7 +275,8 @@ class Typobuster(Gtk.Window):
             self.open_file()
         elif event.keyval == Gdk.KEY_s and event.state & Gdk.ModifierType.CONTROL_MASK:
             self.save_file()
-        elif event.keyval == Gdk.KEY_S and event.state & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK):
+        elif event.keyval == Gdk.KEY_S and (event.state & Gdk.ModifierType.CONTROL_MASK) and (
+                event.state & Gdk.ModifierType.SHIFT_MASK):
             self.save_file_as()
         elif event.keyval == Gdk.KEY_p and event.state & Gdk.ModifierType.CONTROL_MASK:
             self.on_print_btn()
