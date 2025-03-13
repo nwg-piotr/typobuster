@@ -9,7 +9,7 @@ def read(f_name):
 
 setup(
     name='typobuster',
-    version='0.1.7',
+    version='0.1.8',
     description='lightweight editor with text transformations and auto-correction',
     packages=find_packages(),
     include_package_data=True,
