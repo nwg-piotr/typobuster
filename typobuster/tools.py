@@ -364,7 +364,26 @@ def as_in_sentence(text):
 
 
 def as_in_title(text):
-    return ' '.join(word.capitalize() for word in text.split())
+    lines = text.splitlines()
+    modified_lines = []
+    for line in lines:
+        line = line.lower()
+        words = line.split()
+        modified_words = []
+        for i in range(len(words)):
+            word = words[i]
+            if i == 0:
+                # always capitalize 1st word, even a single letter
+                w = word[0].upper() + word[1:]
+            else:
+                # don't capitalize subsequent words if they are single letters
+                if len(word) > 1:
+                    w = word[0].upper() + word[1:]
+                else:
+                    w = word
+            modified_words.append(w)
+        modified_lines.append(" ".join(modified_words))
+    return "\n".join(modified_lines)
 
 
 def unordered_list(text):
