@@ -454,3 +454,8 @@ def move_last_word_to_beginning(text):
         line = f"{words[1]} {words[0]}" if len(words) > 1 else text
         result.append(line)
     return "\n".join(result)
+
+
+def merge_lines(text):
+    lines = text.splitlines()
+    return " ".join(lines)

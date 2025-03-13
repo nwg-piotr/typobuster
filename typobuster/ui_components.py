@@ -149,15 +149,20 @@ class MenuBar(Gtk.MenuBar):
         transform_menu_item.get_submenu().append(transform_ordered_list_menu_item)
         transform_ordered_list_menu_item.connect("activate", parent_window.transform_text, "ordered")
 
-        # Transform/First word to the end menu item
+        # Transform/First word to the end
         first_to_end_item = Gtk.MenuItem(label=parent_window.voc["move-to-end"])
         transform_menu_item.get_submenu().append(first_to_end_item)
         first_to_end_item.connect("activate", parent_window.transform_text, "first-to-end")
 
-        # TransformLast word to the beginning menu item
+        # TransformLast word to the beginning
         last_to_beginning_item = Gtk.MenuItem(label=parent_window.voc["last-to-beginning"])
         transform_menu_item.get_submenu().append(last_to_beginning_item)
         last_to_beginning_item.connect("activate", parent_window.transform_text, "last-to-beginning")
+
+        # Merge lines
+        merge_lines_menu_item = Gtk.MenuItem(label=parent_window.voc["merge-lines"])
+        transform_menu_item.get_submenu().append(merge_lines_menu_item)
+        merge_lines_menu_item.connect("activate", parent_window.transform_text, "merge-lines")
 
         separator = Gtk.SeparatorMenuItem()
         edit_menu.append(separator)

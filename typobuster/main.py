@@ -542,6 +542,8 @@ class Typobuster(Gtk.Window):
                 transformed_text = move_first_word_to_end(text)
             elif transformation == "last-to-beginning":
                 transformed_text = move_last_word_to_beginning(text)
+            elif transformation == "merge-lines":
+                transformed_text = merge_lines(text)
             else:
                 transformed_text = text
 
