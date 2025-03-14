@@ -1,7 +1,9 @@
+import os.path
+
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, GdkPixbuf
 
 from typobuster.tools import *
 from typobuster.__about__ import __version__
@@ -311,6 +313,48 @@ def add_syntax_menu(widget, parent_item, parent_window):
         menu.append(item)
     menu.show_all()
     parent_item.set_submenu(menu)
+
+
+class ButtonBar(Gtk.Box):
+    def __init__(self, parent_window, dir_name):
+        super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        self.settings = parent_window.settings
+        print(self.settings)
+        self.icons_path = os.path.join(dir_name, "icons", self.settings["icon-set"])
+        print(self.icons_path)
+
+        btn_new = self.create_button("new.svg")
+        btn_new.set_tooltip_text(parent_window.voc["new"])
+        self.pack_start(btn_new, False, False, 0)
+        btn_new.connect("clicked", parent_window.new_file)
+
+        btn_open = (self.create_button("open.svg"))
+        btn_open.set_tooltip_text(parent_window.voc["open"])
+        self.pack_start(btn_open, False, False, 0)
+        btn_open.connect("clicked", parent_window.open_file)
+
+        btn_save = (self.create_button("save.svg"))
+        btn_save.set_tooltip_text(parent_window.voc["save"])
+        self.pack_start(btn_save, False, False, 0)
+        btn_save.connect("clicked", parent_window.save_file)
+
+        btn_save_as = (self.create_button("save-as.svg"))
+        btn_save_as.set_tooltip_text(parent_window.voc["save-as"])
+        self.pack_start(btn_save_as, False, False, 0)
+        btn_save_as.connect("clicked", parent_window.save_file_as)
+
+        self.show_all()
+
+    def create_button(self, icon_name):
+        btn = Gtk.Button()
+        btn.set_image(self.create_image(icon_name))
+        btn.set_property("name", "bar-button")
+        return btn
+
+    def create_image(self, icon_name):
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(os.path.join(self.icons_path, icon_name),
+                                                        self.settings["icon-size"], self.settings["icon-size"])
+        return Gtk.Image.new_from_pixbuf(pixbuf)
 
 
 class SanitizationDialog(Gtk.Window):

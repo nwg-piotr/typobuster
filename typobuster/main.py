@@ -17,7 +17,7 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
 from gi.repository import Gtk, Gdk, GLib, GtkSource
 
-from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow, SearchBar, PreferencesDialog
+from typobuster.ui_components import MenuBar, ButtonBar, SanitizationDialog, AboutWindow, SearchBar, PreferencesDialog
 from typobuster.tools import *
 
 dir_name = os.path.dirname(__file__)
@@ -138,6 +138,9 @@ class Typobuster(Gtk.Window):
 
         self.menu_bar = MenuBar(self)
         vbox.pack_start(self.menu_bar, False, False, 0)
+
+        self.button_bar = ButtonBar(self, dir_name)
+        vbox.pack_start(self.button_bar, False, False, 0)
 
         # Create a scrollable window and add the source view
         scrolled_window = Gtk.ScrolledWindow()
@@ -870,6 +873,11 @@ def main():
         }
         #searchentry-error {
             color: red;
+        }
+        #bar-button {
+            background: none;
+            border: none;
+            padding: 0;
         }
         """
     provider.load_from_data(css)
