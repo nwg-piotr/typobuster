@@ -36,8 +36,8 @@
   "last-to-beginning": "Last word to the beginning",
   "line-numbers": "Line numbers",
   "lowercase": "lowercase",
-  "merge-lines": "Merge lines",
-  "move-to-end": "First word to the end",
+  "merge-rows": "Merge rows",
+  "first-to-end": "First word to the end",
   "new": "New",
   "open": "Open",
   "ordered-list": "1. ordered list",
@@ -87,5 +87,5 @@
   "web-cleanup": "Web cleanup",
   "whitespaces": "Whitespaces",
   "words": "Wd",
-  "wrap-lines": "Wrap lines"
+  "wrap-lines": "Wrap rows"
 }

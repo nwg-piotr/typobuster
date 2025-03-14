@@ -152,7 +152,7 @@ class MenuBar(Gtk.MenuBar):
         transform_ordered_list_menu_item.connect("activate", parent_window.transform_text, "ordered")
 
         # Transform/First word to the end
-        first_to_end_item = Gtk.MenuItem(label=parent_window.voc["move-to-end"])
+        first_to_end_item = Gtk.MenuItem(label=parent_window.voc["first-to-end"])
         transform_menu_item.get_submenu().append(first_to_end_item)
         first_to_end_item.connect("activate", parent_window.transform_text, "first-to-end")
 
@@ -162,9 +162,9 @@ class MenuBar(Gtk.MenuBar):
         last_to_beginning_item.connect("activate", parent_window.transform_text, "last-to-beginning")
 
         # Merge lines
-        merge_lines_menu_item = Gtk.MenuItem(label=parent_window.voc["merge-lines"])
+        merge_lines_menu_item = Gtk.MenuItem(label=parent_window.voc["merge-rows"])
         transform_menu_item.get_submenu().append(merge_lines_menu_item)
-        merge_lines_menu_item.connect("activate", parent_window.transform_text, "merge-lines")
+        merge_lines_menu_item.connect("activate", parent_window.transform_text, "merge-rows")
 
         separator = Gtk.SeparatorMenuItem()
         edit_menu.append(separator)
@@ -317,7 +317,7 @@ def add_syntax_menu(widget, parent_item, parent_window):
 
 class ButtonBar(Gtk.Box):
     def __init__(self, parent_window, dir_name):
-        super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=2)
         self.settings = parent_window.settings
         print(self.settings)
         self.icons_path = os.path.join(dir_name, "icons", self.settings["icon-set"])
@@ -328,20 +328,71 @@ class ButtonBar(Gtk.Box):
         self.pack_start(btn_new, False, False, 0)
         btn_new.connect("clicked", parent_window.new_file)
 
-        btn_open = (self.create_button("open.svg"))
+        btn_open = self.create_button("open.svg")
         btn_open.set_tooltip_text(parent_window.voc["open"])
         self.pack_start(btn_open, False, False, 0)
         btn_open.connect("clicked", parent_window.open_file)
 
-        btn_save = (self.create_button("save.svg"))
+        btn_save = self.create_button("save.svg")
         btn_save.set_tooltip_text(parent_window.voc["save"])
         self.pack_start(btn_save, False, False, 0)
         btn_save.connect("clicked", parent_window.save_file)
 
-        btn_save_as = (self.create_button("save-as.svg"))
+        btn_save_as = self.create_button("save-as.svg")
         btn_save_as.set_tooltip_text(parent_window.voc["save-as"])
         self.pack_start(btn_save_as, False, False, 0)
         btn_save_as.connect("clicked", parent_window.save_file_as)
+
+        img = self.create_image("separator.svg")
+        self.pack_start(img, False, False, 0)
+
+        btn_sentence = self.create_button("as-in-sentence.svg")
+        btn_sentence.set_tooltip_text(parent_window.voc["as-in-sentence"])
+        self.pack_start(btn_sentence, False, False, 0)
+
+        btn_title = self.create_button("as-in-title.svg")
+        btn_title.set_tooltip_text(parent_window.voc["as-in-title"])
+        self.pack_start(btn_title, False, False, 0)
+
+        btn_uppercase = self.create_button("uppercase.svg")
+        btn_uppercase.set_tooltip_text(parent_window.voc["uppercase"])
+        self.pack_start(btn_uppercase, False, False, 0)
+
+        btn_lowercase = self.create_button("lowercase.svg")
+        btn_lowercase.set_tooltip_text(parent_window.voc["lowercase"])
+        self.pack_start(btn_lowercase, False, False, 0)
+
+        btn_camelcase = self.create_button("camel-case.svg")
+        btn_camelcase.set_tooltip_text(parent_window.voc["camel-case"])
+        self.pack_start(btn_camelcase, False, False, 0)
+
+        btn_snakecase = self.create_button("snake-case.svg")
+        btn_snakecase.set_tooltip_text(parent_window.voc["snake-case"])
+        self.pack_start(btn_snakecase, False, False, 0)
+
+        btn_kebabcase = self.create_button("kebab-case.svg")
+        btn_kebabcase.set_tooltip_text(parent_window.voc["kebab-case"])
+        self.pack_start(btn_kebabcase, False, False, 0)
+
+        btn_unordered = self.create_button("unordered-list.svg")
+        btn_unordered.set_tooltip_text(parent_window.voc["unordered-list"])
+        self.pack_start(btn_unordered, False, False, 0)
+
+        btn_ordered = self.create_button("ordered-list.svg")
+        btn_ordered.set_tooltip_text(parent_window.voc["ordered-list"])
+        self.pack_start(btn_ordered, False, False, 0)
+
+        btn_first = self.create_button("first-to-end.svg")
+        btn_first.set_tooltip_text(parent_window.voc["first-to-end"])
+        self.pack_start(btn_first, False, False, 0)
+
+        btn_last = self.create_button("last-to-beginning.svg")
+        btn_last.set_tooltip_text(parent_window.voc["last-to-beginning"])
+        self.pack_start(btn_last, False, False, 0)
+
+        btn_merge = self.create_button("merge-rows.svg")
+        btn_merge.set_tooltip_text(parent_window.voc["merge-rows"])
+        self.pack_start(btn_merge, False, False, 0)
 
         self.show_all()
 
