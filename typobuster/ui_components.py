@@ -317,7 +317,7 @@ def add_syntax_menu(widget, parent_item, parent_window):
 
 class ButtonBar(Gtk.Box):
     def __init__(self, parent_window, dir_name):
-        super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=2)
+        super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         self.settings = parent_window.settings
         print(self.settings)
         self.icons_path = os.path.join(dir_name, "icons", self.settings["icon-set"])
@@ -343,7 +343,7 @@ class ButtonBar(Gtk.Box):
         self.pack_start(btn_save_as, False, False, 0)
         btn_save_as.connect("clicked", parent_window.save_file_as)
 
-        img = self.create_image("separator.svg")
+        img = self.create_separator()
         self.pack_start(img, False, False, 0)
 
         btn_sentence = self.create_button("as-in-sentence.svg")
@@ -394,6 +394,29 @@ class ButtonBar(Gtk.Box):
         btn_merge.set_tooltip_text(parent_window.voc["merge-rows"])
         self.pack_start(btn_merge, False, False, 0)
 
+        img = self.create_separator()
+        self.pack_start(img, False, False, 0)
+
+        btn_web = self.create_button("web-cleanup.svg")
+        btn_web.set_tooltip_text(parent_window.voc["web-cleanup"])
+        self.pack_start(btn_web, False, False, 0)
+
+        btn_sort_ascending = self.create_button("sort-ascending.svg")
+        btn_sort_ascending.set_tooltip_text(parent_window.voc["ascending"])
+        self.pack_start(btn_sort_ascending, False, False, 0)
+
+        btn_sort_descending = self.create_button("sort-descending.svg")
+        btn_sort_descending.set_tooltip_text(parent_window.voc["descending"])
+        self.pack_start(btn_sort_descending, False, False, 0)
+
+        btn_remove_empty = self.create_button("remove-empty-rows.svg")
+        btn_remove_empty.set_tooltip_text(parent_window.voc["remove-empty-rows"])
+        self.pack_start(btn_remove_empty, False, False, 0)
+
+        btn_remove_non_ascii = self.create_button("remove-non-ascii.svg")
+        btn_remove_non_ascii.set_tooltip_text(parent_window.voc["remove-non-ascii"])
+        self.pack_start(btn_remove_non_ascii, False, False, 0)
+
         self.show_all()
 
     def create_button(self, icon_name):
@@ -401,6 +424,12 @@ class ButtonBar(Gtk.Box):
         btn.set_image(self.create_image(icon_name))
         btn.set_property("name", "bar-button")
         return btn
+
+    def create_separator(self):
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(os.path.join(self.icons_path, "separator.svg"),
+                                                        self.settings["icon-size"] / 2, self.settings["icon-size"])
+        img = Gtk.Image.new_from_pixbuf(pixbuf)
+        return img
 
     def create_image(self, icon_name):
         pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(os.path.join(self.icons_path, icon_name),

@@ -20,10 +20,10 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="37.741824"
-     inkscape:cx="11.989352"
-     inkscape:cy="11.989352"
-     inkscape:window-width="1912"
-     inkscape:window-height="1012"
+     inkscape:cx="12.0026"
+     inkscape:cy="12.015847"
+     inkscape:window-width="2552"
+     inkscape:window-height="1372"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -36,24 +36,19 @@
    .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
   </style>
   </defs>
-  <rect
+  <path
      style="fill:#dfdfdf;fill-opacity:1;stroke-width:3.5;stroke-linecap:round"
-     id="rect2"
-     width="13.997419"
-     height="13.997419"
-     x="5.0012903"
-     y="4.8929033"
-     ry="1.5298282" />
+     d="m 6.53125,4.8925781 c -0.8475248,0 -1.5292969,0.6817721 -1.5292969,1.5292969 v 10.939453 c 0,0.847525 0.6817721,1.529297 1.5292969,1.529297 h 10.9375 c 0.847525,0 1.529297,-0.681772 1.529297,-1.529297 V 6.421875 c 0,-0.8475248 -0.681772,-1.5292969 -1.529297,-1.5292969 z"
+     id="rect2" />
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.6736px;line-height:1.1;font-family:Iosevka;-inkscape-font-specification:'Iosevka, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;letter-spacing:-0.7px;word-spacing:-1.58873px;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;stroke-width:3.84437;stroke-linecap:round"
-     x="12.313332"
-     y="16.258501"
-     id="text1"
-     transform="scale(0.97555759,1.0250548)"><tspan
+     style="font-weight:800;font-size:12.9907px;line-height:1.25;font-family:'Iosevka Nerd Font Propo';-inkscape-font-specification:'Iosevka Nerd Font Propo, Ultra-Bold';text-align:center;letter-spacing:-0.426255px;text-anchor:middle;stroke-width:1.21787"
+     x="12.090935"
+     y="16.665684"
+     id="text1"><tspan
        sodipodi:role="line"
        id="tspan1"
-       x="11.963332"
-       y="16.258501"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.6736px;font-family:'Iosevka Fixed';-inkscape-font-specification:'Iosevka Fixed, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.7px;word-spacing:-1.58873px;stroke-width:3.84437">Se</tspan></text>
+       x="11.877807"
+       y="16.665684"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.9907px;font-family:'Iosevka Nerd Font Mono';-inkscape-font-specification:'Iosevka Nerd Font Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:-0.426255px;stroke-width:1.21787">AS</tspan></text>
 </svg>
