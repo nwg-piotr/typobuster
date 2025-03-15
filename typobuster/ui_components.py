@@ -638,7 +638,7 @@ class PreferencesDialog(Gtk.Dialog):
         self.grid.attach(self.icon_size_label, 0, 3, 1, 1)
 
         icon_bar_cb = Gtk.CheckButton.new_with_label(parent.voc["show"])
-        icon_bar_cb.set_active(parent.settings["right-margin-show"])
+        icon_bar_cb.set_active(parent.settings["show-bar"])
         self.grid.attach(icon_bar_cb, 2, 3, 1, 1)
         icon_bar_cb.connect("toggled", parent.on_bar_show_toggled)
 
