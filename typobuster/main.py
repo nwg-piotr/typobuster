@@ -221,7 +221,7 @@ class Typobuster(Gtk.Window):
         self.connect("destroy", on_destroy_event)
 
     def create_button_bar(self):
-        if self.settings["bar-show"]:
+        if self.settings["show-bar"]:
             # we need to destroy and build from scratch in case icon size changed
             if len(self.button_bar_wrapper.get_children()) > 0:
                 self.button_bar_wrapper.get_children()[0].destroy()
