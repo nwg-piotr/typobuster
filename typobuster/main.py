@@ -20,6 +20,7 @@ from gi.repository import Gtk, Gdk, GLib, GtkSource
 from typobuster.ui_components import MenuBar, ButtonBar, SanitizationDialog, AboutWindow, SearchBar, PreferencesDialog
 from typobuster.tools import *
 
+from typobuster.__about__ import __version__
 dir_name = os.path.dirname(__file__)
 file_path = ""
 voc = {}
@@ -882,6 +883,12 @@ class Typobuster(Gtk.Window):
 def main():
     parser = argparse.ArgumentParser(description="Simple text editor")
     parser.add_argument("file_path", type=str, nargs="?", help="Path of the file to open")
+    parser.add_argument("-v",
+                        "--version",
+                        action="version",
+                        version="%(prog)s version {}".format(__version__),
+                        help="display version information")
+
     args = parser.parse_args()
 
     if args.file_path:
@@ -905,6 +912,8 @@ def main():
             color: red;
         }
         #bar-button {
+            min-width: 16px;
+            min-height: 16px;
             background: none;
             border: none;
             padding: 0px;
