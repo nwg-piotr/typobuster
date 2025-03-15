@@ -341,8 +341,7 @@ class ButtonBar(Gtk.Box):
         self.pack_start(btn_save_as, False, False, 0)
         btn_save_as.connect("clicked", parent_window.save_file_as)
 
-        img = self.create_separator()
-        self.pack_start(img, False, False, 0)
+        self.pack_start(self.create_separator(), False, False, 0)
 
         btn_undo = self.create_button("edit-undo.svg")
         btn_undo.set_tooltip_text(parent_window.voc["undo"])
@@ -369,8 +368,7 @@ class ButtonBar(Gtk.Box):
         self.pack_start(btn_paste, False, False, 0)
         btn_paste.connect("clicked", parent_window.paste_text)
 
-        img = self.create_separator()
-        self.pack_start(img, False, False, 0)
+        self.pack_start(self.create_separator(), False, False, 0)
 
         btn_sentence = self.create_button("as-in-sentence.svg")
         btn_sentence.set_tooltip_text(parent_window.voc["as-in-sentence"])
@@ -432,8 +430,7 @@ class ButtonBar(Gtk.Box):
         self.pack_start(btn_merge, False, False, 0)
         btn_merge.connect("clicked", parent_window.transform_text, "merge-rows")
 
-        img = self.create_separator()
-        self.pack_start(img, False, False, 0)
+        self.pack_start(self.create_separator(), False, False, 0)
 
         btn_web = self.create_button("web-cleanup.svg")
         btn_web.set_tooltip_text(parent_window.voc["web-cleanup"])
