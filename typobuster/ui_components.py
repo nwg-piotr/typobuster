@@ -319,9 +319,7 @@ class ButtonBar(Gtk.Box):
     def __init__(self, parent_window, dir_name):
         super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         self.settings = parent_window.settings
-        print(self.settings)
         self.icons_path = os.path.join(dir_name, "icons", self.settings["icon-set"])
-        print(self.icons_path)
 
         btn_new = self.create_button("new.svg")
         btn_new.set_tooltip_text(parent_window.voc["new"])
@@ -349,50 +347,62 @@ class ButtonBar(Gtk.Box):
         btn_sentence = self.create_button("as-in-sentence.svg")
         btn_sentence.set_tooltip_text(parent_window.voc["as-in-sentence"])
         self.pack_start(btn_sentence, False, False, 0)
+        btn_sentence.connect("clicked", parent_window.transform_text, "sentence")
 
         btn_title = self.create_button("as-in-title.svg")
         btn_title.set_tooltip_text(parent_window.voc["as-in-title"])
         self.pack_start(btn_title, False, False, 0)
+        btn_title.connect("clicked", parent_window.transform_text, "title")
 
         btn_uppercase = self.create_button("uppercase.svg")
         btn_uppercase.set_tooltip_text(parent_window.voc["uppercase"])
         self.pack_start(btn_uppercase, False, False, 0)
+        btn_uppercase.connect("clicked", parent_window.transform_text, "uppercase")
 
         btn_lowercase = self.create_button("lowercase.svg")
         btn_lowercase.set_tooltip_text(parent_window.voc["lowercase"])
         self.pack_start(btn_lowercase, False, False, 0)
+        btn_lowercase.connect("clicked", parent_window.transform_text, "lowercase")
 
         btn_camelcase = self.create_button("camel-case.svg")
         btn_camelcase.set_tooltip_text(parent_window.voc["camel-case"])
         self.pack_start(btn_camelcase, False, False, 0)
+        btn_camelcase.connect("clicked", parent_window.transform_text, "camelcase")
 
         btn_snakecase = self.create_button("snake-case.svg")
         btn_snakecase.set_tooltip_text(parent_window.voc["snake-case"])
         self.pack_start(btn_snakecase, False, False, 0)
+        btn_snakecase.connect("clicked", parent_window.transform_text, "snakecase")
 
         btn_kebabcase = self.create_button("kebab-case.svg")
         btn_kebabcase.set_tooltip_text(parent_window.voc["kebab-case"])
         self.pack_start(btn_kebabcase, False, False, 0)
+        btn_kebabcase.connect("clicked", parent_window.transform_text, "kebabcase")
 
         btn_unordered = self.create_button("unordered-list.svg")
         btn_unordered.set_tooltip_text(parent_window.voc["unordered-list"])
         self.pack_start(btn_unordered, False, False, 0)
+        btn_unordered.connect("clicked", parent_window.transform_text, "unordered")
 
         btn_ordered = self.create_button("ordered-list.svg")
         btn_ordered.set_tooltip_text(parent_window.voc["ordered-list"])
         self.pack_start(btn_ordered, False, False, 0)
+        btn_ordered.connect("clicked", parent_window.transform_text, "ordered")
 
         btn_first = self.create_button("first-to-end.svg")
         btn_first.set_tooltip_text(parent_window.voc["first-to-end"])
         self.pack_start(btn_first, False, False, 0)
+        btn_first.connect("clicked", parent_window.transform_text, "first-to-end")
 
         btn_last = self.create_button("last-to-beginning.svg")
         btn_last.set_tooltip_text(parent_window.voc["last-to-beginning"])
         self.pack_start(btn_last, False, False, 0)
+        btn_last.connect("clicked", parent_window.transform_text, "last-to-beginning")
 
         btn_merge = self.create_button("merge-rows.svg")
         btn_merge.set_tooltip_text(parent_window.voc["merge-rows"])
         self.pack_start(btn_merge, False, False, 0)
+        btn_merge.connect("clicked", parent_window.transform_text, "merge-rows")
 
         img = self.create_separator()
         self.pack_start(img, False, False, 0)
@@ -400,22 +410,27 @@ class ButtonBar(Gtk.Box):
         btn_web = self.create_button("web-cleanup.svg")
         btn_web.set_tooltip_text(parent_window.voc["web-cleanup"])
         self.pack_start(btn_web, False, False, 0)
+        btn_web.connect("clicked", parent_window.sanitize_text)
 
         btn_sort_ascending = self.create_button("sort-ascending.svg")
         btn_sort_ascending.set_tooltip_text(parent_window.voc["ascending"])
         self.pack_start(btn_sort_ascending, False, False, 0)
+        btn_sort_ascending.connect("clicked", parent_window.transform_text, "sort-asc")
 
         btn_sort_descending = self.create_button("sort-descending.svg")
         btn_sort_descending.set_tooltip_text(parent_window.voc["descending"])
         self.pack_start(btn_sort_descending, False, False, 0)
+        btn_sort_descending.connect("clicked", parent_window.transform_text, "sort-desc")
 
         btn_remove_empty = self.create_button("remove-empty-rows.svg")
         btn_remove_empty.set_tooltip_text(parent_window.voc["remove-empty-rows"])
         self.pack_start(btn_remove_empty, False, False, 0)
+        btn_remove_empty.connect("clicked", parent_window.transform_text, "remove-empty-rows")
 
         btn_remove_non_ascii = self.create_button("remove-non-ascii.svg")
         btn_remove_non_ascii.set_tooltip_text(parent_window.voc["remove-non-ascii"])
         self.pack_start(btn_remove_non_ascii, False, False, 0)
+        btn_remove_non_ascii.connect("clicked", parent_window.transform_text, "remove-non-ascii")
 
         self.show_all()
 
