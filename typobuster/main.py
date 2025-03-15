@@ -907,7 +907,7 @@ def main():
         #bar-button {
             background: none;
             border: none;
-            padding: 0;
+            padding: 0px;
         }
         #bar-button:hover {
             background-color: rgba(0, 255, 255, 0.5);
