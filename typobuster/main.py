@@ -448,7 +448,7 @@ class Typobuster(Gtk.Window):
         save_settings(self.settings)
 
     def on_bar_show_toggled(self, cb):
-        self.settings["bar-show"] = cb.get_active()
+        self.settings["show-bar"] = cb.get_active()
         save_settings(self.settings)
         self.create_button_bar()
 
