@@ -909,6 +909,9 @@ def main():
             border: none;
             padding: 0;
         }
+        #bar-button:hover {
+            background-color: rgba(0, 255, 255, 0.5);
+        }
         #bar-wrapper {
             padding: 3px;
         }
