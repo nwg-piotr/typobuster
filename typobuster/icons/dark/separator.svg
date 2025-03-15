@@ -29,12 +29,13 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg1" />
+     inkscape:current-layer="svg1"
+     showgrid="false" />
   <rect
-     style="fill:#dfdfdf;stroke-width:7.89697;stroke-linecap:round"
+     style="fill:#dfdfdf;stroke-width:6.60707;stroke-linecap:round"
      id="rect1"
-     width="2"
+     width="1.4"
      height="14"
-     x="5"
+     x="5.3000002"
      y="5" />
 </svg>
