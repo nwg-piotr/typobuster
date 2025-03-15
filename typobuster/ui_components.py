@@ -81,15 +81,15 @@ class MenuBar(Gtk.MenuBar):
         edit_menu.append(self.redo_menu_item)
         self.redo_menu_item.connect("activate", parent_window.redo)
 
-        # Edit/Cut
-        cut_menu_item = CustomMenuItem(parent_window.voc["cut"], "Ctrl+X")
-        edit_menu.append(cut_menu_item)
-        cut_menu_item.connect("activate", parent_window.cut_text)
-
         # Edit/Copy
         copy_menu_item = CustomMenuItem(parent_window.voc["copy"], "Ctrl+C")
         edit_menu.append(copy_menu_item)
         copy_menu_item.connect("activate", parent_window.copy_text)
+
+        # Edit/Cut
+        cut_menu_item = CustomMenuItem(parent_window.voc["cut"], "Ctrl+X")
+        edit_menu.append(cut_menu_item)
+        cut_menu_item.connect("activate", parent_window.cut_text)
 
         # Edit/Paste
         paste_menu_item = CustomMenuItem(parent_window.voc["paste"], "Ctrl+V")
@@ -321,22 +321,22 @@ class ButtonBar(Gtk.Box):
         self.settings = parent_window.settings
         self.icons_path = os.path.join(dir_name, "icons", self.settings["icon-set"])
 
-        btn_new = self.create_button("new.svg")
+        btn_new = self.create_button("file-new.svg")
         btn_new.set_tooltip_text(parent_window.voc["new"])
         self.pack_start(btn_new, False, False, 0)
         btn_new.connect("clicked", parent_window.new_file)
 
-        btn_open = self.create_button("open.svg")
+        btn_open = self.create_button("file-open.svg")
         btn_open.set_tooltip_text(parent_window.voc["open"])
         self.pack_start(btn_open, False, False, 0)
         btn_open.connect("clicked", parent_window.open_file)
 
-        btn_save = self.create_button("save.svg")
+        btn_save = self.create_button("file-save.svg")
         btn_save.set_tooltip_text(parent_window.voc["save"])
         self.pack_start(btn_save, False, False, 0)
         btn_save.connect("clicked", parent_window.save_file)
 
-        btn_save_as = self.create_button("save-as.svg")
+        btn_save_as = self.create_button("file-save-as.svg")
         btn_save_as.set_tooltip_text(parent_window.voc["save-as"])
         self.pack_start(btn_save_as, False, False, 0)
         btn_save_as.connect("clicked", parent_window.save_file_as)
@@ -344,15 +344,30 @@ class ButtonBar(Gtk.Box):
         img = self.create_separator()
         self.pack_start(img, False, False, 0)
 
-        btn_undo = self.create_button("undo.svg")
+        btn_undo = self.create_button("edit-undo.svg")
         btn_undo.set_tooltip_text(parent_window.voc["undo"])
         self.pack_start(btn_undo, False, False, 0)
         btn_undo.connect("clicked", parent_window.undo)
 
-        btn_redo = self.create_button("redo.svg")
+        btn_redo = self.create_button("edit-redo.svg")
         btn_redo.set_tooltip_text(parent_window.voc["redo"])
         self.pack_start(btn_redo, False, False, 0)
         btn_redo.connect("clicked", parent_window.redo)
+
+        btn_copy = self.create_button("edit-copy.svg")
+        btn_copy.set_tooltip_text(parent_window.voc["copy"])
+        self.pack_start(btn_copy, False, False, 0)
+        btn_copy.connect("clicked", parent_window.copy_text)
+
+        btn_cut = self.create_button("edit-cut.svg")
+        btn_cut.set_tooltip_text(parent_window.voc["cut"])
+        self.pack_start(btn_cut, False, False, 0)
+        btn_cut.connect("clicked", parent_window.cut_text)
+
+        btn_paste = self.create_button("edit-paste.svg")
+        btn_paste.set_tooltip_text(parent_window.voc["paste"])
+        self.pack_start(btn_paste, False, False, 0)
+        btn_paste.connect("clicked", parent_window.paste_text)
 
         img = self.create_separator()
         self.pack_start(img, False, False, 0)
