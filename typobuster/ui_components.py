@@ -344,6 +344,19 @@ class ButtonBar(Gtk.Box):
         img = self.create_separator()
         self.pack_start(img, False, False, 0)
 
+        btn_undo = self.create_button("undo.svg")
+        btn_undo.set_tooltip_text(parent_window.voc["undo"])
+        self.pack_start(btn_undo, False, False, 0)
+        btn_undo.connect("clicked", parent_window.undo)
+
+        btn_redo = self.create_button("redo.svg")
+        btn_redo.set_tooltip_text(parent_window.voc["redo"])
+        self.pack_start(btn_redo, False, False, 0)
+        btn_redo.connect("clicked", parent_window.redo)
+
+        img = self.create_separator()
+        self.pack_start(img, False, False, 0)
+
         btn_sentence = self.create_button("as-in-sentence.svg")
         btn_sentence.set_tooltip_text(parent_window.voc["as-in-sentence"])
         self.pack_start(btn_sentence, False, False, 0)
