@@ -5,7 +5,7 @@
    viewBox="0 0 24 24"
    version="1.1"
    id="svg1"
-   sodipodi:docname="edit-undo.svg"
+   sodipodi:docname="undo.svg"
    inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -22,7 +22,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="21.041667"
      inkscape:cx="12.023762"
-     inkscape:cy="12.047525"
+     inkscape:cy="12"
      inkscape:window-width="2552"
      inkscape:window-height="1372"
      inkscape:window-x="0"
@@ -38,7 +38,7 @@
   </style>
   </defs>
   <path
-     style="fill:#444444;fill-opacity:1"
+     style="fill:currentColor"
      class="ColorScheme-Text"
      d="M 7 2 L 2 5 L 7 8 L 7 6 L 10 6 C 11.6793 6 13 7.3207 13 9 C 13 10.6793 11.6793 12 10 12 L 5 12 L 5 14 L 10 14 C 12.7527 14 15 11.7527 15 9 C 15 6.2473 12.7527 4 10 4 L 7 4 L 7 2 z"
      transform="translate(4 4)"

@@ -97,7 +97,7 @@ def load_settings():
         "gtk-theme-name": "",
         "highlight-current-row": False,
         "highlight-matching-brackets": False,
-        "icon-set": "dark",
+        "icon-set": "light",
         "icon-size": 24,
         "right-margin-position": 80,
         "right-margin-show": False,

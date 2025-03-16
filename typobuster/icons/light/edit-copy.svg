@@ -4,7 +4,7 @@
    height="24"
    version="1.1"
    id="svg1"
-   sodipodi:docname="edit-copy.svg"
+   sodipodi:docname="copy.svg"
    inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -21,9 +21,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="21.041667"
      inkscape:cx="12.023762"
-     inkscape:cy="12.047525"
-     inkscape:window-width="2552"
-     inkscape:window-height="1372"
+     inkscape:cy="12.023762"
+     inkscape:window-width="1912"
+     inkscape:window-height="1053"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -38,10 +38,9 @@
   </defs>
   <g
      transform="translate(4,4)"
-     id="g1"
-     style="fill:#444444;fill-opacity:1">
+     id="g1">
     <path
-       style="fill:#444444;fill-opacity:1"
+       style="fill:currentColor"
        class="ColorScheme-Text"
        d="M 3,1 C 3,1 2,1 2,2 V 11 C 2,11 2,12 3,12 H 4 V 3 H 12 V 2 C 12,1 11,1 11,1 Z M 6,4 C 6,4 5,4 5,5 V 15 C 5,16 6,16 6,16 H 14 C 14,16 15,16 15,15 V 5 C 15,4 14,4 14,4 Z M 7,6 H 13 V 14 H 7 Z"
        id="path1" />
