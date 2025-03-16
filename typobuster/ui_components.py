@@ -563,7 +563,7 @@ class SanitizationDialog(Gtk.Window):
             text = add_spaces_after_punctuation_marks(text, start_idx, end_idx)
 
         if self.settings["sanitize-spaces"]:
-            text = sanitize_spaces(text, start_idx, end_idx, self.settings["tab-mode"] == "insert-spaces",
+            text = sanitize_spaces(text, start_idx, end_idx, self.settings["tab-mode"] == "spaces",
                                    self.settings["tab-width"])
 
         if self.settings["sanitize-eol"]:
