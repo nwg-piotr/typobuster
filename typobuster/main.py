@@ -221,6 +221,8 @@ class Typobuster(Gtk.Window):
         # Connect the delete event to quit the application
         self.connect("destroy", on_destroy_event)
 
+        self.source_view.grab_focus()
+
     def create_button_bar(self):
         if self.settings["show-bar"]:
             # we need to destroy and build from scratch in case icon size changed
