@@ -279,6 +279,7 @@ def sanitize_spaces(text, start_idx, end_idx, convert_tabs, tab_width):
     selection = re.sub(r" {2,}", " ", selection)  # Replace two or more spaces with a single space
     if convert_tabs:
         selection = re.sub(r'\t+', ' ' * tab_width, selection).strip()  # Replace tabs with a single space
+        selection = re.sub(r" {2,}", " ", selection)  # Replace two or more spaces with a single space
     selection = selection.replace(" \n", "\n")  # Remove spaces before end-of-line characters
     selection = selection.replace("\n ", "\n")  # Remove spaces right after end-of-line characters
     return text[:start_idx] + selection + text[end_idx:]
