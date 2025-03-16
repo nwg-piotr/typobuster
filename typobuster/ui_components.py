@@ -823,7 +823,7 @@ class SearchBar(Gtk.Box):
     def replace(self, widget):
         old = self.search_entry.get_text()
         new = self.replace_entry.get_text()
-        if old and new:
+        if old:
             self.parent_window.replace(old, new)
 
     def clear(self):
