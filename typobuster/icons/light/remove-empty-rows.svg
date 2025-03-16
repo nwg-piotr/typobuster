@@ -23,7 +23,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="34.427261"
      inkscape:cx="7.9878559"
-     inkscape:cy="7.9733325"
+     inkscape:cy="11.458942"
      inkscape:window-width="2552"
      inkscape:window-height="1372"
      inkscape:window-x="0"
@@ -32,6 +32,6 @@
      inkscape:current-layer="svg1" />
   <path
      id="text2"
-     style="font-weight:800;font-size:10.6667px;line-height:1.25;font-family:'Iosevka Nerd Font Mono';-inkscape-font-specification:'Iosevka Nerd Font Mono, Ultra-Bold';text-align:center;text-anchor:middle;fill:#dfdfdf;stroke-width:1.11542"
+     style="font-weight:800;font-size:10.6667px;line-height:1.25;font-family:'Iosevka Nerd Font Mono';-inkscape-font-specification:'Iosevka Nerd Font Mono, Ultra-Bold';text-align:center;text-anchor:middle;fill:#444444;stroke-width:1.11542;fill-opacity:1"
      d="M 5.1775812,14.773658 7.1548611,12.000158 5.1775812,9.2266581 H 7.0619688 L 7.9510812,10.709413 8.8401936,9.2266581 h 1.8843874 l -1.9772797,2.7734999 1.9772797,2.7735 H 8.8401936 L 7.9510812,13.290903 7.0619688,14.773658 Z M 18.598804,5.0113127 c 0.222262,0 0.401195,0.2229994 0.401195,0.4999995 v 0.9999991 c 4.45e-4,0.2763708 -0.179438,0.5005538 -0.401195,0.5000004 H 5.4011969 c -0.2222633,0 -0.4011965,-0.2230003 -0.4011965,-0.5000004 V 5.5113122 c 0,-0.2770001 0.1789332,-0.4999995 0.4011965,-0.4999995 z m 0,11.9773743 c 0.222262,0 0.401195,0.222999 0.401195,0.5 v 0.999999 c 4.45e-4,0.27637 -0.179438,0.500553 -0.401195,0.5 H 5.4011969 c -0.2222633,0 -0.4011965,-0.223 -0.4011965,-0.5 v -0.999999 c 0,-0.277001 0.1789332,-0.5 0.4011965,-0.5 z" />
 </svg>
