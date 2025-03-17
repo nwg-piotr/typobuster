@@ -907,9 +907,6 @@ def main():
     style_context = Gtk.StyleContext()
     style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     css = b"""
-        #searchentry {
-            color: white;
-        }
         #searchentry-error {
             color: red;
         }
