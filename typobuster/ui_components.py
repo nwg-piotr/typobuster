@@ -1,7 +1,9 @@
+import os.path
+
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk, Gdk, GdkPixbuf
 
 from typobuster.tools import *
 from typobuster.__about__ import __version__
@@ -79,15 +81,15 @@ class MenuBar(Gtk.MenuBar):
         edit_menu.append(self.redo_menu_item)
         self.redo_menu_item.connect("activate", parent_window.redo)
 
-        # Edit/Cut
-        cut_menu_item = CustomMenuItem(parent_window.voc["cut"], "Ctrl+X")
-        edit_menu.append(cut_menu_item)
-        cut_menu_item.connect("activate", parent_window.cut_text)
-
         # Edit/Copy
         copy_menu_item = CustomMenuItem(parent_window.voc["copy"], "Ctrl+C")
         edit_menu.append(copy_menu_item)
         copy_menu_item.connect("activate", parent_window.copy_text)
+
+        # Edit/Cut
+        cut_menu_item = CustomMenuItem(parent_window.voc["cut"], "Ctrl+X")
+        edit_menu.append(cut_menu_item)
+        cut_menu_item.connect("activate", parent_window.cut_text)
 
         # Edit/Paste
         paste_menu_item = CustomMenuItem(parent_window.voc["paste"], "Ctrl+V")
@@ -150,7 +152,7 @@ class MenuBar(Gtk.MenuBar):
         transform_ordered_list_menu_item.connect("activate", parent_window.transform_text, "ordered")
 
         # Transform/First word to the end
-        first_to_end_item = Gtk.MenuItem(label=parent_window.voc["move-to-end"])
+        first_to_end_item = Gtk.MenuItem(label=parent_window.voc["first-to-end"])
         transform_menu_item.get_submenu().append(first_to_end_item)
         first_to_end_item.connect("activate", parent_window.transform_text, "first-to-end")
 
@@ -160,9 +162,9 @@ class MenuBar(Gtk.MenuBar):
         last_to_beginning_item.connect("activate", parent_window.transform_text, "last-to-beginning")
 
         # Merge lines
-        merge_lines_menu_item = Gtk.MenuItem(label=parent_window.voc["merge-lines"])
+        merge_lines_menu_item = Gtk.MenuItem(label=parent_window.voc["merge-rows"])
         transform_menu_item.get_submenu().append(merge_lines_menu_item)
-        merge_lines_menu_item.connect("activate", parent_window.transform_text, "merge-lines")
+        merge_lines_menu_item.connect("activate", parent_window.transform_text, "merge-rows")
 
         separator = Gtk.SeparatorMenuItem()
         edit_menu.append(separator)
@@ -313,6 +315,168 @@ def add_syntax_menu(widget, parent_item, parent_window):
     parent_item.set_submenu(menu)
 
 
+class ButtonBar(Gtk.Box):
+    def __init__(self, parent_window, dir_name):
+        super().__init__(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        self.settings = parent_window.settings
+        self.icons_path = os.path.join(dir_name, "icons", self.settings["icon-set"])
+
+        btn_new = self.create_button("file-new.svg")
+        btn_new.set_tooltip_text(parent_window.voc["new"])
+        self.pack_start(btn_new, False, False, 0)
+        btn_new.connect("clicked", parent_window.new_file)
+
+        btn_open = self.create_button("file-open.svg")
+        btn_open.set_tooltip_text(parent_window.voc["open"])
+        self.pack_start(btn_open, False, False, 0)
+        btn_open.connect("clicked", parent_window.open_file)
+
+        btn_save = self.create_button("file-save.svg")
+        btn_save.set_tooltip_text(parent_window.voc["save"])
+        self.pack_start(btn_save, False, False, 0)
+        btn_save.connect("clicked", parent_window.save_file)
+
+        btn_save_as = self.create_button("file-save-as.svg")
+        btn_save_as.set_tooltip_text(parent_window.voc["save-as"])
+        self.pack_start(btn_save_as, False, False, 0)
+        btn_save_as.connect("clicked", parent_window.save_file_as)
+
+        self.pack_start(self.create_separator(), False, False, 0)
+
+        btn_undo = self.create_button("edit-undo.svg")
+        btn_undo.set_tooltip_text(parent_window.voc["undo"])
+        self.pack_start(btn_undo, False, False, 0)
+        btn_undo.connect("clicked", parent_window.undo)
+
+        btn_redo = self.create_button("edit-redo.svg")
+        btn_redo.set_tooltip_text(parent_window.voc["redo"])
+        self.pack_start(btn_redo, False, False, 0)
+        btn_redo.connect("clicked", parent_window.redo)
+
+        btn_copy = self.create_button("edit-copy.svg")
+        btn_copy.set_tooltip_text(parent_window.voc["copy"])
+        self.pack_start(btn_copy, False, False, 0)
+        btn_copy.connect("clicked", parent_window.copy_text)
+
+        btn_cut = self.create_button("edit-cut.svg")
+        btn_cut.set_tooltip_text(parent_window.voc["cut"])
+        self.pack_start(btn_cut, False, False, 0)
+        btn_cut.connect("clicked", parent_window.cut_text)
+
+        btn_paste = self.create_button("edit-paste.svg")
+        btn_paste.set_tooltip_text(parent_window.voc["paste"])
+        self.pack_start(btn_paste, False, False, 0)
+        btn_paste.connect("clicked", parent_window.paste_text)
+
+        self.pack_start(self.create_separator(), False, False, 0)
+
+        btn_sentence = self.create_button("as-in-sentence.svg")
+        btn_sentence.set_tooltip_text(parent_window.voc["as-in-sentence"])
+        self.pack_start(btn_sentence, False, False, 0)
+        btn_sentence.connect("clicked", parent_window.transform_text, "sentence")
+
+        btn_title = self.create_button("as-in-title.svg")
+        btn_title.set_tooltip_text(parent_window.voc["as-in-title"])
+        self.pack_start(btn_title, False, False, 0)
+        btn_title.connect("clicked", parent_window.transform_text, "title")
+
+        btn_uppercase = self.create_button("uppercase.svg")
+        btn_uppercase.set_tooltip_text(parent_window.voc["uppercase"])
+        self.pack_start(btn_uppercase, False, False, 0)
+        btn_uppercase.connect("clicked", parent_window.transform_text, "uppercase")
+
+        btn_lowercase = self.create_button("lowercase.svg")
+        btn_lowercase.set_tooltip_text(parent_window.voc["lowercase"])
+        self.pack_start(btn_lowercase, False, False, 0)
+        btn_lowercase.connect("clicked", parent_window.transform_text, "lowercase")
+
+        btn_camelcase = self.create_button("camel-case.svg")
+        btn_camelcase.set_tooltip_text(parent_window.voc["camel-case"])
+        self.pack_start(btn_camelcase, False, False, 0)
+        btn_camelcase.connect("clicked", parent_window.transform_text, "camelcase")
+
+        btn_snakecase = self.create_button("snake-case.svg")
+        btn_snakecase.set_tooltip_text(parent_window.voc["snake-case"])
+        self.pack_start(btn_snakecase, False, False, 0)
+        btn_snakecase.connect("clicked", parent_window.transform_text, "snakecase")
+
+        btn_kebabcase = self.create_button("kebab-case.svg")
+        btn_kebabcase.set_tooltip_text(parent_window.voc["kebab-case"])
+        self.pack_start(btn_kebabcase, False, False, 0)
+        btn_kebabcase.connect("clicked", parent_window.transform_text, "kebabcase")
+
+        btn_unordered = self.create_button("unordered-list.svg")
+        btn_unordered.set_tooltip_text(parent_window.voc["unordered-list"])
+        self.pack_start(btn_unordered, False, False, 0)
+        btn_unordered.connect("clicked", parent_window.transform_text, "unordered")
+
+        btn_ordered = self.create_button("ordered-list.svg")
+        btn_ordered.set_tooltip_text(parent_window.voc["ordered-list"])
+        self.pack_start(btn_ordered, False, False, 0)
+        btn_ordered.connect("clicked", parent_window.transform_text, "ordered")
+
+        btn_first = self.create_button("first-to-end.svg")
+        btn_first.set_tooltip_text(parent_window.voc["first-to-end"])
+        self.pack_start(btn_first, False, False, 0)
+        btn_first.connect("clicked", parent_window.transform_text, "first-to-end")
+
+        btn_last = self.create_button("last-to-beginning.svg")
+        btn_last.set_tooltip_text(parent_window.voc["last-to-beginning"])
+        self.pack_start(btn_last, False, False, 0)
+        btn_last.connect("clicked", parent_window.transform_text, "last-to-beginning")
+
+        btn_merge = self.create_button("merge-rows.svg")
+        btn_merge.set_tooltip_text(parent_window.voc["merge-rows"])
+        self.pack_start(btn_merge, False, False, 0)
+        btn_merge.connect("clicked", parent_window.transform_text, "merge-rows")
+
+        self.pack_start(self.create_separator(), False, False, 0)
+
+        btn_web = self.create_button("web-cleanup.svg")
+        btn_web.set_tooltip_text(parent_window.voc["web-cleanup"])
+        self.pack_start(btn_web, False, False, 0)
+        btn_web.connect("clicked", parent_window.sanitize_text)
+
+        btn_sort_ascending = self.create_button("sort-ascending.svg")
+        btn_sort_ascending.set_tooltip_text(parent_window.voc["ascending"])
+        self.pack_start(btn_sort_ascending, False, False, 0)
+        btn_sort_ascending.connect("clicked", parent_window.transform_text, "sort-asc")
+
+        btn_sort_descending = self.create_button("sort-descending.svg")
+        btn_sort_descending.set_tooltip_text(parent_window.voc["descending"])
+        self.pack_start(btn_sort_descending, False, False, 0)
+        btn_sort_descending.connect("clicked", parent_window.transform_text, "sort-desc")
+
+        btn_remove_empty = self.create_button("remove-empty-rows.svg")
+        btn_remove_empty.set_tooltip_text(parent_window.voc["remove-empty-rows"])
+        self.pack_start(btn_remove_empty, False, False, 0)
+        btn_remove_empty.connect("clicked", parent_window.transform_text, "remove-empty-rows")
+
+        btn_remove_non_ascii = self.create_button("remove-non-ascii.svg")
+        btn_remove_non_ascii.set_tooltip_text(parent_window.voc["remove-non-ascii"])
+        self.pack_start(btn_remove_non_ascii, False, False, 0)
+        btn_remove_non_ascii.connect("clicked", parent_window.transform_text, "remove-non-ascii")
+
+        self.show_all()
+
+    def create_button(self, icon_name):
+        btn = Gtk.Button()
+        btn.set_image(self.create_image(icon_name))
+        btn.set_property("name", "bar-button")
+        return btn
+
+    def create_separator(self):
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(os.path.join(self.icons_path, "separator.svg"),
+                                                        self.settings["icon-size"] / 2, self.settings["icon-size"])
+        img = Gtk.Image.new_from_pixbuf(pixbuf)
+        return img
+
+    def create_image(self, icon_name):
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(os.path.join(self.icons_path, icon_name),
+                                                        self.settings["icon-size"], self.settings["icon-size"])
+        return Gtk.Image.new_from_pixbuf(pixbuf)
+
+
 class SanitizationDialog(Gtk.Window):
     def __init__(self, parent_window, buffer):
         super().__init__(title="Sanitize Text")
@@ -399,7 +563,7 @@ class SanitizationDialog(Gtk.Window):
             text = add_spaces_after_punctuation_marks(text, start_idx, end_idx)
 
         if self.settings["sanitize-spaces"]:
-            text = sanitize_spaces(text, start_idx, end_idx, self.settings["tab-mode"] == "insert-spaces",
+            text = sanitize_spaces(text, start_idx, end_idx, self.settings["tab-mode"] == "spaces",
                                    self.settings["tab-width"])
 
         if self.settings["sanitize-eol"]:
@@ -482,28 +646,51 @@ class PreferencesDialog(Gtk.Dialog):
         self.grid.attach(right_margin_cb, 2, 2, 1, 1)
         right_margin_cb.connect("toggled", parent.on_right_margin_toggled)
 
+        self.icon_size_label = Gtk.Label(label=parent.voc["button-bar-icon-size"], halign=Gtk.Align.START)
+        self.grid.attach(self.icon_size_label, 0, 3, 1, 1)
+
+        icon_bar_cb = Gtk.CheckButton.new_with_label(parent.voc["show"])
+        icon_bar_cb.set_active(parent.settings["show-bar"])
+        self.grid.attach(icon_bar_cb, 2, 3, 1, 1)
+        icon_bar_cb.connect("toggled", parent.on_bar_show_toggled)
+
+        icon_size_sb = Gtk.SpinButton.new_with_range(16, 128, 4)
+        icon_size_sb.set_value(parent.settings["icon-size"])
+        self.grid.attach(icon_size_sb, 1, 3, 1, 1)
+        icon_size_sb.connect("value-changed", parent.on_icon_size_selected)
+
+        icon_set_label = Gtk.Label(label=parent.voc["button-bar-icon-set"], halign=Gtk.Align.START)
+        self.grid.attach(icon_set_label, 0, 4, 1, 1)
+
+        icon_set_combo = Gtk.ComboBoxText()
+        icon_set_combo.append("light", parent.voc["light"])
+        icon_set_combo.append("dark", parent.voc["dark"])
+        icon_set_combo.set_active_id(parent.settings["icon-set"])
+        icon_set_combo.connect("changed", parent.on_icon_set_changed)
+        self.grid.attach(icon_set_combo, 1, 4, 1, 1)
+
         self.tab_width_label = Gtk.Label(label=parent.voc["tab-width"], halign=Gtk.Align.START)
-        self.grid.attach(self.tab_width_label, 0, 3, 1, 1)
+        self.grid.attach(self.tab_width_label, 0, 5, 1, 1)
 
         tab_width_sb = Gtk.SpinButton.new_with_range(1, 32.0, 1)
         tab_width_sb.set_value(parent.settings["tab-width"])
         tab_width_sb.connect("value-changed", parent.on_tab_with_selected)
-        self.grid.attach(tab_width_sb, 1, 3, 1, 1)
+        self.grid.attach(tab_width_sb, 1, 5, 1, 1)
 
         self.tab_mode_label = Gtk.Label(label=parent.voc["tab-mode"], halign=Gtk.Align.START)
-        self.grid.attach(self.tab_mode_label, 0, 4, 1, 1)
+        self.grid.attach(self.tab_mode_label, 0, 6, 1, 1)
 
         self.tab_mode_combo = Gtk.ComboBoxText()
         self.tab_mode_combo.append("tabs", parent.voc["insert-tabs"])
         self.tab_mode_combo.append("spaces", parent.voc["insert-spaces"])
         self.tab_mode_combo.set_active_id(parent.settings["tab-mode"])
         self.tab_mode_combo.connect("changed", parent.on_tab_mode_changed)
-        self.grid.attach(self.tab_mode_combo, 1, 4, 1, 1)
+        self.grid.attach(self.tab_mode_combo, 1, 6, 1, 1)
 
         self.auto_indent_cb = Gtk.CheckButton(label=parent.voc["auto-indent"])
         self.auto_indent_cb.set_active(parent.settings["auto-indent"])
         self.auto_indent_cb.connect("toggled", parent.on_auto_indent_changed)
-        self.grid.attach(self.auto_indent_cb, 0, 5, 1, 1)
+        self.grid.attach(self.auto_indent_cb, 0, 7, 1, 1)
 
         self.spell_check_cb = Gtk.CheckButton(label=parent.voc["spell-check"])
         self.spell_check_cb.set_sensitive(parent.gspell_available)
@@ -511,21 +698,21 @@ class PreferencesDialog(Gtk.Dialog):
             self.spell_check_cb.set_tooltip_text(parent.voc["gspell-missing"])
         self.spell_check_cb.set_active(parent.settings["gspell-enable"])
         self.spell_check_cb.connect("toggled", parent.on_spell_check_switched)
-        self.grid.attach(self.spell_check_cb, 1, 5, 1, 1)
+        self.grid.attach(self.spell_check_cb, 1, 7, 1, 1)
 
         self.stats_cb = Gtk.CheckButton(label=parent.voc["show-stats"])
         self.stats_cb.set_active(parent.settings["show-stats"])
         self.stats_cb.connect("toggled", parent.on_stats_cb_toggled)
-        self.grid.attach(self.stats_cb, 0, 6, 1, 1)
+        self.grid.attach(self.stats_cb, 0, 8, 1, 1)
 
         self.change_cb = Gtk.CheckButton(label=parent.voc["show-change-mark"])
         self.change_cb.set_active(parent.settings["show-change"])
         self.change_cb.connect("toggled", parent.on_change_cb_toggled)
-        self.grid.attach(self.change_cb, 1, 6, 1, 1)
+        self.grid.attach(self.change_cb, 1, 8, 1, 1)
 
         # OK Button
         hbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
-        self.grid.attach(hbox, 0, 7, 3, 1)
+        self.grid.attach(hbox, 0, 9, 3, 1)
         self.ok_button = Gtk.Button(label=parent.voc["close"])
         self.ok_button.connect("clicked", lambda x: self.close())
         hbox.pack_end(self.ok_button, False, False, 0)
@@ -636,7 +823,7 @@ class SearchBar(Gtk.Box):
     def replace(self, widget):
         old = self.search_entry.get_text()
         new = self.replace_entry.get_text()
-        if old and new:
+        if old:
             self.parent_window.replace(old, new)
 
     def clear(self):

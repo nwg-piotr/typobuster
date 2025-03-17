@@ -17,9 +17,10 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("GtkSource", "4")
 from gi.repository import Gtk, Gdk, GLib, GtkSource
 
-from typobuster.ui_components import MenuBar, SanitizationDialog, AboutWindow, SearchBar, PreferencesDialog
+from typobuster.ui_components import MenuBar, ButtonBar, SanitizationDialog, AboutWindow, SearchBar, PreferencesDialog
 from typobuster.tools import *
 
+from typobuster.__about__ import __version__
 dir_name = os.path.dirname(__file__)
 file_path = ""
 voc = {}
@@ -62,6 +63,7 @@ def on_destroy_event(widget):
 class Typobuster(Gtk.Window):
     def __init__(self):
         super().__init__()
+        self.button_bar = None
         self.drag_in_progress = False
         self.settings = load_settings()
         self.syntax_dict = load_syntax()
@@ -139,6 +141,12 @@ class Typobuster(Gtk.Window):
         self.menu_bar = MenuBar(self)
         vbox.pack_start(self.menu_bar, False, False, 0)
 
+        self.button_bar_wrapper = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        self.button_bar_wrapper.set_property("name", "bar-wrapper")
+        vbox.pack_start(self.button_bar_wrapper, False, False, 0)
+
+        self.create_button_bar()
+
         # Create a scrollable window and add the source view
         scrolled_window = Gtk.ScrolledWindow()
         scrolled_window.set_hexpand(True)
@@ -212,6 +220,19 @@ class Typobuster(Gtk.Window):
 
         # Connect the delete event to quit the application
         self.connect("destroy", on_destroy_event)
+
+        self.source_view.grab_focus()
+
+    def create_button_bar(self):
+        if self.settings["show-bar"]:
+            # we need to destroy and build from scratch in case icon size changed
+            if len(self.button_bar_wrapper.get_children()) > 0:
+                self.button_bar_wrapper.get_children()[0].destroy()
+            self.button_bar = ButtonBar(self, dir_name)
+            self.button_bar_wrapper.pack_start(self.button_bar, False, False, 0)
+            self.button_bar_wrapper.show_all()
+        else:
+            self.button_bar_wrapper.hide()
 
     def text_changed(self):
         return self.buffer.get_text(self.buffer.get_start_iter(), self.buffer.get_end_iter(), True) != self.initial_text
@@ -419,15 +440,30 @@ class Typobuster(Gtk.Window):
         self.source_view.set_right_margin_position(self.settings["right-margin-position"])
         save_settings(self.settings)
 
+    def on_icon_size_selected(self, sb):
+        self.settings["icon-size"] = int(sb.get_value())
+        save_settings(self.settings)
+        self.create_button_bar()
+
     def on_right_margin_toggled(self, cb):
         self.settings["right-margin-show"] = cb.get_active()
         self.source_view.set_show_right_margin(self.settings["right-margin-show"])
         save_settings(self.settings)
 
+    def on_bar_show_toggled(self, cb):
+        self.settings["show-bar"] = cb.get_active()
+        save_settings(self.settings)
+        self.create_button_bar()
+
     def on_tab_mode_changed(self, combo):
         self.settings["tab-mode"] = combo.get_active_id()
         self.set_tab_mode()
         save_settings(self.settings)
+
+    def on_icon_set_changed(self, combo):
+        self.settings["icon-set"] = combo.get_active_id()
+        save_settings(self.settings)
+        self.create_button_bar()
 
     def on_auto_indent_changed(self, check_button):
         self.settings["auto-indent"] = check_button.get_active()
@@ -542,7 +578,7 @@ class Typobuster(Gtk.Window):
                 transformed_text = move_first_word_to_end(text)
             elif transformation == "last-to-beginning":
                 transformed_text = move_last_word_to_beginning(text)
-            elif transformation == "merge-lines":
+            elif transformation == "merge-rows":
                 transformed_text = merge_lines(text)
             else:
                 transformed_text = text
@@ -849,6 +885,12 @@ class Typobuster(Gtk.Window):
 def main():
     parser = argparse.ArgumentParser(description="Simple text editor")
     parser.add_argument("file_path", type=str, nargs="?", help="Path of the file to open")
+    parser.add_argument("-v",
+                        "--version",
+                        action="version",
+                        version="%(prog)s version {}".format(__version__),
+                        help="display version information")
+
     args = parser.parse_args()
 
     if args.file_path:
@@ -865,11 +907,21 @@ def main():
     style_context = Gtk.StyleContext()
     style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     css = b"""
-        #searchentry {
-            color: white;
-        }
         #searchentry-error {
             color: red;
+        }
+        #bar-button {
+            min-width: 16px;
+            min-height: 16px;
+            background: none;
+            border: none;
+            padding: 0px;
+        }
+        #bar-button:hover {
+            background-color: rgba(0, 255, 255, 0.5);
+        }
+        #bar-wrapper {
+            padding: 3px;
         }
         """
     provider.load_from_data(css)
