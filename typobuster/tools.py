@@ -234,7 +234,10 @@ def selected_text(buffer):
     end = buffer.get_end_iter()
 
     if buffer.get_has_selection():
-        start_iter, end_iter = buffer.get_selection_bounds()
+        try:
+            start_iter, end_iter = buffer.get_selection_bounds()
+        except:
+            return "", 0, 0
     else:
         start_iter = start
         end_iter = end

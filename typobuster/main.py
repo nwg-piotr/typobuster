@@ -308,7 +308,17 @@ class Typobuster(Gtk.Window):
         elif event.keyval == Gdk.KEY_y and event.state & Gdk.ModifierType.CONTROL_MASK:
             self.redo()
         elif event.keyval == Gdk.KEY_f and event.state & Gdk.ModifierType.CONTROL_MASK:
-            self.search_bar.search_entry.grab_focus()
+            self.search_selection()
+
+    def search_selection(self):
+        txt, s, e = selected_text(self.buffer)
+        selection = txt[s:e]
+        if s != 0 and e != len(txt):
+            self.search_bar.search_entry.set_text(selection)
+        else:
+            self.search_bar.search_entry.set_text("")
+
+        self.search_bar.search_entry.grab_focus()
 
     def on_close(self, widget, event):
         # remember last window dimensions
