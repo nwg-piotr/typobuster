@@ -1,8 +1,8 @@
 """
-A simple text editor that helps you correct common typos.
+Lightweight editor with text transformations and auto-correction.
 Project: https://github.com/nwg-piotr/typobuster
 Author's email: nwg.piotr@gmail.com
-Copyright (c) 2025 Piotr Miller
+Copyright (c) 2025 Piotr Miller & Contributors
 License: GPL3
 """
 
