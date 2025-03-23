@@ -21,6 +21,7 @@ from typobuster.ui_components import MenuBar, ButtonBar, SanitizationDialog, Abo
 from typobuster.tools import *
 
 from typobuster.__about__ import __version__
+
 dir_name = os.path.dirname(__file__)
 file_path = ""
 voc = {}
