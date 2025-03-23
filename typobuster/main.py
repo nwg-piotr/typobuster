@@ -289,7 +289,10 @@ class Typobuster(Gtk.Window):
 
     def handle_keyboard_release(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
-            self.source_view.grab_focus()
+            if self.search_bar.search_entry.is_focus() and self.search_bar.search_entry.get_text():
+                self.search_bar.search_entry.set_text("")
+            else:
+                self.source_view.grab_focus()
         elif event.keyval == Gdk.KEY_n and event.state & Gdk.ModifierType.CONTROL_MASK:
             self.new_file()
         elif event.keyval == Gdk.KEY_o and event.state & Gdk.ModifierType.CONTROL_MASK:
@@ -313,7 +316,7 @@ class Typobuster(Gtk.Window):
     def search_selection(self):
         txt, s, e = selected_text(self.buffer)
         selection = txt[s:e]
-        if s != 0 and e != len(txt):
+        if not (s == 0 and e == len(txt)):
             self.search_bar.search_entry.set_text(selection)
         else:
             self.search_bar.search_entry.set_text("")
